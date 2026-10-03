@@ -1467,27 +1467,53 @@ const esc=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 const clip=(v,n)=>esc(String(v==null?'':v).replace(/\s+/g,' ').trim().slice(0,n));
 const MOTIFS=['peaks','mesa','waves','balloons','fields','forest','torii','dome','coast','city'];
 const ZONES=['temperate','desert','tropical','alpine'];
-const pairs=(a,k,n,lens)=>{if(!Array.isArray(a))throw new Error('bad');const o=a.slice(0,k).map(r=>{if(!Array.isArray(r)||r.length<n)throw new Error('bad');return lens.map((l,i)=>clip(r[i],l));});if(o.length<1)throw new Error('bad');return o;};
-function cleanPlace(raw){
-  const r=raw||{};
-  const slug=String(r.id||r.n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
-  if(!slug||!r.n)throw new Error('bad');
-  const country=ALLC.includes(r.country)?r.country:clip(r.country,60);
-  const mm=Array.isArray(r.m)?Array.from(new Set(r.m.map(Number).filter(x=>x>=1&&x<=12))).sort((a,b)=>a-b):[];
-  if(!mm.length)throw new Error('bad');
-  const bud=Array.isArray(r.bud)&&r.bud.length>=3?r.bud.slice(0,3).map(x=>Math.max(10,Math.min(5000,Math.round(Number(x))||0))):null;
-  if(!bud||bud.some(x=>!x))throw new Error('bad');
+const rowsOf=(a,k,lens,def)=>{
+  if(!Array.isArray(a))a=[];
+  return a.slice(0,k).map(r=>{
+    if(typeof r==='string')r=[r];
+    else if(r&&!Array.isArray(r)&&typeof r==='object')r=Object.values(r);
+    if(!Array.isArray(r))return null;
+    const o=lens.map((l,i)=>clip(r[i]!==undefined&&r[i]!==null&&r[i]!==''?r[i]:def[i],l));
+    return o[0]?o:null;
+  }).filter(Boolean);
+};
+const MONTHKEYS=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+function parseMonths(m){
+  const out=new Set();
+  (Array.isArray(m)?m:String(m||'').split(/[,\s]+/)).forEach(x=>{
+    const n=Number(x);
+    if(n>=1&&n<=12)out.add(Math.round(n));
+    else{const i=MONTHKEYS.indexOf(String(x).slice(0,3).toLowerCase());if(i>=0)out.add(i+1);}
+  });
+  return Array.from(out).sort((a,b)=>a-b);
+}
+function cleanPlace(raw,fb){
+  if(Array.isArray(raw))raw=raw[0];
+  const r=raw&&typeof raw==='object'?raw:{};
+  fb=fb||{};
+  const name=clip(r.n||r.name||r.title,80);
+  if(!name)throw new Error('missing name');
+  const slug=String(r.id||name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'place';
+  const country=ALLC.includes(r.country)?r.country:(fb.country&&fb.country!=='all'?fb.country:clip(r.country||'Earth',60));
+  let mm=parseMonths(r.m);if(!mm.length)mm=[1,2,3,4,5,6,7,8,9,10,11,12];
+  let bud=Array.isArray(r.bud)?r.bud.slice(0,3).map(x=>Math.max(10,Math.min(5000,Math.round(parseFloat(String(x).replace(/[^0-9.]/g,'')))||0))):[];
+  if(bud.length<3||bud.some(x=>!x))bud=[80,160,320];
+  bud.sort((a,b)=>a-b);
   const reg=clip(r.reg,60);
-  const eat=pairs(r.eat,6,4,[80,200,24,4]);
-  const d={id:'c-'+slug,n:clip(r.n,80),reg,reg2:'',country,cont:CONT_OF[country]||(CONTS.includes(r.cont)?r.cont:'Europe'),sc:'world',custom:true,
+  const d={id:'c-'+slug,n:name,reg,reg2:'',country,cont:CONT_OF[country]||(CONTS.includes(r.cont)?r.cont:(fb.cont&&fb.cont!=='all'?fb.cont:'Europe')),sc:'world',custom:true,
     m:mm,tags:(Array.isArray(r.tags)?r.tags:[]).filter(t=>TAGS.includes(t)).slice(0,3),z:ZONES.includes(r.z)?r.z:'temperate',h:Math.max(0,Math.min(360,Math.round(Number(r.h))||200)),
     motif:MOTIFS.includes(r.motif)?r.motif:'peaks',south:!!r.south,intl:country!=='United States',
-    b:clip(r.b,320),ev:clip(r.ev,240),tip:clip(r.tip,240),
-    spots:pairs(r.spots,5,3,[80,40,200]),it:pairs(r.it,5,2,[60,220]),eat:eat,bud:bud.sort((a,b)=>a-b),
-    ride:pairs([r.ride],1,2,[30,240])[0],book:pairs(r.book,5,3,[80,24,200]),shop:r.shop?clip(r.shop,320):null,
-    stay:pairs(r.stay,4,2,[70,200]),fancy:pairs([r.fancy],1,3,[80,200,160])[0],gear:(Array.isArray(r.gear)?r.gear:[]).slice(0,6).map(x=>clip(x,90)).filter(Boolean)};
+    b:clip(r.b||r.summary,320)||('A guide to '+name+'.'),ev:clip(r.ev,240),tip:clip(r.tip,240)||'Check opening days and book popular sights ahead.',
+    spots:rowsOf(r.spots,5,[80,40,200],['','Morning','']),it:rowsOf(r.it,6,[60,220],['','']),eat:rowsOf(r.eat,6,[80,200,24,4],['','','Local dish','$$']),
+    bud:bud,ride:rowsOf([r.ride],1,[30,240],['Mixed','Check local transport options.'])[0]||['Mixed','Check local transport options.'],
+    book:rowsOf(r.book,5,[80,24,200],['','Optional','']),shop:r.shop?clip(r.shop,320):null,
+    stay:rowsOf(r.stay,4,[70,200],['','']),fancy:rowsOf([r.fancy],1,[80,200,160],['','',''])[0]||[name,'A highlight worth planning around.','Check booking rules.'],gear:(Array.isArray(r.gear)?r.gear:[]).slice(0,6).map(x=>clip(x,90)).filter(Boolean)};
   d.loc=reg?reg+', '+country:country;
   if(!d.tags.length)d.tags=['culture'];
+  if(!d.spots.length)d.spots=[[name,'Morning','A highlight of '+name+'.']];
+  if(!d.it.length)d.it=[['Explore '+name,'Spend the day at the main sights.']];
+  if(!d.eat.length)d.eat=[['Local restaurants','Ask locals for their favorite spots.','Local dish','$$']];
+  if(!d.book.length)d.book=[['Lodging','Optional','Book ahead in busy months.']];
   if(!d.gear.length)d.gear=GEAR0[d.z];
   if(!d.stay.length)d.stay=STAY0;
   return d;
@@ -1632,7 +1658,7 @@ function sugCard(){
   return h;
 }
 const PROMPT=t=>'You are a travel researcher. Build a concise travel guide for this destination: '+JSON.stringify(t)+'.\n'+
-'Reply with ONLY one JSON object, no markdown, using exactly these keys:\n'+
+'Be brief: every text value under 15 words, exactly 3 spots, 3 itinerary days, 3 eat items, 2 book items, 2 stay tips, 4 gear items. A long reply gets cut off and fails.\nReply with ONLY one JSON object, no markdown, using exactly these keys:\n'+
 '{"n":"place name","reg":"state, province or region (empty if none)","country":"country name in English","cont":"one of North America, South America, Europe, Asia, Africa, Oceania, Antarctica",'+
 '"m":[best months as numbers 1-12],"tags":[up to 3 of nature,adventure,beach,culture,city,festival],"z":"temperate|desert|tropical|alpine","h":hue 0-360,"motif":"peaks|mesa|waves|balloons|fields|forest|torii|dome|coast|city","south":true if southern hemisphere,'+
 '"b":"one-sentence summary","ev":"a notable festival or seasonal event, or empty","tip":"one insider tip",'+
@@ -1646,7 +1672,7 @@ async function askClaude(t){
   askBusy=true;busyT0=Date.now();askMsg='';askCtl=new AbortController();renderHome();
   try{
     const raw=await sampleFn.json(PROMPT(t),{signal:askCtl.signal,cache:false});
-    const d=cleanPlace(raw);
+    const d=cleanPlace(raw,{country:state.country,cont:state.cont});
     const i=D.findIndex(x=>x.id===d.id);
     if(i>=0){if(!D[i].custom)throw new Error('dup');D.splice(i,1);}
     D.push(d);
@@ -1655,7 +1681,7 @@ async function askClaude(t){
     askBusy=false;askCtl=null;openDetail(d.id);return;
   }catch(e){
     const c=e&&e.code;
-    askMsg=c==='cancelled'?'':c==='not_granted'?'Claude access was declined, so no guide was built.':c==='rate_limited'?'Too many requests. Wait a minute and try again.':'Claude could not build that guide. Try a more specific place name.';
+    askMsg=c==='cancelled'?'':c==='not_granted'?'Claude access was declined, so no guide was built.':c==='rate_limited'?'Too many requests. Wait a minute and try again.':'Claude could not build that guide ('+(c||(e&&e.message)||'unknown')+'). Tap Build again, or try a more specific name.';
   }
   askBusy=false;askCtl=null;if(!state.view)renderHome();
 }
@@ -1719,7 +1745,7 @@ let planBusy=false,planMsg='',planCtl=null;
 function planPrompt(d){
   const mo=state.month?MF[state.month-1]:'its best season ('+rangeText(d.m)+')';
   return 'Plan a '+state.days+'-day trip to '+JSON.stringify(d.n+', '+d.loc)+' for '+state.ppl+' traveler(s), visiting in '+mo+'.\n'+
-  'Curate the best of the best so no day is wasted. Order the days so the most important days come first. Use 5 to 6 stops per day covering sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group stops by neighborhood to cut travel time, and put each place at the time of day it works best (sunrise for quiet views, golden hour for photos, night for lit-up skylines). Include the famous themed experiences and day trips travelers ask about (for example the Harry Potter studio tour for London), plus meals with local food and gelato or sweets where fitting. For each stop give the time to allow, travel or transfer time if it is more than a few minutes, and what to book ahead or closing days if relevant. Do not invent exact prices or opening hours you are unsure of.\n'+
+  'Curate the best of the best so no day is wasted. Order the days so the most important days come first. Use 5 to 6 stops per day covering sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group stops by neighborhood to cut travel time, and put each place at the time of day it works best (sunrise for quiet views, golden hour for photos, night for lit-up skylines). Include the famous themed experiences and day trips travelers ask about (for example the Harry Potter studio tour for London), plus meals with local food and gelato or sweets where fitting. For each stop give the time to allow, travel or transfer time if it is more than a few minutes, and what to book ahead or closing days if relevant. Do not invent exact prices or opening hours you are unsure of. Keep every note under 20 words so the reply is not cut off.\n'+
   ((store.mine[d.id]||[]).length?'The traveler specifically asked to include these places, so fit them into sensible days: '+JSON.stringify(store.mine[d.id].map(p=>p.n))+'.\n':'')+
   'Known highlights you can use: photo spots '+JSON.stringify(d.spots.map(x=>x[0]+' ('+x[1]+')'))+'; food '+JSON.stringify(d.eat.map(x=>x[0]))+'. Add other well-known places too.\n'+
   'Reply with ONLY one JSON object, no markdown: {"days":[{"title":"short theme for the day","stops":[{"t":"time label such as Sunrise 6:30 AM, Morning, Lunch, Golden hour, Night view","n":"stop name","d":"time to allow, e.g. 2–3 hrs","note":"why this time is best plus one tip, 1 to 2 sentences","b":"what to book ahead or closing days, or empty"}]}]} with exactly '+state.days+' days.';
