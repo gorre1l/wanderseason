@@ -1,0 +1,1549 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F6E7B">
+<meta name="copyright" content="© 2026 Lalitha Priya Gorre. All rights reserved.">
+<meta name="author" content="Lalitha Priya Gorre">
+<meta name="description" content="Find the best places to visit by month anywhere in the world, with itineraries, photo spots, food, budgets, visa rules and packing lists.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>body{margin:0}[hidden]{display:none!important}:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Wanderseason</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: a seasonal landscape hero with a floating filter panel, then an airy grid of illustrated place cards that open into a tabbed trip page. */
+:root{
+  --bg:#F4F7F8; --surface:#FFFFFF; --ink:#0E2433; --muted:#5C7080; --line:#E0E8EC; --soft:#EAF1F3;
+  --accent:#0F6E7B; --on-accent:#FFFFFF; --sun:#C99A3C; --on-sun:#1A1300; --cover-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(10,35,50,.06),0 12px 32px rgba(10,35,50,.08);
+  --display:'Fraunces','Iowan Old Style',Georgia,serif;
+  --body:'DM Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'DM Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#08141D; --surface:#0F2231; --ink:#EAF1F5; --muted:#8EA5B3; --line:#1E3A4D; --soft:#14303F;
+    --accent:#55CCD6; --on-accent:#04222A; --sun:#E0B35C;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08141D; --surface:#0F2231; --ink:#EAF1F5; --muted:#8EA5B3; --line:#1E3A4D; --soft:#14303F;
+  --accent:#55CCD6; --on-accent:#04222A; --sun:#E0B35C;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-inline:16px;padding-block:12px 48px}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto}
+.art{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* hero */
+.hero{position:relative;border-radius:28px;overflow:hidden;color:var(--cover-ink);min-height:300px;display:flex;flex-direction:column;justify-content:space-between;padding:20px 22px 64px}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,18,28,.62),rgba(4,18,28,0) 65%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.heroart{position:absolute!important;inset:0;z-index:0!important}
+.logo{display:flex;align-items:center;gap:10px;font:600 14px var(--mono);letter-spacing:.18em;text-transform:uppercase}
+.logo svg{width:26px;height:26px}
+h1{font:600 clamp(34px,6.4vw,64px)/1.04 var(--display);letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance;max-width:16ch}
+h1 em{font-style:italic;font-weight:400}
+.sub{margin:0;max-width:56ch;font-size:17px;opacity:.95}
+/* controls */
+.panel-c{position:relative;z-index:2;background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);margin:-40px 12px 28px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.lbl{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 16px;min-height:40px}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"],.mbtn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:700}
+.ribbon{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.mbtn{border:1px solid var(--line);background:var(--surface);font:500 13px var(--mono);flex:0 0 auto;min-width:54px;text-align:center;border-radius:12px;padding:8px 10px;min-height:40px}
+.mbtn.now::after{content:"";display:block;width:5px;height:5px;border-radius:50%;background:var(--sun);margin:2px auto -4px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.search{flex:1 1 220px;min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:9px 18px;min-height:44px}
+.search::placeholder{color:var(--muted)}
+.sel{display:flex;flex-direction:column;gap:4px;min-width:0}
+.sel span{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sel select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:9px 12px;min-height:44px;max-width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:14px;padding:6px 14px;min-height:36px}
+.chip{text-transform:none}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 18px;min-height:44px;font-weight:500}
+.btn.sun{background:var(--sun);border-color:var(--sun);color:var(--on-sun);font-weight:700}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+details.more summary{cursor:pointer;font-weight:700;color:var(--accent);min-height:36px;display:flex;align-items:center}
+details.more[open] summary{margin-bottom:10px}
+.moregrid{display:flex;flex-direction:column;gap:12px}
+/* grid + cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;min-width:0;box-shadow:var(--shadow);transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.card-link{display:flex;flex-direction:column;flex:1;color:inherit;text-decoration:none}
+.cover{position:relative;min-height:176px;color:var(--cover-ink);padding:14px 16px 16px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,18,28,.72),rgba(4,18,28,0) 62%)}
+.cover>*{position:relative;z-index:1}
+.cover .art{z-index:0}
+.cover h3{font:600 24px/1.1 var(--display);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.cover p{margin:2px 0 0;font-size:14px;opacity:.92}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:auto;padding-bottom:40px;padding-right:46px}
+.pill{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;background:rgba(4,18,28,.45);color:var(--cover-ink);padding:4px 9px;border-radius:999px;backdrop-filter:blur(4px)}
+.pill.now{background:var(--sun);color:var(--on-sun)}
+.heart{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(4,18,28,.45);color:var(--cover-ink);display:grid;place-items:center;z-index:3}
+.heart svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.heart[aria-pressed="true"]{color:#ff8da1}
+.heart[aria-pressed="true"] svg{fill:currentColor}
+.cbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.blurb{margin:0;font-size:15px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.facts span{font:500 12px var(--mono);background:var(--soft);padding:4px 9px;border-radius:8px}
+.vb{display:inline-flex;align-items:center;gap:7px;font:500 12px var(--mono);padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.vb::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.v-free::before,.v-home::before{background:#2f9e6b}
+.v-auth::before,.v-voa::before{background:var(--sun)}
+.v-visa::before{background:#d6455d}
+.mbar{display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
+.mbar span{height:6px;border-radius:3px;background:var(--line)}
+.mbar span.on{background:var(--accent)}
+.mbar span.sel{outline:2px solid var(--sun);outline-offset:1px}
+.mbar.big span{height:auto;padding:8px 0;border-radius:6px;text-align:center;font:500 11px var(--mono);color:var(--muted)}
+.mbar.big span.on{color:var(--on-accent)}
+.best{margin:0;font:500 12px var(--mono);color:var(--muted);margin-top:auto}
+.empty{grid-column:1/-1;padding:36px 16px;text-align:center;background:var(--surface);border:1px dashed var(--line);border-radius:20px;color:var(--muted)}
+.empty .btn{margin-top:10px}
+/* detail */
+.back{border:0;background:none;padding:10px 0;font-weight:700;color:var(--accent);display:inline-flex;gap:6px;align-items:center;min-height:44px}
+.dcover{position:relative;border-radius:28px;overflow:hidden;color:var(--cover-ink);min-height:280px;padding:20px 24px 26px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.dcover::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,18,28,.78),rgba(4,18,28,0) 70%)}
+.dcover>*{position:relative;z-index:1}
+.dcover .art{z-index:0}
+.dcover .pills{margin-bottom:auto;padding-bottom:0}
+.dcover h2{font:600 clamp(34px,6vw,56px)/1.04 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance;padding-right:50px}
+.dcover p{margin:0}
+.dcover .meta{font:500 13px var(--mono);opacity:.95}
+.trip{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:18px 0 0}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tt{font:600 20px var(--display)}
+.tcard p{margin:0}
+.s{font-size:13px}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tier{border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;gap:1px;align-items:center;text-align:center;min-width:0}
+.tier b{font:600 22px var(--display)}
+.tier span{font-weight:700;font-size:13px}
+.tier small{color:var(--muted);font-size:11px}
+.tier[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.tier[aria-pressed="true"] small{color:inherit;opacity:.8}
+.est{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.est label{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.est input{width:78px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:8px;font:500 16px var(--mono)}
+.total{margin-left:auto;text-align:right}
+.total small{display:block;font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.total b{font:600 36px/1.05 var(--display)}
+.tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);margin:26px 0 20px}
+.tab{border:0;background:none;padding:12px 14px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;min-height:46px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sun)}
+.panel{max-width:780px}
+.panel h3{font:600 22px var(--display);margin:0 0 8px}
+.lead{font-size:19px;margin:0 0 18px;max-width:62ch}
+.note{background:var(--soft);border-radius:14px;padding:12px 16px;margin:0 0 12px}
+.note b{display:block;font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px}
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 18px}
+.glance div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-width:0}
+.glance small{display:block;font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.glance b{font:600 20px/1.25 var(--display)}
+.muted{color:var(--muted);margin:0 0 14px;font-size:14px}
+.days{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.day{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.day .dn{font:500 13px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding-top:4px}
+.day h4{margin:0 0 2px;font:600 18px var(--display)}
+.day p{margin:0}
+.spots{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.spot{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+.spot h4{margin:0;font:600 18px var(--display);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.spot p{margin:0;color:var(--muted)}
+.when{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;background:var(--sun);color:var(--on-sun);padding:3px 9px;border-radius:999px}
+.when.alt{background:var(--soft);color:var(--ink)}
+.price{font:500 12px var(--mono);color:var(--muted)}
+.urg{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:999px;border:1px solid var(--ink)}
+.u-Required{background:var(--ink);color:var(--bg)}
+.u-Bookahead{background:var(--sun);color:var(--on-sun);border-color:var(--sun)}
+.u-Optional,.u-WalkupOK{color:var(--muted);border-color:var(--line)}
+.ride{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 16px;margin-bottom:18px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.ride p{margin:0}
+h3.sp{margin-top:24px}
+.seasons{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 4px}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.count{font:500 13px var(--mono);color:var(--muted);margin:0 0 14px}
+.pk{margin-bottom:16px}
+.pk ul{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.pk li+li{border-top:1px solid var(--line)}
+.pk label{display:flex;gap:12px;align-items:center;padding:10px 16px;min-height:46px;cursor:pointer}
+.pk input{width:20px;height:20px;accent-color:var(--accent);flex:0 0 auto}
+.pk input:checked+span{color:var(--muted);text-decoration:line-through}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.copybox{width:100%;min-height:140px;margin-top:10px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font:13px var(--mono)}
+.foot{margin:40px auto 0;color:var(--muted);font-size:13px;max-width:70ch;text-align:center}
+.tagrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.tagrow span{border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;color:var(--muted);text-transform:capitalize}
+.wm{position:absolute;right:10px;bottom:14px;z-index:2;writing-mode:vertical-rl;font:500 10px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.62);pointer-events:none;user-select:none}
+.foot.copy{margin-top:10px;font-weight:500}
+.gate{position:relative;max-width:1120px;margin:0 auto;min-height:78vh;display:grid;place-items:center;border-radius:28px;overflow:hidden;padding:24px}
+.gart{position:absolute;inset:0}
+.gcard{position:relative;z-index:1;background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px 24px;max-width:360px;width:100%;display:flex;flex-direction:column;gap:12px;text-align:center;align-items:center}
+.gcard h2{font:600 30px var(--display);margin:0}
+.gcard p{margin:0}
+.pin{width:100%;max-width:220px;text-align:center;font:500 30px var(--mono);letter-spacing:.5em;padding:10px 8px 10px 20px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
+.gmsg{min-height:1.4em;font-size:14px;color:var(--ink)}
+@media (min-width:720px){.moregrid{flex-direction:row;flex-wrap:wrap;gap:24px}.panel-c{margin-inline:24px;padding:20px}}
+@media (prefers-reduced-motion:reduce){.prog i,.card{transition:none}}
+
+.u-Check{color:var(--muted);border-color:var(--line)}
+.sform{display:flex;gap:8px;width:100%}
+.sform .search{flex:1 1 auto}
+.geo{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.geo .sel{flex:1 1 200px}
+.geo .sel select{width:100%}
+.ask{grid-column:1/-1;padding:22px 18px;background:var(--surface);border:1px dashed var(--accent);border-radius:20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.ask h3{margin:0;font:600 20px var(--serif,Fraunces,Georgia,serif)}
+.ask p{margin:0;color:var(--muted)}
+.ask .err{color:var(--bad,#b3261e)}
+.errbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#b3261e;color:#fff;padding:10px 16px;font-size:14px}
+.pill.ai{background:var(--sun);color:var(--on-sun)}
+.aibadge{margin:0 0 12px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--soft);font-size:14px}
+.aibadge .btn{margin-left:8px;min-height:34px;padding:4px 12px}
+</style>
+</head><body>
+
+<div id="gate" class="gate">
+  <div class="gart"></div>
+  <form class="gcard" id="gform" autocomplete="off">
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10.500" width="14" height="10" rx="2.500"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500"/></svg>
+    <h2>Wanderseason</h2>
+    <p class="muted">Private preview. Enter your 4-digit code to continue.</p>
+    <input id="pin" class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="4-digit code" placeholder="····">
+    <button class="btn sun" id="gbtn" type="submit">Unlock</button>
+    <p class="gmsg" id="gmsg" role="alert"></p>
+    <p class="s muted">© 2026 Lalitha Priya Gorre. All rights reserved.</p>
+  </form>
+</div>
+
+<div class="wrap" id="appwrap" hidden>
+  <div class="errbar" id="errbar" hidden role="alert"></div>
+  <section id="home">
+    <div class="hero">
+      <div class="heroart" id="heroart"></div><span class="wm">© Wanderseason</span>
+      <div class="logo"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/><path d="M21.500 10.500 18 18l-7.500 3.500L14 14z" fill="currentColor"/></svg>Wanderseason</div>
+      <div>
+        <h1 id="h1"></h1>
+        <p class="sub" id="sub"></p>
+      </div>
+    </div>
+
+    <div class="panel-c">
+      <div>
+        <span class="lbl">Where</span>
+        <div class="seg" id="conts" role="group" aria-label="Continent"></div>
+        <div class="geo" id="geo"></div>
+      </div>
+      <div>
+        <span class="lbl">When</span>
+        <div class="ribbon" id="ribbon" role="group" aria-label="Month"></div>
+      </div>
+      <form class="sform" id="sform" role="search">
+        <input class="search" id="q" type="search" placeholder="Search any place" aria-label="Search places" autocomplete="off">
+        <button class="btn sun" id="sbtn" type="submit">Search</button>
+      </form>
+      <div class="row">
+        <span class="row" id="passHome" style="align-items:flex-end"></span>
+        <button class="btn" id="savedBtn" aria-pressed="false"></button>
+        <button class="btn sun" id="surprise">Surprise me</button>
+      </div>
+      <details class="more">
+        <summary>More filters</summary>
+        <div class="moregrid">
+          <div><span class="lbl">Vibe</span><div class="chips" id="chips" role="group" aria-label="Vibe"></div></div>
+          <div><span class="lbl">Daily budget</span><div class="chips" id="budgets" role="group" aria-label="Daily budget"></div></div>
+          <div><span class="lbl">Entry</span><div class="chips" id="visaf" role="group" aria-label="Entry"></div></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="detail" hidden></section>
+
+  <p class="foot">Visa rules were last checked on Oct 3, 2026 from government pages and travel sites, and they change often. Confirm on the official site before you book. Dates, closures and reservation rules change every year too. Budgets are rough estimates in US dollars.</p>
+  <p class="foot copy">© 2026 Lalitha Priya Gorre. All rights reserved. Wanderseason, including its text, data, illustrations and code, may not be copied, resold or republished without written permission.</p>
+</div>
+<script>
+/*! Wanderseason © 2026 Lalitha Priya Gorre. All rights reserved. Copying, reselling or republishing this code, text, data or artwork without written permission is prohibited. */
+try{console.info('Wanderseason © 2026 Lalitha Priya Gorre. All rights reserved.');}catch(e){}
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MF=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SC={tx:'Texas',usa:'USA',world:'World'};
+const TAGS=['nature','adventure','beach','culture','city','festival'];
+
+const D=[
+{id:'bigbend',n:'Big Bend National Park',loc:'West Texas',sc:'tx',m:[11,12,1,2,3],tags:['nature','adventure'],z:'desert',h:28,
+ b:'Remote desert, canyon and mountain scenery along the Rio Grande, with one of the darkest night skies in the lower 48.',
+ ev:'It is an International Dark Sky Park, so plan at least one night for stargazing.',
+ tip:'Fuel up and buy groceries before you arrive. Services inside the park are limited.',
+ spots:[['Santa Elena Canyon','Morning','Walk to the canyon mouth when early sun lights the cliffs.'],['The Window View','Sunset','Frame the desert through the gap in the Chisos peaks.'],['Hot Springs Historic District','Golden hour','Old ruins and the Rio Grande make a quiet backdrop.']],
+ it:[['Chisos Basin','Hike the Window Trail and catch sunset at the Window View.'],['Ross Maxwell Scenic Drive','Stop at Tuff Canyon, then walk into Santa Elena Canyon.'],['River and springs','Soak at the hot springs, then stargaze after dark.']],
+ gear:['Water: plan about a gallon per person per day','Salty snacks and electrolytes','Red-light headlamp for stargazing','Paper map (cell service is patchy)']},
+{id:'hillcountry',n:'Hill Country Bluebonnets',loc:'Fredericksburg, Texas',sc:'tx',m:[3,4,11],tags:['nature','festival'],z:'temperate',h:265,
+ b:'Wildflower fields in spring, small-town wineries and peach stands, and red maple color at Lost Maples in November.',
+ ev:'Bluebonnets usually peak from late March through April, depending on rainfall.',
+ tip:'Pull off only where it is safe, and stay out of private fields.',
+ spots:[['Willow City Loop','Late morning','Roadside wildflowers with granite hills behind.'],['Enchanted Rock','Sunrise','A huge pink granite dome with wide views.'],['Wildseed Farms','Midday','Rows of blooms and rustic barns.']],
+ it:[['Fredericksburg','Main Street shops, a winery lunch and Wildseed Farms.'],['Willow City Loop','Drive the loop in morning light, then picnic.'],['Enchanted Rock','Sunrise climb, then peaches or pie in Stonewall.']],
+ gear:['Blanket for flower photos','Allergy medicine','Sunscreen and a hat']},
+{id:'marfa',n:'Marfa & Fort Davis',loc:'Far West Texas',sc:'tx',m:[3,4,5,10,11],tags:['culture','city'],z:'desert',h:12,
+ b:'Art, big skies and a high-desert town where minimalist installations sit beside Airstream hotels.',
+ ev:'The Marfa Lights viewing area is on US-90, east of town.',
+ tip:'Weekends fill early. Book lodging well ahead.',
+ spots:[['Prada Marfa','Sunset','A lone art installation on the highway, about 35 miles northwest of town.'],['Chinati Foundation','Midday','Concrete boxes and long rows of metal sculpture.'],['Downtown Marfa','Golden hour','Courthouse, vintage signs and low adobe storefronts.']],
+ it:[['Town day','Gallery hop, brunch and the Chinati Foundation.'],['Valentine run','Drive to Prada Marfa for sunset.'],['Fort Davis','Davis Mountains scenic loop and a McDonald Observatory star party.']],
+ gear:['Layers for cold desert nights','Binoculars for stars','Sunglasses']},
+{id:'paloduro',n:'Palo Duro Canyon',loc:'Canyon, Texas',sc:'tx',m:[4,5,9,10],tags:['nature','adventure'],z:'desert',h:18,
+ b:'Often called the second-largest canyon in the U.S., with striped red rock, trails and campsites near Amarillo.',
+ ev:'In summer, an outdoor musical called TEXAS plays in the canyon.',
+ tip:'Hike early. Canyon floor temperatures climb fast.',
+ spots:[['Lighthouse Rock','Sunrise','The signature hoodoo, about 6 miles round trip on foot.'],['Canyon rim overlook','Sunset','Bands of red and orange light up the walls.'],['Canyon Drive','Golden hour','Stop at pullouts for striped cliff views.']],
+ it:[['Arrive and orient','Scenic drive, then the Rock Garden Trail.'],['Lighthouse Trail','Hike early before the heat, picnic at the base.'],['Rim and sunset','Horseback ride or a quiet rim walk at golden hour.']],
+ gear:['Plenty of water for hot trails','Sturdy hiking shoes','Salty snacks']},
+{id:'padre',n:'South Padre Island',loc:'Texas Gulf Coast',sc:'tx',m:[4,5,6,9,10],tags:['beach'],z:'tropical',h:200,
+ b:'Warm Gulf water, long beaches and a laid-back island town at the southern tip of Texas.',
+ ev:'Sea Turtle, Inc. runs a rescue and release program on the island.',
+ tip:'Mid-March is spring break. Aim for April or fall for smaller crowds.',
+ spots:[['Beach at dawn','Sunrise','Open sand and soft light before the crowds arrive.'],['Port Isabel Lighthouse','Golden hour','A historic lighthouse on the mainland side.'],['Birding & Nature Center boardwalk','Morning','Wooden walkways over bay marsh with wildlife.']],
+ it:[['Beach day','Sunrise walk, swim, seafood dinner on the bay.'],['Wildlife','Nature center boardwalk and a dolphin-watch cruise.'],['Lighthouse','Port Isabel Lighthouse, then a slow beach afternoon.']],
+ gear:['Reef-safe sunscreen','Beach towel and tote','Water shoes']},
+{id:'guadalupe',n:'Guadalupe Mountains',loc:'West Texas',sc:'tx',m:[10,11],tags:['nature','adventure'],z:'desert',h:35,
+ b:'The highest peaks in Texas, with fall maple color in McKittrick Canyon.',
+ ev:'McKittrick Canyon color usually peaks from late October into November.',
+ tip:'The canyon gate has set hours, so check the park site before you drive out.',
+ spots:[['McKittrick Canyon','Late morning','Maples glow against limestone walls.'],['Guadalupe Peak trail','Sunrise','The highest point in Texas. A strenuous hike.'],['El Capitan viewpoint','Sunset','The cliff face glows along the highway.']],
+ it:[['McKittrick Canyon','Day hike toward Pratt Cabin and beyond.'],['Guadalupe Peak','Start at dawn for the long climb.'],['Rest and drive','Visit Carlsbad Caverns, nearby in New Mexico.']],
+ gear:['Wind layer for ridge hikes','Trekking poles','Water and salty snacks']},
+
+{id:'abq',n:'Albuquerque Balloon Fiesta',loc:'New Mexico',sc:'usa',m:[10],tags:['festival','culture'],z:'desert',h:322,
+ b:'Hundreds of hot air balloons rise at dawn over the Rio Grande valley at one of the largest balloon gatherings in the world.',
+ ev:'It runs nine days in early October, with mass ascensions at sunrise and balloon glows after dark.',
+ tip:'Book lodging far ahead and use the park-and-ride shuttle to reach the field.',
+ spots:[['Balloon Fiesta Park','Sunrise','Stand near the launch field as the sky fills with balloons.'],['Old Town Plaza','Midday','Adobe walls, chile ristras and blue doors.'],['Sandia Peak Tramway','Sunset','City lights below and a pink glow on the ridge.']],
+ it:[['Dawn patrol','Arrive before sunrise for the mass ascension, then breakfast burritos.'],['Old Town & tramway','Old Town in the morning, the tramway at sunset.'],['Nob Hill','Route 66 neon signs and green chile cheeseburgers.']],
+ gear:['Hand warmers for the 5am cold','Folding chair or blanket','Cash for parking and vendors']},
+{id:'zion',n:'Zion, Page & Horseshoe Bend',loc:'Utah and Arizona',sc:'usa',m:[3,4,5,9,10],tags:['nature','adventure'],z:'desert',h:15,
+ b:'Red sandstone canyons, slot canyon light and a river bend in one road trip.',
+ ev:'Antelope Canyon visits require a guided tour, so reserve early.',
+ tip:'Zion Canyon uses a shuttle in busy seasons. Check the National Park Service site.',
+ spots:[['Canyon Overlook Trail','Sunrise','A short hike with a wide view over Zion Canyon.'],['Horseshoe Bend','Golden hour','The Colorado River curves about 1,000 feet below the rim.'],['Antelope Canyon','Midday','Light beams often enter the slot around noon in warmer months.']],
+ it:[['Zion Canyon','Shuttle to Zion Lodge, Emerald Pools and the Riverside Walk.'],['Sunrise and drive','Canyon Overlook at dawn, then about 2.5 hours to Page.'],['Page','Guided Antelope Canyon tour and Horseshoe Bend at sunset.']],
+ gear:['Hiking shoes with grip','Wide-brim hat','Extra water','Tour confirmations saved offline']},
+{id:'sedona',n:'Sedona',loc:'Arizona',sc:'usa',m:[2,3,4,5,10,11],tags:['nature','culture'],z:'desert',h:8,
+ b:'Red rock buttes, easy trails and sunset spots a short drive from town.',
+ tip:'Trailhead parking fills early. Use shuttles where offered or arrive at sunrise.',
+ spots:[['Cathedral Rock','Sunset','Reflections at Crescent Moon Picnic Site.'],['Airport Mesa','Sunset','An easy walk to a wide panorama.'],['Chapel of the Holy Cross','Morning','A chapel built into a red rock wall.']],
+ it:[['Easy overlooks','Airport Mesa at sunrise, then breakfast in town.'],['Cathedral Rock','Hike Cathedral Rock, then cool off along Oak Creek.'],['Chapel and shops','Chapel of the Holy Cross, Tlaquepaque, a sunset drive.']],
+ gear:['Sturdy shoes with grip','Sun hat','Refillable water bottle']},
+{id:'newengland',n:'New England Fall Foliage',loc:'Vermont and New Hampshire',sc:'usa',m:[9,10],tags:['nature','culture'],z:'temperate',h:30,
+ b:'Maple-lined roads, covered bridges and white churches in peak autumn color.',
+ ev:'Peak color usually arrives in late September in the north and mid October farther south.',
+ tip:'Check weekly foliage reports and travel on weekdays to avoid traffic.',
+ spots:[['Stowe Community Church','Golden hour','The classic steeple view over fall color.'],['Kancamagus Highway','Morning','Scenic overlooks across the White Mountains.'],['Quechee Gorge','Midday','A bridge view over the gorge and river.']],
+ it:[['Stowe','Church view, cider donuts and a walk on the Recreation Path.'],['Kancamagus Highway','Pull off at overlooks and hike to a waterfall.'],['Woodstock & Quechee','Covered bridge, farm stand lunch and a gorge walk.']],
+ gear:['Warm hat and gloves','Rain jacket','Spare camera battery']},
+{id:'bigsur',n:'Big Sur & Pacific Coast Highway',loc:'California',sc:'usa',m:[4,5,6,9,10],tags:['nature','adventure'],z:'temperate',h:215,
+ b:'A cliffside coast road with bridges, waterfalls and purple-tinted sand.',
+ ev:'Highway 1 sometimes closes after landslides, so check Caltrans before you go.',
+ tip:'Fill the tank in Carmel or Cambria. Gas in Big Sur is limited and costly.',
+ spots:[['Bixby Creek Bridge','Golden hour','A pullout view of the arch bridge and the coast.'],['McWay Falls','Late afternoon','A waterfall dropping onto a cove beach.'],['Pfeiffer Beach','Sunset','Purple sand and a keyhole rock arch.']],
+ it:[['Monterey & Carmel','17-Mile Drive, then head south along Highway 1.'],['Big Sur','Bixby Bridge, McWay Falls and a forest hike.'],['Pfeiffer Beach','Sunset on purple sand, then dinner with an ocean view.']],
+ gear:['Windbreaker for coastal fog','Layers','Offline maps (signal is weak)']},
+{id:'maui',n:'Maui',loc:'Hawaii',sc:'usa',m:[4,5,9,10,11],tags:['beach','adventure'],z:'tropical',h:145,
+ b:'Sunrise above the clouds, rainforest waterfalls and calm beaches.',
+ ev:'Humpback whales visit from roughly December through April.',
+ tip:'Reserve the Haleakala summit sunrise slot ahead. They sell out.',
+ spots:[['Haleakala summit','Sunrise','An above-the-clouds view. Reservation required.'],['Road to Hana waterfalls','Morning','Start early to beat traffic at roadside stops.'],['Wailea Beach','Late afternoon','Gold light on calm water and white sand.']],
+ it:[['South Maui','Snorkel at Molokini or Turtle Town, sunset at Wailea.'],['Haleakala','Sunrise at the summit, then upcountry farms.'],['Hana','Road to Hana with stops at waterfalls and black sand beaches.']],
+ gear:['Reef-safe sunscreen','Snorkel gear (or rent it)','Light rain jacket for Hana','Warm layer for the summit']},
+{id:'alaska',n:'Alaska Road Trip',loc:'Anchorage, Seward and Denali',sc:'usa',m:[6,7,8],tags:['nature','adventure'],z:'alpine',h:245,
+ b:'Glaciers, fjord cruises and long daylight in the great outdoors.',
+ ev:'Aurora season runs roughly late August through April, best away from city lights.',
+ tip:'Book Denali bus tours and Kenai Fjords cruises early.',
+ spots:[['Exit Glacier','Morning','A short walk to the glacier edge.'],['Kenai Fjords cruise','Midday','Calving glaciers and sea life from the water.'],['Denali Park Road','Golden hour','Mountain views when the clouds lift.']],
+ it:[['Anchorage to Seward','Drive the scenic Seward Highway.'],['Kenai Fjords','Boat tour and an Exit Glacier walk.'],['Denali','Drive north and take a park bus tour.']],
+ gear:['Bug spray and a head net','Layers for fast weather changes','Eye mask for the midnight sun']},
+
+{id:'banff',n:'Banff National Park',loc:'Alberta, Canada',sc:'world',m:[6,7,8,9,12,1,2,3],tags:['nature','adventure'],z:'alpine',h:185,intl:true,
+ b:'Turquoise glacial lakes in summer, golden larches in late September, and snowy ski runs in winter.',
+ ev:'Larch season, around late September, turns the high valleys gold.',
+ tip:'Moraine Lake has no private car access. Use the Parks Canada shuttle and check current rules.',
+ spots:[['Moraine Lake','Sunrise','Peaks mirror in the water on calm mornings.'],['Peyto Lake','Midday','A bright blue lake seen from the overlook.'],['Vermilion Lakes','Sunrise','Mount Rundle reflections close to town.']],
+ it:[['Banff town','Vermilion Lakes at dawn, Banff Gondola and Bow Falls.'],['Lake Louise','Moraine Lake by shuttle, then a walk around Lake Louise.'],['Icefields Parkway','Drive to Bow Lake, Peyto Lake and the Athabasca Glacier.']],
+ gear:['Bear spray if hiking (learn to use it)','Warm layers even in summer','Parks Canada Discovery Pass']},
+{id:'kyoto',n:'Kyoto',loc:'Japan',sc:'world',m:[3,4,11],tags:['culture','city'],z:'temperate',h:340,intl:true,
+ b:'Temples, tea houses and lanes lined with cherry blossoms in spring or red maples in autumn.',
+ ev:'Cherry blossoms usually peak in early April, maples in late November.',
+ tip:'Visit popular shrines at sunrise, and respect private property in Gion lanes.',
+ spots:[['Fushimi Inari Taisha','Sunrise','Walk the torii gates before tour groups arrive.'],['Arashiyama Bamboo Grove','Early morning','Soft light and quieter paths.'],['Philosopher’s Path','Midday','A canal lined with cherry or maple trees.']],
+ it:[['Fushimi Inari','Dawn gates walk, then Nishiki Market lunch.'],['Arashiyama','Bamboo grove, Tenryu-ji garden and river views.'],['Higashiyama','Kiyomizu-dera and old streets, then Gion at dusk.']],
+ gear:['Slip-on shoes for temples','Coin pouch for offerings and vending machines','IC transit card (Suica or ICOCA)']},
+{id:'santorini',n:'Santorini',loc:'Greece',sc:'world',m:[5,6,9,10],tags:['beach','culture'],z:'temperate',h:250,intl:true,
+ b:'White villages above a volcanic caldera and sunsets that draw crowds every evening.',
+ ev:'Oia sunset is packed. Arrive early or watch from Imerovigli.',
+ tip:'Late spring and early fall mean fewer crowds and still-warm water.',
+ spots:[['Oia','Sunset','Whitewashed lanes and blue domes.'],['Imerovigli','Blue hour','Quieter caldera views than Oia.'],['Amoudi Bay','Late afternoon','A fishing harbor under the cliffs.']],
+ it:[['Fira to Imerovigli','Walk the caldera path with stops for photos.'],['Beaches and wine','Red Beach, then a winery tasting at sunset.'],['Oia','Morning lanes, then sunset at the castle ruins.']],
+ gear:['Grippy sandals for steps','Sun hat','Cash for small tavernas']},
+{id:'iceland',n:'Iceland Ring Road',loc:'Iceland',sc:'world',m:[2,3,6,7,9,10],tags:['nature','adventure'],z:'alpine',h:285,intl:true,
+ b:'Waterfalls, black sand beaches and glaciers, with northern lights in the dark months.',
+ ev:'Aurora season runs from about September to March. Midnight sun brightens June and July.',
+ tip:'Stay well back from the surf at black sand beaches like Reynisfjara. Sneaker waves are dangerous.',
+ spots:[['Seljalandsfoss','Evening','Walk behind the waterfall for a sunset view.'],['Skógafoss','Morning','A wide waterfall, often with a rainbow in sun.'],['Jökulsárlón','Golden hour','Icebergs drifting toward the sea.']],
+ it:[['Golden Circle','Þingvellir, Geysir and Gullfoss.'],['South coast','Seljalandsfoss and Skógafoss, then the coast from a safe distance.'],['Glacier lagoon','Drive east to Jökulsárlón for icebergs. It is a long day.']],
+ gear:['Waterproof shell and pants','Swimsuit for hot springs','Ice cleats for winter paths','Aurora forecast app']},
+{id:'amalfi',n:'Amalfi Coast',loc:'Italy',sc:'world',m:[5,6,9],tags:['beach','culture'],z:'temperate',h:48,intl:true,
+ b:'Pastel cliffside towns, lemon terraces and ferry rides along the Tyrrhenian Sea.',
+ ev:'Ferries run more often from late spring to early fall.',
+ tip:'Skip driving the coast road. Ferries and buses are less stressful.',
+ spots:[['Positano','Golden hour','Stacked pastel houses down the hillside.'],['Path of the Gods','Sunrise','A cliff trail with sea views above the coast.'],['Villa Cimbrone terrace','Morning','A garden terrace in Ravello with a dramatic coastline view.']],
+ it:[['Positano','Beach time, boutiques and ceramics.'],['Path of the Gods','Hike Bomerano to Nocelle, then take the bus.'],['Amalfi & Ravello','The cathedral, paper museum and Villa Cimbrone gardens.']],
+ gear:['Flat sandals for stairs','Beach bag','Light scarf for covering shoulders in churches']},
+{id:'bali',n:'Bali',loc:'Indonesia',sc:'world',m:[4,5,6,7,8,9,10],tags:['beach','culture'],z:'tropical',h:120,intl:true,
+ b:'Rice terraces, sea temples and surf beaches, best in the dry season.',
+ ev:'The dry season runs roughly April to October.',
+ tip:'At Lempuyang the famous mirror shot is a photographer’s trick, and lines are long. Go early.',
+ spots:[['Tegallalang Rice Terraces','Sunrise','Layered green steps with palm silhouettes.'],['Uluwatu Temple','Sunset','A clifftop temple above the surf, with a Kecak dance after.'],['Kelingking Beach (Nusa Penida)','Morning','The T-rex shaped cliff view. The steep stairs are risky.']],
+ it:[['Ubud','Tegallalang at sunrise, the Monkey Forest and a local market.'],['Temples','Lempuyang gates early, then Tirta Gangga water palace.'],['Uluwatu','Beach time, then sunset at the cliff temple.']],
+ gear:['Sarong for temples (often rented on site)','Mosquito repellent','Dry bag for boat trips']},
+{id:'cappadocia',n:'Cappadocia',loc:'Turkey',sc:'world',m:[4,5,9,10,11],tags:['festival','adventure'],z:'desert',h:55,intl:true,
+ b:'Fairy chimneys, cave hotels and hundreds of balloons rising at sunrise.',
+ ev:'Balloon flights depend on wind, so keep two mornings free.',
+ tip:'Book with a licensed operator and keep flexible dates.',
+ spots:[['Göreme viewpoint','Sunrise','Balloons fill the sky above the valleys.'],['Red and Rose Valleys','Sunset','Rock walls glow pink and orange.'],['Uçhisar Castle','Blue hour','A high rock fortress with wide views.']],
+ it:[['Göreme','Open Air Museum and a valley walk.'],['Balloons','Sunrise flight, then Red Valley at sunset.'],['Underground city','Visit Derinkuyu, then Uçhisar Castle.']],
+ gear:['Warm layer for the pre-dawn launch','Closed shoes for uneven trails','Cash for tips and small shops']},
+{id:'swiss',n:'Swiss Alps',loc:'Lauterbrunnen and Zermatt, Switzerland',sc:'world',m:[6,7,8,9,12,1,2],tags:['nature','adventure'],z:'alpine',h:355,intl:true,
+ b:'Cliffside waterfalls, cog railways and the Matterhorn, with hiking in summer and skiing in winter.',
+ ev:'Some mountain lifts close for a few weeks in the shoulder seasons.',
+ tip:'A Swiss Travel Pass can cover trains, boats and some mountain lifts.',
+ spots:[['Staubbach Falls','Morning','A Lauterbrunnen valley waterfall right by the village.'],['Gornergrat','Sunrise','A cog railway ride to a Matterhorn panorama.'],['First Cliff Walk','Midday','A Grindelwald walkway on the cliff edge.']],
+ it:[['Lauterbrunnen','Waterfalls and the Mürren trail.'],['Grindelwald','First Cliff Walk and Bachalpsee lake.'],['Zermatt','The Gornergrat railway for Matterhorn views.']],
+ gear:['Sturdy hiking boots','Sun protection for high altitude','Rail tickets or a Swiss Travel Pass']},
+{id:'patagonia',n:'Torres del Paine',loc:'Patagonia, Chile',sc:'world',m:[11,12,1,2,3],tags:['nature','adventure'],z:'alpine',h:205,south:true,intl:true,
+ b:'Granite towers, turquoise lakes and glaciers in the southern summer.',
+ ev:'Strong wind and four seasons in one day are normal.',
+ tip:'Reserve campsites and refugios months ahead and check park entry rules.',
+ spots:[['Base of the Towers','Sunrise','The granite spires glow orange on clear mornings.'],['Lago Grey','Morning','Icebergs drift near the shore.'],['Lago Pehoé','Golden hour','The Cuernos peaks over a turquoise lake.']],
+ it:[['Lago Grey','Walk to the viewpoint and the icebergs.'],['Pehoé & Salto Grande','Viewpoints and short walks.'],['Towers hike','A long hike to Base de las Torres. Start early.']],
+ gear:['Windproof shell','Trekking poles','Waterproof pack cover','Park reservations saved offline']},
+{id:'marrakech',n:'Marrakech',loc:'Morocco',sc:'world',m:[3,4,5,10,11],tags:['culture','city'],z:'desert',h:22,intl:true,
+ b:'Souks, riads and gardens with the Atlas Mountains on the skyline.',
+ tip:'Agree on taxi fares first and keep small bills for tips.',
+ spots:[['Jardin Majorelle','Morning','Cobalt blue walls and cactus gardens. Ticketed entry.'],['Bahia Palace','Midday','Painted ceilings and tiled courtyards.'],['Rooftop terraces','Golden hour','Medina rooftops with minarets in view.']],
+ it:[['Medina','Souks, then Jemaa el-Fnaa square at dusk.'],['Gardens and palaces','Majorelle and Bahia Palace.'],['Atlas or Agafay','A day trip to the Atlas foothills or Agafay desert sunset.']],
+ gear:['Modest, breathable clothing','Scarf for sun or mosque visits','Small bills for tips']},
+{id:'tulips',n:'Dutch Tulip Season',loc:'Lisse, Netherlands',sc:'world',m:[4],tags:['festival','nature'],z:'temperate',h:305,intl:true,
+ b:'Rows of tulip fields in red, yellow and pink, plus windmills and canal cities.',
+ ev:'Keukenhof opens from late March to mid May, with peak bloom usually in mid April.',
+ tip:'Stay on paths and public viewpoints. Walking into fields damages the bulbs.',
+ spots:[['Bulb fields near Lisse','Morning','Stripes of color seen from public roads and paths.'],['Keukenhof Gardens','Midday','Landscaped beds and indoor flower pavilions.'],['Zaanse Schans','Golden hour','Windmills and green wooden houses.']],
+ it:[['Amsterdam','A canal walk and a museum visit.'],['Keukenhof','Early entry, then the fields by bike.'],['Zaanse Schans','Windmills, then back through Haarlem.']],
+ gear:['Rain jacket for April showers','Bike lock for rentals','Closed shoes for muddy paths']}
+];
+
+/* Extra trip details. bud = rough USD per person per day [shoestring, comfortable, splurge], excluding flights. */
+const X={
+bigbend:{bud:[90,160,300],ride:['Car needed','A rental car is essential. There is no public transport, and the nearest large airports are several hours away.'],
+ eat:[['Starlight Theatre, Terlingua','Dinner in a restored ghost-town theater, often with live music.','Local dish','$$'],['Chisos Mountains Lodge restaurant','Park dining with a view toward the Window.','Splurge','$$'],['Ice cream or pie in Terlingua','A cool treat after a hot trail.','Sweet','$'],['Groceries before you arrive','Picnic lunches save money and time on the trail.','Budget','$']],
+ book:[['Lodging in or near the park','Book ahead','Park lodge and nearby Terlingua rooms fill months ahead in peak season.'],['Backcountry and campsite permits','Required','Needed for backcountry camping and many campsites. Reserve through the National Park Service.'],['Rio Grande river outfitters','Optional','Half-day float trips can be booked a few days ahead.']],
+ shop:null,stay:[['Camp inside the park','Campgrounds cost far less than lodge rooms.'],['Terlingua and Study Butte lodging','Often cheaper than in-park rooms, with more variety.'],['Bring groceries','Prices are higher near the park and options are limited.']],
+ fancy:['Chisos Mountains Lodge window table','Sunset dinner with the Window framed in the glass.','Ask for a window table and book ahead.']},
+hillcountry:{bud:[100,190,350],ride:['Car needed','Plan to drive. Wildflower roads and wineries are spread out and not served by transit.'],
+ eat:[['Hilltop Cafe, Fredericksburg','Texas-Greek comfort food and live music in a roadside cafe.','Local dish','$$'],['Peach stands near Stonewall','Fresh peaches and homemade ice cream when in season, usually summer.','Sweet','$'],['German bakeries on Main Street','Strudel and pastries from Fredericksburg’s German heritage.','Sweet','$'],['Winery tasting patios','Sip Texas wines with a view.','Drink','$$']],
+ book:[['Weekend lodging','Book ahead','Wildflower weekends fill early in Fredericksburg.'],['Enchanted Rock day entry','Required','The state park often requires reservations on busy days. Check Texas Parks and Wildlife.'],['Winery tastings','Optional','Walk-ins are often fine on weekdays. Book for groups.']],
+ shop:'Fredericksburg’s Main Street has boutiques, boots and hats. On the drive from Austin, the San Marcos outlets offer brand-name discounts.',
+ stay:[['Texas state park camping','Camping at Enchanted Rock costs far less than inns. Reserve ahead.'],['Stay in nearby small towns','Rates just outside Fredericksburg are often lower.'],['Visit midweek','Weekday rates drop sharply outside wildflower weekends.']],
+ fancy:['Winery sunset tasting','Golden vineyard rows and a glass of wine.','Reserve weekend slots.']},
+marfa:{bud:[110,200,380],ride:['Car needed','The town is walkable, but Prada Marfa, Fort Davis and the observatory need a car.'],
+ eat:[['Food Shark','A local favorite food truck known for falafel and Mediterranean plates.','Budget','$'],['Pizza Foundation','Wood-fired pizza in a small courtyard.','Local dish','$$'],['Cochineal','A well-known dinner spot for a special night.','Splurge','$$$'],['Marfa Burrito','Breakfast burritos for the road.','Budget','$'],['Paletas and ice cream','Cool down after the desert sun.','Sweet','$']],
+ book:[['Lodging','Book ahead','Small towns fill on art and festival weekends.'],['McDonald Observatory star party','Required','Tickets sell out. Reserve online.'],['Chinati Foundation tours','Book ahead','Guided access is limited. Check hours.']],
+ shop:null,stay:[['Alpine','A larger nearby town with cheaper motels.'],['Davis Mountains State Park','Camping inside a scenic park.'],['Midweek stays','Marfa rates drop midweek.']],
+ fancy:['Historic hotel courtyards','Photogenic lobbies and courtyards.','Many lobbies are free to see.']},
+paloduro:{bud:[80,140,260],ride:['Car needed','Amarillo is the nearest big airport, about 30 minutes from the canyon.'],
+ eat:[['The Big Texan Steak Ranch, Amarillo','The famous 72-ounce steak challenge, plus normal portions.','Local dish','$$'],['Route 66 diners in Amarillo','Classic burgers and chicken-fried steak.','Budget','$'],['Texas pie shops','A slice of pie after a hike.','Sweet','$']],
+ book:[['Park entry and campsites','Book ahead','Day use and campsites can sell out on weekends. Reserve through Texas Parks and Wildlife.'],['TEXAS outdoor musical','Book ahead','Summer shows only. Buy tickets early.'],['Horseback or Jeep tours','Optional','Reserve a day or two ahead.']],
+ shop:null,stay:[['Camp in the park','Cheapest and closest.'],['Stay in Canyon or Amarillo','Lower rates, 20 to 30 minutes away.'],['Park cabins','Book far ahead for weekends.']],
+ fancy:['Sunset canyon horseback ride','Silhouettes against red cliffs.','Book with a park outfitter.']},
+padre:{bud:[90,170,320],ride:['Mixed','A car helps. Island shuttles run in season.'],
+ eat:[['Dirty Al’s','A local seafood spot on the island.','Local dish','$$'],['Pier 19, Port Isabel','Waterfront seafood with bay views.','Local dish','$$'],['Shaved ice and ice cream on Padre Boulevard','Cool treats near the beach.','Sweet','$'],['Gulf shrimp tacos','Cheap eats from beach-side stands.','Budget','$']],
+ book:[['Beachfront lodging','Book ahead','Spring break and summer weekends sell out.'],['Dolphin or sunset cruise','Optional','Book a day ahead.'],['Sea turtle release events','Book ahead','Check the schedule with Sea Turtle, Inc.']],
+ shop:null,stay:[['Port Isabel or Brownsville','Cheaper than beachfront.'],['Condos with kitchens','Split costs and cook some meals.'],['Off-season','Fall and winter rates are lower.']],
+ fancy:['Sunset sail','Silhouette photos on the bay.','Book with a licensed captain.']},
+guadalupe:{bud:[70,120,220],ride:['Car needed','The location is remote. Fuel up before driving out.'],
+ eat:[['Pack a picnic','There are no restaurants inside the park. Bring food and water.','Budget','$'],['Carlsbad, NM diners','Southwestern breakfasts in the nearest sizable town.','Local dish','$'],['Green chile cheeseburger','A New Mexico staple on the drive.','Local dish','$'],['Pie or ice cream in Carlsbad','A sweet reward after a long hike.','Sweet','$']],
+ book:[['Campsites','Book ahead','Pine Springs Campground has limited sites. Reserve in advance.'],['McKittrick Canyon access','Optional','Gate hours are limited. Check the park site.'],['Backcountry permits','Required','Needed for overnight backcountry stays.']],
+ shop:null,stay:[['Camp at Pine Springs','Cheapest option with mountain views.'],['Carlsbad, NM','Hotels about an hour away.'],['Tent or van camping','Lowest cost overall.']],
+ fancy:['Summit sunrise','Free but a long, strenuous hike.','No booking. Start before dawn.']},
+abq:{bud:[110,200,380],ride:['Mixed','Use the Fiesta park-and-ride shuttle. Rideshare pickups near the field are limited and slow.'],
+ eat:[['Frontier Restaurant','A big casual diner near the university, known for sweet rolls and green chile.','Local dish','$'],['Golden Crown Panaderia','A bakery famous for green chile bread.','Local dish','$'],['Barelas Coffee House','A classic New Mexican breakfast.','Local dish','$'],['Paletas and ice cream in Old Town','A cool treat while you walk around.','Sweet','$']],
+ book:[['Lodging for Balloon Fiesta','Required','Rooms sell out many months ahead and prices rise.'],['Park and ride or parking','Book ahead','Reserve online where offered.'],['Balloon ride or crew experience','Book ahead','Limited slots. Book as early as possible.'],['Sandia Peak Tramway tickets','Optional','Buy online to skip the line.']],
+ shop:'Buy Native jewelry and pottery from Old Town vendors or galleries that name the artist, and ask about authenticity.',
+ stay:[['Stay farther out','Hotels in Rio Rancho or along the highway cost less than near the field.'],['Camping or RV','Some campgrounds also book out. Reserve early.'],['Share a room','Split a family room for a big saving.']],
+ fancy:['Be in the basket','A sunrise balloon ride over the valley.','Book months ahead.']},
+zion:{bud:[130,230,420],ride:['Mixed','Zion Canyon uses a shuttle in busy seasons. Between Zion and Page you need a car.'],
+ eat:[['Whiptail Grill, Springdale','Southwest dinner in a casual setting.','Local dish','$$'],['Bit & Spur, Springdale','A popular spot for Mexican dishes and margaritas.','Local dish','$$'],['Big John’s Texas BBQ, Page','Barbecue before or after Antelope Canyon.','Budget','$'],['Ice cream in Springdale','A cold treat after a hot hike.','Sweet','$']],
+ book:[['Antelope Canyon tour','Required','Entry is by guided tour only. Book as soon as you know your dates.'],['Angels Landing permit','Required','A permit is needed through the park lottery.'],['Zion lodging','Book ahead','Springdale rooms fill months ahead.'],['The Narrows from the top','Optional','Top-down day hikes need a permit. Bottom-up needs none.']],
+ shop:null,stay:[['Hurricane, St. George or Kanab','Cheaper rooms within 30 to 60 minutes.'],['Campgrounds','Reserve Watchman Campground early.'],['Off-peak weeks','Rates drop outside spring and fall.']],
+ fancy:['Antelope Canyon photo tour','Longer tours let you set up tripods for light-beam shots.','Reserve far ahead.']},
+sedona:{bud:[130,240,450],ride:['Mixed','A car is easiest. A trail shuttle serves some busy trailheads.'],
+ eat:[['Elote Cafe','A well-known Mexican restaurant. Plan ahead for a table.','Splurge','$$'],['Tlaquepaque courtyards','Casual lunches in a shaded Spanish-style village.','Local dish','$$'],['Cafe breakfast in Uptown','An easy start before a hike.','Budget','$'],['Gelato and fudge in Uptown','Sweet stops along the main drag.','Gelato','$']],
+ book:[['Lodging','Book ahead','Weekends in spring and fall fill early.'],['Red Rock Pass or parking','Required','A pass is required at many trailheads. Buy before your hike.'],['Jeep or helicopter tours','Optional','Book a day ahead, more in peak season.']],
+ shop:'Tlaquepaque Arts & Shopping Village has galleries. Compare prices across galleries and look for artist signatures.',
+ stay:[['Cottonwood or Camp Verde','Cheaper rooms 20 to 30 minutes away.'],['Forest Service camping','Dispersed camping is cheapest. Check the rules.'],['Midweek stays','Lower rates than weekends.']],
+ fancy:['Sunset Jeep or helicopter ride','Aerial red rock views.','Book ahead and compare operators.']},
+newengland:{bud:[130,230,420],ride:['Car needed','Foliage roads are best driven. Public transit is limited.'],
+ eat:[['Cold Hollow Cider Mill','Cider donuts and fresh cider.','Sweet','$'],['Ben & Jerry’s Factory, Waterbury','Factory tour and fresh flavors.','Sweet','$'],['Maple creemee','Soft serve with Vermont maple.','Sweet','$'],['Farm stand lunches','Cheese, apples and local sandwiches.','Budget','$']],
+ book:[['Lodging in peak color','Required','Inns sell out for October weekends. Book months ahead.'],['Factory tours','Optional','Book Ben & Jerry’s tour times online.'],['Parking at popular spots','Optional','Arrive early. Some lots fill.']],
+ shop:'New Hampshire has no sales tax, so North Conway outlets can be a budget pick. Buy maple syrup at sugarhouses and farm stands.',
+ stay:[['State park campgrounds','Cheapest. Check closing dates.'],['Stay in smaller towns','Fewer crowds and lower rates.'],['Midweek foliage','Weekday rooms are cheaper.']],
+ fancy:['Historic inn with a porch','A fall-view breakfast with coffee.','Book months ahead for October.']},
+bigsur:{bud:[140,260,520],ride:['Car needed','Cell signal is weak. Download maps and check road closures.'],
+ eat:[['Nepenthe','A clifftop restaurant known for its burger and view.','Splurge','$$'],['Big Sur Bakery','Pastries and wood-fired pizza.','Sweet','$$'],['Picnic from Carmel or Cambria','Market sandwiches for the beach.','Budget','$'],['Ice cream in Carmel or Cambria','A sweet treat before or after the drive.','Sweet','$']],
+ book:[['Lodging','Required','Rooms are scarce and sell out far ahead.'],['Pfeiffer Big Sur campsites','Book ahead','Reserve through the state parks system.'],['Sunset dinner','Book ahead','Popular restaurants fill at sunset.']],
+ shop:null,stay:[['Camp at Pfeiffer Big Sur','A campground in a redwood canyon.'],['Stay in Monterey or Cambria','Cheaper than Big Sur.'],['Day trip','Drive Big Sur as a day trip instead.']],
+ fancy:['Cliffside luxury inns','Ocean-view pools and terraces.','Some take non-guest dining reservations. Ask.']},
+maui:{bud:[200,350,700],ride:['Car needed','A rental car is essential for Hana and the summit.'],
+ eat:[['Mama’s Fish House','A famous waterfront seafood restaurant near Paia.','Splurge','$$$'],['Leoda’s Kitchen and Pie Shop','Pies and sandwiches near Olowalu.','Sweet','$$'],['Ululani’s Hawaiian Shave Ice','Shave ice with island flavors.','Sweet','$'],['Banana bread stands on the Road to Hana','Roadside snack stands.','Budget','$']],
+ book:[['Haleakala sunrise reservation','Required','Needed for sunrise at the summit. Book as soon as slots open.'],['Waianapanapa State Park','Required','Entry reservations are required for nonresidents.'],['Rental car','Book ahead','Book early. Prices spike.'],['Luau or snorkel tours','Optional','Reserve a few days ahead.']],
+ shop:'Wailea has higher-end boutiques. Kahului big-box stores often have lower prices for beachwear and souvenirs.',
+ stay:[['Kihei condos with kitchens','Cook some meals to save.'],['Stay away from Wailea','Rooms elsewhere cost less.'],['Shoulder season','Spring and fall rates drop.']],
+ fancy:['Wailea resort sunrise','Infinity pools and palms.','Many resorts have public beach access nearby.']},
+alaska:{bud:[180,320,550],ride:['Car needed','Rental car or rail. The Alaska Railroad also runs between some towns.'],
+ eat:[['Ray’s Waterfront, Seward','Seafood dinner on the harbor.','Local dish','$$'],['Snow City Cafe, Anchorage','A popular breakfast spot.','Budget','$$'],['Fresh salmon and halibut','Fish and chips from harbor stands.','Local dish','$'],['Bakeries and ice cream in Seward','Sweet stops near the harbor.','Sweet','$']],
+ book:[['Denali park bus','Book ahead','Reserve well ahead for summer.'],['Kenai Fjords cruise','Book ahead','Popular days sell out.'],['Rental car or RV','Book ahead','Limited supply in summer.']],
+ shop:null,stay:[['Camp or use hostels','Cheaper, but book early in summer.'],['Stay in Seward or Talkeetna','More variety and local feel.'],['Cabins','Book far ahead.']],
+ fancy:['Floatplane flightseeing','Aerial glacier shots.','Book ahead and expect high prices.']},
+banff:{bud:[140,260,500],ride:['Mixed','Banff town has local buses. Use the Parks Canada shuttle to Moraine Lake. A car helps on the Icefields Parkway.'],
+ eat:[['BeaverTails','Fried pastry on Banff Avenue.','Sweet','$'],['Banff Avenue Brewing Co.','A lively pub with local beer.','Drink','$$'],['Park Distillery','Alberta fare and spirits.','Local dish','$$'],['Calgary groceries','Stock up before driving in.','Budget','$']],
+ book:[['Moraine Lake shuttle','Required','Private cars are not allowed to Moraine Lake. Check Parks Canada.'],['Park pass','Required','A Parks Canada pass is required for park stops.'],['Lodging','Book ahead','Summer and winter fill months ahead.'],['Banff Gondola','Optional','Buy tickets online.']],
+ shop:'Outdoor gear and groceries cost more in town. Stock up in Calgary before the drive.',
+ stay:[['Canmore','Often cheaper than Banff town.'],['HI hostels and campgrounds','The cheapest ways to sleep in the park.'],['Shoulder seasons','Lower rates in fall and spring.']],
+ fancy:['Fairmont Banff Springs and Chateau Lake Louise','Castle-like hotels and lake views.','A drink or afternoon tea is a cheaper way in.']},
+kyoto:{bud:[90,180,380],ride:['Transit works','Buses, subway and IC cards cover most sights. Taxis help for temples at dawn.'],
+ eat:[['Nishiki Market','Street snacks and pickles down a covered market.','Local dish','$'],['Gion Tsujiri','Matcha parfaits and tea desserts.','Sweet','$'],['Kaiseki lunch sets','Many restaurants offer lunch menus at lower prices than dinner.','Splurge','$$'],['Matcha soft serve','Common on temple approach streets.','Sweet','$']],
+ book:[['Lodging','Book ahead','Spring and fall fill early.'],['Kaiseki and tea ceremony','Book ahead','Reserve a few days ahead.'],['Kimono rental','Optional','Book online for morning slots.'],['Transit pass','Optional','Check whether a pass saves money.']],
+ shop:'Tourists can often shop tax-free at participating stores with a passport. Japan is changing tax-free rules, so confirm in the store. Nishiki Market and Teramachi are good for crafts.',
+ stay:[['Business hotels','Clean and cheaper.'],['Hostels and capsule stays','The lowest-cost option.'],['Weekday stays','Rates drop midweek.']],
+ fancy:['Kimono rental photos','Traditional outfits around Higashiyama.','Book mornings online.']},
+santorini:{bud:[120,250,500],ride:['Mixed','Buses link major towns. ATVs, taxis and rentals are common. Ferries or flights reach the island.'],
+ eat:[['Metaxi Mas','A well-known tavern in Exo Gonia.','Local dish','$$'],['Lucky’s Souvlakis, Fira','Cheap gyros.','Budget','$'],['Tomato fritters (tomatokeftedes)','A local snack.','Local dish','$'],['Greek yogurt with honey or ice cream','Sweet treats in Fira.','Sweet','$']],
+ book:[['Lodging with a caldera view','Book ahead','Sells out far ahead in summer.'],['Ferries','Book ahead','Reserve in peak season.'],['Sunset cruise','Optional','Book a day or two ahead.']],
+ shop:'Jewelry and local ceramics are in Fira and Oia. Prices in Oia are higher, so compare in Fira.',
+ stay:[['Karterados or Pyrgos','Cheaper than Oia.'],['Imerovigli instead of Oia','Similar views for less.'],['Shoulder season','Lower rates.']],
+ fancy:['Cave hotel with a caldera pool','Private terrace and infinity pool.','Very pricey in Oia.']},
+iceland:{bud:[170,300,550],ride:['Car needed','A rental car or guided tours are the main ways to reach sights.'],
+ eat:[['Bæjarins Beztu Pylsur','The famous Reykjavik hot dog stand.','Budget','$'],['Efstidalur farm','Farm ice cream with a view of the cows, on the Golden Circle.','Sweet','$'],['Lamb soup','Warm local comfort food.','Local dish','$'],['Skyr desserts','Local dairy treats.','Sweet','$']],
+ book:[['Rental car','Book ahead','Book early for summer.'],['Lagoon time slots','Required','Blue Lagoon and Sky Lagoon use timed entry.'],['Glacier or ice cave tours','Book ahead','Weather dependent.'],['Lodging','Book ahead','Limited outside Reykjavik.']],
+ shop:'Handmade wool sweaters (lopapeysa) cost more than imported ones. Check the label for Icelandic wool. Tourists can claim VAT refunds on qualifying purchases.',
+ stay:[['Guesthouses and hostels','Cheaper than hotels.'],['Campervan','Combines lodging and transport.'],['Self-catering','Supermarkets save money.']],
+ fancy:['Sky Lagoon or Blue Lagoon','Milky-blue geothermal water.','Pre-book timed entry.']},
+amalfi:{bud:[130,260,520],ride:['Mixed','Ferries and SITA buses link towns. Avoid driving the coastal road in peak season.'],
+ eat:[['Gelaterie in Positano and Amalfi','Gelato from the main squares.','Gelato','$'],['Pasticceria Andrea Pansa, Amalfi','A historic pastry shop.','Sweet','$'],['Da Adolfo, Positano','A beach restaurant reached by boat.','Splurge','$$'],['Fresh seafood pasta','A coastal classic.','Local dish','$$']],
+ book:[['Lodging','Book ahead','Summer fills early.'],['Ferries','Book ahead','Reserve in peak season.'],['Boat tours','Optional','Book a day ahead.'],['Path of the Gods','Optional','No booking needed.']],
+ shop:'Ceramics from Vietri sul Mare are cheaper than coastal tourist shops. Non-EU visitors can claim VAT refunds on bigger purchases (a minimum spend applies).',
+ stay:[['Salerno, Maiori or Minori','Cheaper bases.'],['Apartments','Often cheaper than hotels.'],['Shoulder season','Lower rates.']],
+ fancy:['Boat day','Cliffs and grotto swims.','Book private or small-group.']},
+bali:{bud:[50,110,280],ride:['Mixed','Taxis, scooters and private drivers. Traffic is heavy.'],
+ eat:[['Ibu Oka, Ubud','Famous for babi guling, a roast pork dish.','Local dish','$'],['Naughty Nuri’s','Smoky ribs and martinis.','Local dish','$$'],['Warung meals','Local eateries with set prices.','Budget','$'],['Gelato and smoothie bowls','Treats in Seminyak and Ubud.','Gelato','$']],
+ book:[['Private driver','Book ahead','Often cheaper per day than ride apps for long routes.'],['Lodging','Book ahead','High season fills.'],['Boat to Nusa Penida','Book ahead','Reserve a day ahead.'],['Temple visits','Optional','Dress codes apply.']],
+ shop:'At Ubud Art Market, bargain politely and start near half the asking price. Seminyak has local designer boutiques.',
+ stay:[['Homestays','Cheap and welcoming.'],['Villas','Split the cost for groups.'],['Shoulder season','Lower rates.']],
+ fancy:['Rice terrace swing','Photos over the valley.','Prices vary. Confirm what is included.']},
+cappadocia:{bud:[60,130,300],ride:['Mixed','Taxis, tours and rentals. Tour buses reach main sights.'],
+ eat:[['Testi kebab','Meat stew cooked in a clay pot.','Local dish','$$'],['Turkish breakfast','A spread of cheeses and breads.','Budget','$'],['Baklava and Turkish delight','Sweets from local shops.','Sweet','$'],['Dondurma','Stretchy Turkish ice cream.','Sweet','$']],
+ book:[['Balloon flight','Book ahead','Weather dependent. Keep flexible dates.'],['Lodging','Book ahead','Cave hotels fill in season.'],['Tours','Optional','Compare operators.']],
+ shop:'Pottery from Avanos and carpets from cooperatives can be good buys. Compare prices and avoid pressure.',
+ stay:[['Cave pensions','Cheaper than luxury cave hotels.'],['Göreme','A central base.'],['Shoulder season','Lower rates.']],
+ fancy:['Cave hotel terrace breakfast','Balloons in the background.','Pick a room with a terrace.']},
+swiss:{bud:[200,350,600],ride:['Transit works','Trains, buses and cable cars are reliable.'],
+ eat:[['Cheese fondue or raclette','A Swiss staple.','Local dish','$$'],['Supermarket picnic (Coop, Migros)','Cheaper than restaurants.','Budget','$'],['Läderach chocolate','Famous Swiss chocolate.','Sweet','$$'],['Alpine hut lunches','Rösti and views.','Local dish','$$']],
+ book:[['Rail passes','Book ahead','Compare passes against point-to-point tickets.'],['Lodging','Book ahead','Peak seasons fill.'],['Mountain railways','Optional','Buy online for discounts.']],
+ shop:'Watches are priciest. Non-EU visitors can claim VAT refunds over a per-store minimum (about CHF 300). Supermarket chocolate is cheaper than souvenir shops.',
+ stay:[['Swiss Youth Hostels','Budget beds in good locations.'],['Interlaken or Grindelwald','Cheaper than Zermatt.'],['Apartments with kitchens','Save on food.']],
+ fancy:['Matterhorn Glacier Paradise','A high cable car station with big views.','Check the weather before booking.']},
+patagonia:{bud:[120,220,420],ride:['Mixed','Buses reach the park from Puerto Natales. Inside, use shuttles, boats and trails.'],
+ eat:[['Lamb asado','Open-fire lamb is a regional specialty.','Local dish','$$'],['Calafate sour','A drink made with calafate berries.','Drink','$$'],['Refugio meals','Hearty trail meals.','Budget','$$'],['Alfajores','Cookie sandwiches with dulce de leche.','Sweet','$']],
+ book:[['Refugios and campsites','Required','Book months ahead.'],['Park entry','Required','Check current reservation rules.'],['Catamaran to Paine Grande','Book ahead','Reserve in season.']],
+ shop:null,stay:[['Camp','Cheapest.'],['Puerto Natales hostels','A good base town.'],['Self-catering','Cook your own meals.']],
+ fancy:['Lodges with lake windows','Expensive, with floor-to-ceiling views.','Book a year ahead.']},
+marrakech:{bud:[50,110,260],ride:['Mixed','The medina is on foot. Take taxis for longer trips and agree on a fare first.'],
+ eat:[['Jemaa el-Fnaa food stalls','Evening grills and tagines.','Budget','$'],['Café Clock','Camel burger and cooking classes.','Local dish','$$'],['Nomad','Rooftop views over the medina.','Splurge','$$$'],['Moroccan pastries','Almond and honey sweets.','Sweet','$']],
+ book:[['Riad','Book ahead','Often arranged with airport pickup.'],['Cooking class','Optional','Reserve a day ahead.'],['Atlas day trip','Book ahead','Compare operators.']],
+ shop:'Haggle in the souks: start low and walk away politely. Ensemble Artisanal shows fair price benchmarks.',
+ stay:[['Riads','Cheaper than large hotels.'],['Shoulder season','Rates drop.'],['Hostels','The lowest-cost option.']],
+ fancy:['Rooftop dinner','The medina at sunset.','Book a table near sunset.']},
+tulips:{bud:[120,210,380],ride:['Transit works','Trains plus a bus to Keukenhof. Bikes for the fields.'],
+ eat:[['Stroopwafels at Albert Cuyp Market','Warm syrup waffles in Amsterdam.','Sweet','$'],['Herring and fries','Classic Dutch snacks.','Local dish','$'],['Café lunches near Keukenhof','Simple, quick fare.','Budget','$'],['Gelato in Amsterdam','Many gelato shops around the canals.','Gelato','$']],
+ book:[['Keukenhof tickets','Required','Timed tickets sell out in peak weeks.'],['Lodging','Book ahead','April is busy.'],['Canal cruise','Optional','Book ahead if rain is forecast.']],
+ shop:'Amsterdam’s designer street is P.C. Hooftstraat. Non-EU visitors can use VAT refunds with a minimum spend.',
+ stay:[['Haarlem or Leiden','Cheaper than Amsterdam.'],['Hostels','The lowest-cost option.'],['Midweek stays','Lower rates.']],
+ fancy:['Fields by bike or boat','Flowing rows of color.','Rent bikes early.']}
+};
+D.forEach(d=>Object.assign(d,X[d.id]));
+const bookLevel=d=>d.book.some(b=>b[1]==='Required')?'Reservations needed':d.book.some(b=>b[1]==='Book ahead')?'Book ahead':'Flexible';
+const budgetClass=d=>d.bud[1]<=150?'budget':d.bud[1]<=260?'mid':'splurge';
+const fmt=n=>'$'+n.toLocaleString('en-US');
+
+const CLOTH={
+ temperate:{Winter:['Insulated coat','Thermal base layers','Wool socks','Gloves and beanie','Waterproof walking boots'],Spring:['Light waterproof jacket','Layers: tees and a sweater','Comfortable walking shoes','Compact umbrella'],Summer:['Breathable tops and shorts','Sun hat and sunglasses','Light rain shell','Sandals and walking shoes'],Fall:['Mid-weight jacket','Sweaters or flannels','Scarf','Closed-toe walking shoes','Light gloves']},
+ desert:{Winter:['Fleece and puffy jacket for cold nights','Long pants','Beanie and gloves','Sturdy shoes'],Spring:['Layers for cool mornings','Sun hoodie','Hiking shoes','Wide-brim hat'],Summer:['Lightweight long sleeves for sun','Wide-brim hat','Breathable hiking shoes','Electrolyte packets'],Fall:['Layers and a light jacket','Hiking boots or shoes','Sun hat','Warm layer for the night']},
+ tropical:null,
+ alpine:{Winter:['Insulated waterproof jacket','Thermal base layers','Snow boots','Warm hat, gloves and neck gaiter','Goggles or sunglasses'],Spring:['Waterproof shell','Fleece mid-layer','Hiking boots','Gloves and a beanie'],Summer:['Hiking layers','Rain shell','Sun hat and sunglasses','Trail shoes or boots','Fleece for evenings'],Fall:['Puffy jacket','Wool hat and gloves','Waterproof boots','Base layers']}
+};
+const TROP=['Swimwear (two sets)','Quick-dry tops and shorts','Light rain jacket','Sandals','Cover-up and sun hat','Light layer for evenings'];
+CLOTH.tropical={Winter:TROP,Spring:TROP,Summer:TROP,Fall:TROP};
+const PHOTO=['Phone tripod or mini gimbal','Microfiber lens cloth','Polarizing filter for water and sky','Backup storage or cloud sync turned on','Spare camera battery'];
+const SEASONS=['Winter','Spring','Summer','Fall'];
+
+/* Every country and territory, grouped by continent. Used for the Country filter and for "Ask Claude" guides. */
+const WORLD={
+'North America':['Antigua and Barbuda','Bahamas','Barbados','Belize','Canada','Costa Rica','Cuba','Dominica','Dominican Republic','El Salvador','Greenland','Grenada','Guatemala','Haiti','Honduras','Jamaica','Mexico','Nicaragua','Panama','Puerto Rico','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Trinidad and Tobago','United States'],
+'South America':['Argentina','Bolivia','Brazil','Chile','Colombia','Ecuador','Guyana','Paraguay','Peru','Suriname','Uruguay','Venezuela'],
+'Europe':['Albania','Andorra','Austria','Belarus','Belgium','Bosnia and Herzegovina','Bulgaria','Croatia','Cyprus','Czechia','Denmark','Estonia','Faroe Islands','Finland','France','Germany','Greece','Hungary','Iceland','Ireland','Italy','Kosovo','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Moldova','Monaco','Montenegro','Netherlands','North Macedonia','Norway','Poland','Portugal','Romania','San Marino','Serbia','Slovakia','Slovenia','Spain','Sweden','Switzerland','Ukraine','United Kingdom','Vatican City'],
+'Asia':['Afghanistan','Armenia','Azerbaijan','Bahrain','Bangladesh','Bhutan','Brunei','Cambodia','China','Georgia','Hong Kong','India','Indonesia','Iran','Iraq','Israel','Japan','Jordan','Kazakhstan','Kuwait','Kyrgyzstan','Laos','Lebanon','Macau','Malaysia','Maldives','Mongolia','Myanmar','Nepal','Oman','Pakistan','Philippines','Qatar','Saudi Arabia','Singapore','South Korea','Sri Lanka','Taiwan','Tajikistan','Thailand','Timor-Leste','Turkey','Turkmenistan','United Arab Emirates','Uzbekistan','Vietnam'],
+'Africa':['Algeria','Angola','Benin','Botswana','Burkina Faso','Burundi','Cameroon','Cape Verde','Chad','Comoros','Congo','Democratic Republic of the Congo','Djibouti','Egypt','Eswatini','Ethiopia','Gabon','Gambia','Ghana','Guinea','Ivory Coast','Kenya','Lesotho','Liberia','Libya','Madagascar','Malawi','Mali','Mauritania','Mauritius','Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Tanzania','Togo','Tunisia','Uganda','Zambia','Zimbabwe'],
+'Oceania':['Australia','Fiji','French Polynesia','Kiribati','Marshall Islands','Micronesia','Nauru','New Caledonia','New Zealand','Palau','Papua New Guinea','Samoa','Solomon Islands','Tonga','Tuvalu','Vanuatu'],
+'Antarctica':['Antarctica']
+};
+const CONTS=Object.keys(WORLD);
+const ALLC=[].concat.apply([],CONTS.map(k=>WORLD[k])).sort((a,b)=>a.localeCompare(b));
+const CONT_OF={};CONTS.forEach(k=>WORLD[k].forEach(c=>{CONT_OF[c]=k;}));
+const US_STATES=['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
+/* Where each curated place is (region, country, continent), plus more places from every continent. */
+const META={
+bigbend:['Texas','United States'],hillcountry:['Texas','United States'],marfa:['Texas','United States'],paloduro:['Texas','United States'],padre:['Texas','United States'],guadalupe:['Texas','United States'],
+abq:['New Mexico','United States'],zion:['Utah','United States','Utah and Arizona','Arizona'],sedona:['Arizona','United States'],newengland:['Vermont','United States','Vermont and New Hampshire','New Hampshire'],bigsur:['California','United States'],maui:['Hawaii','United States'],alaska:['Alaska','United States'],
+banff:['Alberta','Canada'],kyoto:['Kyoto','Japan'],santorini:['Cyclades','Greece'],iceland:['','Iceland'],amalfi:['Campania','Italy'],bali:['Bali','Indonesia'],cappadocia:['Central Anatolia','Turkey'],swiss:['Bernese Oberland and Valais','Switzerland'],patagonia:['Magallanes','Chile'],marrakech:['Marrakech','Morocco'],tulips:['South Holland','Netherlands']
+};
+D.forEach(d=>{const m=META[d.id];d.reg=m[0];d.country=m[1];d.reg2=m[3]||'';d.cont=CONT_OF[m[1]];d.loc=m[2]?m[2]+', '+m[1]:(m[0]?m[0]+', '+m[1]:m[1]);});
+
+const STAY0=[['Stay outside the busiest center','Rates are often lower a short ride from the main sights.'],['Hostels and guesthouses','The lowest-cost beds, and many have kitchens.'],['Travel in shoulder season','Prices and crowds drop just outside peak months.']];
+const GEAR0={desert:['Sun protection and a hat','Reusable water bottle','Sturdy walking shoes'],temperate:['Comfortable walking shoes','Light rain jacket','Daypack'],tropical:['Reef-safe sunscreen','Insect repellent','Quick-dry towel'],alpine:['Broken-in hiking boots','Layers for fast weather changes','Sun protection for altitude']};
+const sp=a=>a.map(s=>s.split('|'));
+function P(id,n,reg,country,m,tags,z,h,motif,o,b,tip,spots,it,eat,bud,ride,book,fancy){
+  const book2=sp(book);
+  D.push({id,n,reg,reg2:o.reg2||'',country,cont:CONT_OF[country],loc:o.loc||(reg?reg+', '+country:country),sc:'world',m,tags,z,h,motif,south:!!o.south,intl:country!=='United States',
+    b,ev:o.ev||'',tip,spots:sp(spots),it:sp(it),eat:sp(eat),bud,ride:ride.split('|'),book:book2,shop:o.shop||null,stay:o.stay||STAY0,fancy:fancy.split('|'),gear:o.gear||GEAR0[z]});
+}
+/* ---------- United States ---------- */
+P('yellowstone','Yellowstone National Park','Wyoming','United States',[5,6,7,8,9,10],['nature','adventure'],'alpine',150,'peaks',{ev:'Most park roads close to cars in winter. Summer and early fall have the widest access.'},
+ 'Geysers, hot springs, canyons and herds of bison and elk in the world’s first national park.','Keep at least 100 yards from bears and wolves and 25 yards from other wildlife.',
+ ['Grand Prismatic Spring|Midday|Rainbow rings are best seen from the overlook trail above.','Old Faithful|Morning|Check the posted eruption times and arrive early.','Lamar Valley|Sunrise|Wolves and bison in soft light.'],
+ ['Geyser basins|Old Faithful, Grand Prismatic and the boardwalk loops.','Canyon and falls|Grand Canyon of the Yellowstone and Artist Point.','Lamar Valley|Dawn wildlife drive, then a hot springs stop.'],
+ ['Roosevelt Lodge|Western cookout style meals in a rustic setting.|Local dish|$$','Gardiner or West Yellowstone diners|Burgers and huckleberry shakes outside the gates.|Budget|$','Huckleberry ice cream|A Montana and Wyoming favorite.|Sweet|$'],
+ [130,230,450],'Car needed|The park is huge. A car is essential, and distances between sights are long.',
+ ['Lodging in or near the park|Book ahead|Park lodges often fill a year ahead for summer.','Campsites|Book ahead|Reserve early through the park system.'],
+ 'Old Faithful Inn dinner|A historic log lodge with a soaring lobby.|Reserve dining ahead in peak season.');
+P('yosemite','Yosemite Valley','California','United States',[4,5,6,9,10],['nature','adventure'],'alpine',205,'peaks',{ev:'Waterfalls usually peak in May and June with snowmelt. Some roads close in winter.'},
+ 'Granite cliffs, giant waterfalls and sequoia groves in the Sierra Nevada.','Check whether timed-entry reservations apply on your dates before you drive in.',
+ ['Tunnel View|Sunset|The classic view of El Capitan, Bridalveil Fall and Half Dome.','Glacier Point|Sunrise|A high overlook of Half Dome and the valley. Seasonal road.','Mariposa Grove|Morning|Walk among giant sequoias.'],
+ ['Valley floor|Yosemite Falls, Cook’s Meadow and Tunnel View.','Glacier Point|Drive up for a sunrise or sunset panorama.','Giant sequoias|Mariposa Grove and a relaxed afternoon.'],
+ ['The Ahwahnee dining room|A grand historic dining room for a special night.|Splurge|$$$','Village Store picnic|Sandwiches and snacks for the trail.|Budget|$','Mariposa farm stands|Fresh fruit and ice cream on the drive in.|Sweet|$'],
+ [120,230,480],'Car needed|A car is easiest. A free valley shuttle runs year-round.',
+ ['Lodging or camping|Book ahead|Popular dates sell out months ahead.','Park entry|Check|Reservation rules change by season. Check the park website.'],
+ 'The Ahwahnee afternoon tea|Great Lounge views of the cliffs.|Check seasonal hours.');
+P('nyc','New York City','New York','United States',[4,5,6,9,10,11,12],['city','culture'],'temperate',230,'city',{shop:'Outlets at Woodbury Common offer designer discounts a bus ride north of the city. Sample sales and end-of-season sales (January and July) cut prices sharply in SoHo and Fifth Avenue.'},
+ 'Skyline, Broadway, museums and neighborhood food from every corner of the world.','Walk or take the subway. Taxis in traffic cost far more than they save.',
+ ['Brooklyn Bridge at sunrise|Sunrise|Walk from Brooklyn toward Manhattan with fewer people.','Top of the Rock|Sunset|Skyline views that include the Empire State Building.','Central Park Bow Bridge|Morning|A classic photo with the San Remo towers behind.'],
+ ['Midtown|Grand Central, the Public Library and Top of the Rock.','Downtown|Brooklyn Bridge, DUMBO, then a waterfront dinner.','Uptown|Central Park and a museum afternoon.'],
+ ['Joe’s Pizza|The classic New York slice.|Local dish|$','Bagels and lox|A breakfast staple at a local deli.|Budget|$','Cheesecake and gelato|Cheesecake in Midtown and gelato in many neighborhoods.|Gelato|$$'],
+ [220,420,900],'Transit works|The subway covers nearly everything. Walking is part of the experience.',
+ ['Broadway tickets|Book ahead|Same-day discount booths can save money on some shows.','Observation decks|Book ahead|Timed tickets are cheaper online and let you skip lines.'],
+ 'Rooftop bar at sunset|Skyline backdrops in Midtown and Brooklyn.|Dress codes and waits vary.');
+P('neworleans','New Orleans','Louisiana','United States',[2,3,4,10,11],['culture','festival'],'tropical',280,'city',{ev:'Mardi Gras runs in February or March. Jazz Fest is held in late April and early May.'},
+ 'Brass bands, beignets, iron balconies and a food scene unlike anywhere else in the U.S.','Hotel prices jump during Mardi Gras and Jazz Fest. Book well ahead.',
+ ['French Quarter balconies|Morning|Iron lace and pastel buildings with fewer crowds.','Jackson Square|Golden hour|Street artists and the cathedral.','Garden District|Morning|Mansions under old oaks. Walk the streets and respect residents.'],
+ ['French Quarter|Café du Monde, Jackson Square and live music on Frenchmen Street.','Garden District|Streetcar ride, mansions and Magazine Street shops.','Bayou day|A swamp tour or plantation visit.'],
+ ['Café du Monde|Beignets and chicory coffee since the 1860s.|Sweet|$','Po’boy shops|Fried shrimp or roast beef on French bread.|Local dish|$','Gumbo and jambalaya|Stick to well-reviewed local spots.|Local dish|$$'],
+ [130,250,500],'Mixed|The Quarter is walkable and streetcars reach other areas. Rideshare is common at night.',
+ ['Mardi Gras and festival lodging|Required|Book many months ahead for festival weeks.','Swamp tours|Book ahead|Reserve a day or two ahead.'],
+ 'Courtyard jazz brunch|A classic New Orleans weekend ritual.|Book ahead.');
+P('acadia','Acadia National Park','Maine','United States',[6,7,9,10],['nature','adventure'],'temperate',200,'coast',{ev:'Cadillac Mountain sunrise is one of the first places in the U.S. to see the light in some seasons. Vehicle reservations may be needed in season.'},
+ 'Rocky coastline, pine forest, granite peaks and quiet harbors on Mount Desert Island.','Reserve Cadillac summit access if required, and bring layers even in July.',
+ ['Cadillac Mountain|Sunrise|A bald granite summit above the Atlantic.','Jordan Pond|Morning|Clear water and the Bubbles peaks.','Bass Harbor Head Light|Sunset|A lighthouse on a rocky ledge.'],
+ ['Park Loop Road|Sand Beach, Thunder Hole and Otter Cliffs.','Cadillac sunrise|Early summit, then Jordan Pond popovers.','Bar Harbor|Whale watch or a schooner sail, then lobster.'],
+ ['Lobster rolls|A Maine staple from harbor shacks.|Local dish|$$','Jordan Pond House popovers|Tea and popovers on the lawn.|Sweet|$$','Blueberry pie|Maine wild blueberries in season.|Sweet|$'],
+ [140,260,500],'Car needed|A free island shuttle runs in summer, but a car helps.',
+ ['Lodging in Bar Harbor|Book ahead|Peak summer and fall fill early.','Cadillac Mountain vehicle reservation|Check|Required on some dates in season.'],
+ 'Waterfront lobster dinner|Harbor views at sunset.|Book ahead in summer.');
+P('smokies','Great Smoky Mountains','Tennessee','United States',[5,6,10],['nature'],'temperate',120,'forest',{reg2:'North Carolina',loc:'Tennessee and North Carolina, United States',ev:'Peak fall color is usually in mid to late October. A lottery picks viewers for the synchronous firefly show in early June.'},
+ 'Misty ridges, old cabins and some of the best autumn color in the U.S.','Roads can jam in October. Start before sunrise.',
+ ['Clingmans Dome|Sunrise|The highest point in the park, with long ridge views.','Cades Cove|Morning|Open meadows with deer and old barns.','Roaring Fork Motor Trail|Midday|Streams and old mountain homes.'],
+ ['Clingmans Dome|An early drive and a short climb to the tower.','Cades Cove loop|Wildlife and historic cabins.','Gatlinburg|Short waterfall hikes, then dinner in town.'],
+ ['Mountain pancakes|A Smokies breakfast tradition.|Local dish|$','Barbecue|Smoked pork and ribs in Tennessee.|Local dish|$$','Fudge and apple fritters|Sweet stops in Gatlinburg.|Sweet|$'],
+ [110,200,380],'Car needed|A car is needed. Parking is free in the national park.',
+ ['Fall lodging|Book ahead|October fills early.','Campsites|Book ahead|Reserve online for peak months.'],
+ 'Cabin with a mountain view|A private porch and a hot tub.|Book months ahead.');
+P('keys','Florida Keys','Florida','United States',[11,12,1,2,3,4],['beach','adventure'],'tropical',185,'waves',{ev:'Hurricane season is June through November. Winter is dry and sunny.'},
+ 'A chain of islands linked by the Overseas Highway, with clear water, reefs and sunset celebrations.','Book snorkel trips early on weekends. Check weather for boat days.',
+ ['Seven Mile Bridge|Sunrise|A long road across turquoise water.','Mallory Square|Sunset|The nightly sunset gathering in Key West.','John Pennekamp Coral Reef State Park|Morning|Snorkel or glass-bottom boat over reefs.'],
+ ['Key Largo|Snorkel the reef.','Islamorada and Marathon|Sandbar stops, turtle hospital and lunch by the water.','Key West|Old Town, Mallory Square and key lime pie.'],
+ ['Key lime pie|Frozen on a stick or by the slice.|Sweet|$','Fresh fish sandwiches|Dockside spots in Islamorada and Key West.|Local dish|$$','Cuban coffee|A Key West morning habit.|Budget|$'],
+ [180,320,650],'Car needed|The Overseas Highway is a single road. A car or a Key West shuttle is the way to go.',
+ ['Lodging|Book ahead|Winter fills early.','Dry Tortugas ferry|Book ahead|Reserve weeks ahead.'],
+ 'Sunset sail in Key West|A sailing catamaran with drinks.|Reserve a day ahead.');
+P('glacier','Glacier National Park','Montana','United States',[7,8,9],['nature','adventure'],'alpine',195,'peaks',{ev:'Going-to-the-Sun Road is usually fully open from about early July to September. Vehicle reservations have been required on some dates.'},
+ 'Glacier-carved valleys, turquoise lakes and a famous mountain road.','Check road status and entry rules before you go. Snow can linger into July.',
+ ['Lake McDonald|Sunrise|Colorful stones under glassy water.','Logan Pass|Midday|Alpine meadows and mountain goats.','Many Glacier|Morning|Peaks reflected in Swiftcurrent Lake.'],
+ ['Going-to-the-Sun Road|Drive the road, stop at Logan Pass.','Many Glacier|Hike to Grinnell Lake or a shorter lake walk.','Lake McDonald|A sunrise walk and a boat ride.'],
+ ['Huckleberry anything|Pie, ice cream or jam in Montana.|Sweet|$','Diners in Whitefish and Kalispell|Hearty breakfasts before the trail.|Budget|$','Bison burgers|A regional protein.|Local dish|$$'],
+ [130,230,450],'Car needed|A car helps. A free shuttle runs along parts of the main road.',
+ ['Lodging|Book ahead|Park lodges often fill a year ahead.','Vehicle reservation|Check|May be required for some roads.'],
+ 'Many Glacier Hotel lake view|A historic lodge with a lake-facing lounge.|Book far ahead.');
+P('austin','Austin','Texas','United States',[3,4,10,11],['city','festival'],'temperate',320,'city',{ev:'SXSW is in March and Austin City Limits Festival is in October. The Congress Avenue Bridge bat flight runs spring through fall.'},
+ 'Live music, barbecue, tacos and sunny swimming holes in the Texas capital.','Spring and fall festivals fill hotels. Book early and use rideshares during events.',
+ ['Mount Bonnell|Sunset|A short climb with views over Lake Austin.','Congress Avenue Bridge|Dusk|Watch bats stream out in warm months.','Barton Springs Pool|Morning|A spring-fed swimming hole in Zilker Park.'],
+ ['Downtown|Capitol, bat bridge and live music on 6th or Rainey.','Zilker|Barton Springs, Lady Bird Lake and a taco crawl.','Hill Country day|Wineries, swimming holes or Hamilton Pool.'],
+ ['Franklin or a local barbecue joint|Expect a line. Go early.|Local dish|$$','Breakfast tacos|An Austin morning tradition.|Budget|$','Mexican chocolate and gelato|Sweet stops across East Austin and South Congress.|Gelato|$'],
+ [150,280,520],'Mixed|Rideshare and scooters work downtown. A car helps for the Hill Country.',
+ ['Hamilton Pool|Required|Reservations are needed. Book early.','Festival lodging|Book ahead|Hotels sell out for SXSW and ACL.'],
+ 'Rooftop bar on Congress|Skyline sunsets over the lake.|Reserve weekends.');
+/* ---------- Canada and Latin America ---------- */
+P('quebec','Quebec City','Quebec','Canada',[1,2,6,9,10,12],['culture','city'],'temperate',350,'dome',{ev:'Winter Carnival runs in late January and early February. Fall color peaks in late September to early October.'},
+ 'A walled French-speaking city with cobblestone streets, a hilltop château and a lively winter carnival.','Wear real winter boots for ice and snow from December to March.',
+ ['Château Frontenac|Sunrise|Walk the Dufferin Terrace for the full view.','Rue du Petit-Champlain|Evening|Lights and shop windows on a cobblestone lane.','Montmorency Falls|Morning|A waterfall taller than Niagara a short drive away.'],
+ ['Old Quebec|Walls, Place Royale and the Petit-Champlain.','Falls and island|Montmorency Falls and Île d’Orléans farm stops.','Winter or fall|Carnival events or a Laurentians foliage day.'],
+ ['Poutine|Fries, curds and gravy.|Local dish|$','Tarte au sucre and maple taffy|Sweets from a local shop.|Sweet|$','Crêpes|A cozy breakfast or dessert.|Budget|$'],
+ [130,240,480],'Transit works|Old Quebec is walkable. Buses and taxis cover the rest.',
+ ['Hôtel de Glace|Book ahead|The ice hotel opens in winter.','Winter Carnival lodging|Book ahead|Fills early.'],
+ 'Fairmont Le Château Frontenac|A castle-like hotel with river views.|Book ahead.');
+P('vancouver','Vancouver and Whistler','British Columbia','Canada',[5,6,7,8,9],['nature','city'],'temperate',200,'coast',{ev:'Whistler is also a ski town from late November to April.'},
+ 'Mountains, ocean and rainforest within an hour of each other, plus a strong food scene.','Rain is common outside summer. Pack a shell.',
+ ['Stanley Park Seawall|Morning|A waterfront path with city views.','Capilano Suspension Bridge|Midday|A bridge above the forest. Ticketed.','Sea to Sky Highway|Golden hour|Pull-offs above Howe Sound.'],
+ ['Downtown|Stanley Park, Granville Island and Gastown.','Sea to Sky|Shannon Falls and the Sea to Sky Gondola.','Whistler|Peak 2 Peak or a lake day.'],
+ ['Granville Island Public Market|Seafood, bakeries and coffee.|Budget|$$','Salmon and Dungeness crab|A Pacific Northwest staple.|Local dish|$$','Nanaimo bars|A Canadian dessert from BC.|Sweet|$'],
+ [150,270,520],'Transit works|SkyTrain, buses and the Seabus are easy. Rent a car for Whistler or take a bus.',
+ ['Whistler lodging|Book ahead|Peak ski and summer weekends fill.','Whale watching|Optional|Reserve a day ahead.'],
+ 'Seaplane to Victoria|A fast and scenic transfer.|Book ahead.');
+P('oaxaca','Oaxaca','Oaxaca','Mexico',[10,11,12,2,3],['culture','festival'],'temperate',20,'dome',{ev:'Day of the Dead on November 1 and 2 is one of Mexico’s biggest celebrations. Book early.'},
+ 'Colorful markets, mezcal, mole and ancient ruins in the mountains of southern Mexico.','Take it slow in the morning. Many shops open later.',
+ ['Monte Albán|Morning|A hilltop Zapotec site with sweeping valley views.','Hierve el Agua|Midday|Petrified waterfalls and natural infinity pools.','Santo Domingo Church|Golden hour|A gilded baroque interior.'],
+ ['Centro|Markets, mole and Santo Domingo.','Monte Albán|Ruins and a mezcal tasting.','Hierve el Agua|A day trip with a stop at a textile village.'],
+ ['Mole negro|Rich chocolate-chili sauce over chicken.|Local dish|$$','Tlayudas|A giant crispy tortilla with toppings.|Local dish|$','Oaxacan chocolate and ice cream|Try the flavors at a local shop.|Sweet|$'],
+ [70,140,300],'Mixed|The center is walkable. Taxis and tours reach the ruins.',
+ ['Day of the Dead lodging|Required|Book months ahead.','Cooking classes|Book ahead|Reserve a few days ahead.'],
+ 'Rooftop mezcal tasting|Sunset over the cathedral domes.|Book ahead.');
+P('tulum','Tulum and the Cenotes','Quintana Roo','Mexico',[11,12,1,2,3,4],['beach','adventure'],'tropical',185,'waves',{ev:'Seaweed can wash up on beaches from spring to summer.'},
+ 'White sand, Maya ruins on a cliff and cenotes that glow turquoise.','Take cash. Some beach spots and cenotes do not take cards.',
+ ['Tulum ruins|Sunrise|Maya walls above the Caribbean.','Gran Cenote|Morning|Crystal-clear water and stalactites.','Playa Paraiso|Golden hour|A palm-fringed beach.'],
+ ['Ruins and beach|Early ruins visit, then a beach club.','Cenotes|Dos Ojos or Gran Cenote.','Coba or Sian Ka’an|Pyramids by bike or a boat day.'],
+ ['Tacos al pastor|Pork with pineapple.|Local dish|$','Fresh ceviche|Citrus-cured fish and shellfish.|Local dish|$$','Paletas|Fruit ice pops from a local cart.|Sweet|$'],
+ [90,200,450],'Mixed|Taxis, bikes and colectivos get you around.',
+ ['Cenote entry|Optional|Some require timed tickets.','Beachfront lodging|Book ahead|Winter fills early.'],
+ 'Jungle treehouse stay|A photogenic stay near the coast.|Book ahead.');
+P('costarica','Costa Rica Rainforest and Volcano','Alajuela and Puntarenas','Costa Rica',[12,1,2,3,4],['nature','adventure'],'tropical',140,'forest',{},
+ 'Cloud forest, volcanoes, hot springs and wildlife in a small and welcoming country.','Rain is common most afternoons. Plan outdoor activities early.',
+ ['Arenal Volcano|Sunrise|A cone-shaped peak and lava fields.','La Fortuna Waterfall|Morning|A tall waterfall with a swimming hole.','Monteverde Hanging Bridges|Morning|Walkways above cloud forest.'],
+ ['Arenal|Volcano views and hot springs.','Monteverde|Hanging bridges and a night walk.','Manuel Antonio|Beach and wildlife.'],
+ ['Gallo pinto|Rice and beans for breakfast.|Local dish|$','Casado|A lunch plate with rice, beans and meat or fish.|Local dish|$','Tropical fruit and ice cream|Pineapple, mango and local coffee ice cream.|Sweet|$'],
+ [100,210,450],'Mixed|Shuttles connect main towns. A car helps for remote areas.',
+ ['Hot springs|Book ahead|Popular ones sell out.','Park entry|Book ahead|Manuel Antonio often requires advance tickets.'],
+ 'Treetop lodge|A canopy stay with forest views.|Book ahead.');
+P('machupicchu','Machu Picchu and Cusco','Cusco','Peru',[5,6,7,8,9,10],['culture','adventure'],'alpine',130,'peaks',{south:true,ev:'The dry season runs May to September. The Inca Trail closes every February for maintenance.'},
+ 'An Inca citadel above the clouds, with the Sacred Valley and Rainbow Mountain as nearby adventures.','Spend a day or two in Cusco or the Sacred Valley first to adjust to the altitude.',
+ ['Machu Picchu|Sunrise|Arrive with the first entry slot for clearer light.','Sacred Valley terraces|Morning|Moray and Pisac terraces.','Rainbow Mountain|Sunrise|A colorful ridge at high altitude.'],
+ ['Cusco|Plaza de Armas and altitude rest.','Sacred Valley|Pisac, Ollantaytambo and Moray.','Machu Picchu|Train to Aguas Calientes, then the ruins.'],
+ ['Ceviche|The national dish.|Local dish|$$','Cuy and lomo saltado|Try the stir-fry for a safe start.|Local dish|$','Chocolate and Peruvian ice cream|Cacao treats in Cusco.|Sweet|$'],
+ [90,190,420],'Mixed|Trains and buses reach Aguas Calientes. Taxis and tours cover other sites.',
+ ['Machu Picchu tickets|Required|Timed entry sells out months ahead.','Inca Trail permits|Required|Book 4 to 6 months early.','Train tickets|Book ahead|Seats sell out in peak season.'],
+ 'Luxury train to Machu Picchu|A scenic ride with a glass roof.|Book ahead.');
+P('rio','Rio de Janeiro','Rio de Janeiro','Brazil',[12,1,2,3,8,9],['beach','city','festival'],'tropical',175,'coast',{south:true,ev:'Carnival is in February or March, with parades and street parties across the city.'},
+ 'Beaches below green peaks, Christ the Redeemer and samba on the streets.','Take a registered taxi or rideshare at night, and keep valuables out of sight.',
+ ['Christ the Redeemer|Sunrise|Go early for clearer views and fewer people.','Sugarloaf Mountain|Sunset|Cable cars with views of the bay.','Ipanema Beach|Golden hour|Sunset applause is a local tradition.'],
+ ['Christ and Santa Teresa|Corcovado and the tram quarter.','Sugarloaf and Copacabana|Cable car and beach time.','Ipanema and Lagoa|Surf, a sunset at Arpoador and a samba night.'],
+ ['Feijoada|A black bean stew, traditionally on Saturdays.|Local dish|$$','Açaí bowl|Fruit and granola from a juice bar.|Sweet|$','Brigadeiro|A chocolate truffle at many bakeries.|Sweet|$'],
+ [80,180,420],'Mixed|The metro is useful. Rideshare is common for other trips.',
+ ['Carnival lodging|Required|Book many months ahead.','Christ the Redeemer tickets|Book ahead|Timed entry helps.'],
+ 'Rooftop pool bar|Skyline and mountain views.|Book ahead.');
+P('galapagos','Galápagos Islands','Galápagos','Ecuador',[6,7,8,9,10,11,12],['nature','adventure'],'tropical',200,'waves',{ev:'June to December is cooler and dry with strong wildlife viewing. January to May is warm with calm seas.'},
+ 'Sea lions, giant tortoises and blue-footed boobies that do not fear people.','Book cruises or island hotels well ahead. There is an entry fee for the islands.',
+ ['Sea lions at the pier|Morning|Wildlife often rests on public docks.','Tortuga Bay|Midday|A white beach with marine iguanas.','Kicker Rock|Morning|Snorkel with turtles and sharks on a day tour.'],
+ ['Santa Cruz|Charles Darwin Station and Tortuga Bay.','San Cristobal|Sea lion beach and snorkeling.','Day tour|Bartolomé or North Seymour.'],
+ ['Fresh ceviche|Local seafood.|Local dish|$$','Encebollado|A fish soup.|Local dish|$','Fruit juices and ice cream|Cool treats in Puerto Ayora.|Sweet|$'],
+ [180,350,800],'Mixed|Inter-island ferries and flights connect the main islands.',
+ ['Cruises and island lodging|Required|Book months ahead.','Entry fee and transit control card|Required|Paid when you arrive or in advance.'],
+ 'Small-ship cruise|Visit islands that day trips cannot reach.|Book a year ahead.');
+P('buenosaires','Buenos Aires','Buenos Aires','Argentina',[3,4,5,9,10,11],['city','culture'],'temperate',350,'city',{south:true,shop:'Leather goods and shoes in Palermo are a good value. Tourists may reclaim VAT at the airport on some purchases. Ask the store.'},
+ 'Tango, steaks, grand boulevards and cafés in South America’s “Paris”.','Many restaurants serve dinner after 9 pm. Plan a late evening.',
+ ['Recoleta Cemetery|Morning|Ornate mausoleums in a quiet city of marble.','Caminito in La Boca|Midday|Colorful streets and tango dancers.','El Ateneo Grand Splendid|Midday|A theater turned bookstore.'],
+ ['Centro|Plaza de Mayo and Casa Rosada.','Recoleta and Palermo|Cemetery, parks and cafés.','Tango night|A show or a milonga in San Telmo.'],
+ ['Parrilla steak|Beef from the grill.|Local dish|$$','Empanadas|A cheap and tasty snack.|Budget|$','Helado with dulce de leche|Argentina’s Italian-style gelato.|Gelato|$'],
+ [90,190,420],'Transit works|The subway and buses are cheap. Taxis are affordable.',
+ ['Tango shows|Book ahead|Reserve dinner shows.','Lodging|Book ahead|Peak months fill.'],
+ 'Tango dinner show|A classic night out.|Book a day ahead.');
+P('uyuni','Salar de Uyuni','Potosí','Bolivia',[1,2,3,7,8,9,10,11],['nature','adventure'],'desert',200,'mesa',{south:true,ev:'January to March can mirror the sky when a thin layer of water covers the flats. July to November is dry and easier for driving.'},
+ 'The world’s largest salt flat, famous for mirror reflections and endless white horizons.','Altitude is above 3,600 meters. Rest on arrival and drink plenty of water.',
+ ['Mirror effect|Sunset|A thin water layer reflects the sky in the wet season.','Isla Incahuasi|Morning|A cactus island in the middle of the salt.','Train Cemetery|Golden hour|Old locomotives in the desert.'],
+ ['Uyuni town|Train cemetery and salt works.','Salt flats|Incahuasi and a sunset tour.','Lagoons route|A multi-day trip to colored lakes.'],
+ ['Llama steak|A regional favorite.|Local dish|$$','Quinoa soup|Hearty and warming at altitude.|Local dish|$','Salteñas|Baked pastries with juicy filling.|Budget|$'],
+ [60,130,300],'Mixed|Most travelers join tours. Buses and trains connect Uyuni to other cities.',
+ ['Salt flats tours|Book ahead|Book with a reputable operator.','Lodging in Uyuni|Book ahead|Fills in peak season.'],
+ 'Salt hotel stay|A hotel built partly from salt blocks.|Book ahead.');
+/* ---------- Europe ---------- */
+P('paris','Paris','Île-de-France','France',[4,5,6,9,10,12],['city','culture'],'temperate',330,'city',{shop:'Visitors who live outside the EU can claim a VAT refund (détaxe) on purchases above a minimum in one store on one day. Ask for the form at checkout. Sales run in January and July. Look for outlet villages such as La Vallée Village near Paris.'},
+ 'Cafés, museums, bridges and boulevards in the city that invented the long, slow lunch.','Book the Louvre and the Eiffel Tower summit by timed ticket and arrive early.',
+ ['Trocadéro|Sunrise|The Eiffel Tower in soft morning light with few people.','Montmartre|Morning|Cobbled lanes and Sacré-Cœur.','Pont Alexandre III|Golden hour|Gilded lamps over the Seine.'],
+ ['Left Bank|Notre-Dame area, Latin Quarter and the Luxembourg Garden.','Louvre and Tuileries|Timed Louvre visit, a stroll to the Eiffel Tower.','Montmartre|Sacré-Cœur, a bistro lunch and a Seine sunset.'],
+ ['Croissants and pain au chocolat|From a neighborhood boulangerie.|Budget|$','Crêpes and galettes|Street stands and crêperies.|Local dish|$','Glaces from Berthillon|A famous ice cream shop on Île Saint-Louis.|Gelato|$$'],
+ [200,380,800],'Transit works|The Métro is fast. Walking is the best way to see neighborhoods.',
+ ['Louvre and Eiffel Tower tickets|Required|Timed entry sells out.','Versailles|Book ahead|Timed tickets help.'],
+ 'Seine dinner cruise|Glittering monuments by night.|Book ahead.');
+P('barcelona','Barcelona','Catalonia','Spain',[5,6,9,10],['city','culture','beach'],'temperate',25,'city',{},
+ 'Gaudí architecture, beaches, tapas bars and late nights.','Book Sagrada Família and Park Güell with timed tickets, and watch for pickpockets.',
+ ['Sagrada Família|Morning|Stained glass light is strongest in the morning.','Park Güell|Sunrise|Mosaics and city views.','Bunkers del Carmel|Sunset|A free hilltop viewpoint over the city.'],
+ ['Gothic Quarter|Cathedral, Born and tapas.','Gaudí day|Sagrada Família, Casa Batlló and Park Güell.','Beach and Montjuïc|Barceloneta and a sunset at the castle.'],
+ ['Tapas|Share small plates at a local bar.|Local dish|$$','Crema catalana|A creamy burnt-sugar dessert.|Sweet|$','Churros and chocolate|A classic sweet treat.|Sweet|$'],
+ [140,260,520],'Transit works|The metro and buses are efficient. Many sights are walkable.',
+ ['Sagrada Família and Park Güell|Required|Timed tickets sell out.','Flamenco or a food tour|Optional|Reserve a few days ahead.'],
+ 'Rooftop with Sagrada views|A hotel bar with a skyline view.|Book ahead.');
+P('london','London','England','United Kingdom',[5,6,7,9,12],['city','culture'],'temperate',220,'city',{shop:'The tourist VAT refund ended in 2021, so there is no tax-free shopping. Look for sales in January and July, and for Bicester Village outlet discounts outside the city.'},
+ 'Royal sights, free museums, pubs and parks in one of the world’s great cities.','Many top museums are free. Spend on timed attractions instead.',
+ ['Tower Bridge|Sunrise|Walk along the river from the Tower of London.','Primrose Hill|Sunset|A free view of the skyline.','Notting Hill|Morning|Pastel houses and Portobello Road.'],
+ ['Westminster|Big Ben, the Abbey and St James’s Park.','Museums|British Museum, Covent Garden and a West End show.','Greenwich|Observatory hill and the river.'],
+ ['Fish and chips|A pub or chip-shop classic.|Local dish|$$','Afternoon tea|Scones, finger sandwiches and tea.|Sweet|$$$','Sticky toffee pudding|A British dessert.|Sweet|$'],
+ [200,360,750],'Transit works|The Tube and buses cover the city. Contactless cards work.',
+ ['West End shows|Book ahead|Same-day tickets can be cheaper.','Tower of London|Book ahead|Timed tickets reduce queues.'],
+ 'Afternoon tea at a grand hotel|A formal London tradition.|Book ahead.');
+P('prague','Prague','Prague','Czechia',[4,5,6,9,12],['city','culture'],'temperate',35,'city',{ev:'Christmas markets run from late November to early January.'},
+ 'Spires, bridges and cozy beer halls in one of Europe’s best-preserved old towns.','Cross Charles Bridge at sunrise to avoid crowds.',
+ ['Charles Bridge|Sunrise|Statues and mist with few visitors.','Old Town Square|Evening|The astronomical clock and rooftop views.','Letná Park|Sunset|A city panorama and a beer garden.'],
+ ['Old Town|Square, Jewish Quarter and clock tower.','Prague Castle|Castle, Lesser Town and Petřín hill.','Day trip|Kutná Hora or Karlštejn.'],
+ ['Svíčková|Beef in cream sauce with dumplings.|Local dish|$$','Trdelník|A sweet rolled pastry.|Sweet|$','Czech beer|Pilsner at a local hall.|Drink|$'],
+ [90,180,380],'Transit works|Trams and the metro are cheap. The center is compact and walkable.',
+ ['Prague Castle|Book ahead|Timed tickets in peak season.','Christmas market lodging|Book ahead|December fills.'],
+ 'Rooftop beer garden|River and castle views.|Book weekends.');
+P('dolomites','The Dolomites','South Tyrol','Italy',[6,7,8,9,12,1,2,3],['nature','adventure'],'alpine',210,'peaks',{ev:'Summer is for hiking. Ski season runs from December to March. Popular spots like Lago di Braies may require parking or shuttle reservations in summer.'},
+ 'Pink and grey rock towers above green meadows, with cozy mountain huts and Tyrolean food.','Reserve summer parking or shuttles for Lago di Braies and similar hotspots.',
+ ['Lago di Braies|Sunrise|A turquoise alpine lake. Go early.','Seceda ridge|Morning|Jagged peaks over green slopes.','Tre Cime di Lavaredo|Midday|A famous trio of rock towers.'],
+ ['Braies and Dobbiaco|Lake loop and a mountain hut lunch.','Val Gardena|Seceda by cable car.','Tre Cime|The full loop trail, then a hut dinner.'],
+ ['Canederli|Bread dumplings in broth.|Local dish|$$','Strudel and Kaiserschmarrn|Mountain hut desserts.|Sweet|$','Speck and local cheeses|A hiker’s snack.|Budget|$'],
+ [120,230,450],'Car needed|A car helps. Summer shuttles run on some routes.',
+ ['Mountain hut stays|Book ahead|Reserve in summer.','Lago di Braies parking|Check|Reservation rules change.'],
+ 'Alpine spa hotel|A mountain-view sauna after a hike.|Book ahead.');
+P('tuscany','Tuscany and Florence','Tuscany','Italy',[4,5,6,9,10],['culture','nature'],'temperate',45,'fields',{ev:'Harvest and truffle season is in autumn. Spring has green hills and poppies.',shop:'Florence has leather markets and designer outlets such as The Mall near Reggello. Non-EU visitors can use VAT refund forms above a minimum spend.'},
+ 'Cypress-lined roads, hilltop towns, wine and Renaissance art.','Reserve the Uffizi and Accademia in advance and rent a car for the countryside.',
+ ['Val d’Orcia|Sunrise|Rolling hills with cypress rows.','Florence from Piazzale Michelangelo|Sunset|The city and the Duomo at golden hour.','Pienza and Montepulciano|Morning|Hilltop towns and wine cellars.'],
+ ['Florence|Duomo, Uffizi and the Ponte Vecchio.','Chianti|Wine tasting and a hilltop village lunch.','Val d’Orcia|Pienza and the cypress roads.'],
+ ['Bistecca alla fiorentina|A big grilled steak.|Local dish|$$$','Ribollita and pici|Rustic Tuscan classics.|Local dish|$$','Gelato in Florence|Try a classic shop such as Vivoli.|Gelato|$'],
+ [150,280,550],'Mixed|Trains link the cities. A car is best for countryside.',
+ ['Uffizi and Accademia|Required|Timed tickets sell out.','Agriturismo lodging|Book ahead|Popular farms fill early.'],
+ 'Villa with a pool|Private vineyard views.|Book months ahead.');
+P('lofoten','Lofoten Islands','Nordland','Norway',[2,3,6,7,9,10],['nature','adventure'],'alpine',205,'peaks',{ev:'Northern lights are possible from September to March. The midnight sun shines from late May to mid July.'},
+ 'Red fishing cabins, steep peaks and sea views above the Arctic Circle.','Roads and weather change quickly. Keep time flexible and drive carefully.',
+ ['Reine|Sunrise|Red cabins under dramatic peaks.','Hamnøy|Golden hour|A classic fishing village view.','Haukland Beach|Midnight sun or aurora|White sand in an Arctic setting.'],
+ ['Svolvær|Harbor walk and a boat trip.','Reine and Hamnøy|Viewpoints and short hikes.','Beaches|Haukland and Uttakleiv.'],
+ ['Stockfish and fish soup|Local seafood.|Local dish|$$$','Cinnamon buns|A Nordic bakery staple.|Sweet|$','Cod tongues and fish and chips|Casual dockside spots.|Budget|$$'],
+ [250,420,750],'Car needed|A car is the best way to move between islands.',
+ ['Rorbu cabin lodging|Book ahead|Popular sites fill months ahead.','Northern lights tours|Optional|Book flexible dates.'],
+ 'Rorbu cabin by the water|A traditional fisherman’s cabin.|Book months ahead.');
+P('dubrovnik','Dubrovnik and the Dalmatian Coast','Dalmatia','Croatia',[5,6,9,10],['city','beach','culture'],'temperate',205,'coast',{ev:'Cruise ships can crowd Dubrovnik’s old town. Visit early or late.'},
+ 'Stone city walls, clear Adriatic water and island hopping.','Walk the city walls first thing in the morning for shade and space.',
+ ['City Walls|Morning|Terracotta roofs and sea views.','Mount Srđ|Sunset|A cable car above the old town.','Lokrum Island|Midday|A short ferry ride to quiet coves.'],
+ ['Old Town|Stradun, the walls and Rector’s Palace.','Islands|Lokrum or the Elaphiti islands.','Day trip|Cavtat or Montenegro’s Kotor.'],
+ ['Black risotto and seafood|Local specialties.|Local dish|$$','Rozata|A custard dessert like crème caramel.|Sweet|$','Gelato|Many shops in the old town.|Gelato|$'],
+ [130,250,500],'Mixed|The old town is pedestrian. Buses and ferries connect the coast.',
+ ['City walls tickets|Optional|Buy online to skip lines.','Ferries to islands|Book ahead|Reserve in summer.'],
+ 'Sunset sail|A boat trip around the old town walls.|Book a day ahead.');
+P('highlands','Scottish Highlands and Skye','Scotland','United Kingdom',[5,6,7,8,9],['nature','adventure'],'temperate',130,'peaks',{ev:'Midges can be fierce from June to August. Bring repellent.'},
+ 'Misty glens, castles and rugged coastline.','Roads can be single-track. Use passing places and book rooms early on Skye.',
+ ['Glencoe|Sunrise|Mountains and a winding road.','Fairy Pools|Morning|Clear pools and waterfalls on Skye.','Eilean Donan Castle|Golden hour|A castle on a tidal islet.'],
+ ['Glencoe|Drive and short hikes.','Isle of Skye|Old Man of Storr and the Quiraing.','Fort William|Glenfinnan Viaduct and a steam train.'],
+ ['Haggis, neeps and tatties|A national dish.|Local dish|$$','Cranachan|Oats, cream and raspberries.|Sweet|$','Whisky distillery visits|Tours and tastings.|Drink|$$'],
+ [130,240,450],'Car needed|A car is best. Public transport is sparse.',
+ ['Lodging on Skye|Book ahead|Fills early.','Distillery tours|Book ahead|Reserve in summer.'],
+ 'Highland castle stay|A hotel in a historic castle.|Book months ahead.');
+P('provence','Provence Lavender Fields','Provence','France',[6,7,9],['nature','culture'],'temperate',275,'fields',{ev:'Lavender usually blooms from mid June to late July.'},
+ 'Purple fields, stone villages and Roman ruins in southern France.','Stay on public paths. Do not enter private fields.',
+ ['Valensole Plateau|Sunrise|Rows of lavender at golden hour.','Gordes|Morning|A hillside village of stone.','Gorges du Verdon|Midday|A turquoise canyon.'],
+ ['Valensole|Lavender fields at sunrise.','Luberon|Gordes and Roussillon’s ochre cliffs.','Verdon|Canyon views.'],
+ ['Ratatouille and bouillabaisse|Provençal classics.|Local dish|$$','Calissons|Almond candies from Aix.|Sweet|$','Rosé at a local winery|Tastings.|Drink|$$'],
+ [130,260,520],'Car needed|A car is needed for villages and fields.',
+ ['Lodging|Book ahead|July fills early.','Winery tastings|Optional|Call ahead.'],
+ 'Farm stay with views|A stone house among the fields.|Book early.');
+P('lisbon','Lisbon and Sintra','Lisbon','Portugal',[3,4,5,9,10],['city','culture'],'temperate',45,'city',{shop:'Non-EU visitors can claim a VAT refund on larger purchases at participating stores.'},
+ 'Yellow trams, tiled streets and fresh seafood on seven hills.','Wear shoes with grip. The cobbles are steep and slippery.',
+ ['Alfama viewpoints|Sunset|Rooftops and the river.','Pena Palace in Sintra|Morning|A colorful hilltop palace.','Belém Tower|Golden hour|A river fortress.'],
+ ['Alfama and Baixa|Castle, tram 28 and fado.','Belém|Monastery, tower and pastéis de nata.','Sintra|Pena Palace and Quinta da Regaleira.'],
+ ['Pastel de nata|A custard tart. Try Pastéis de Belém.|Sweet|$','Grilled sardines|A summer staple.|Local dish|$','Ginjinha|A cherry liqueur served in tiny cups.|Drink|$'],
+ [100,190,380],'Transit works|Trams, metro and trains are cheap.',
+ ['Sintra palaces|Book ahead|Timed tickets help.','Fado shows|Optional|Book a table.'],
+ 'Rooftop with river views|A bar over the Tagus.|Book weekends.');
+P('vienna','Vienna','Vienna','Austria',[4,5,6,9,11,12],['city','culture'],'temperate',350,'dome',{ev:'Christmas markets run from mid November to late December.'},
+ 'Palaces, coffee houses and classical music.','Standing tickets at the opera cost very little and are sold close to showtime.',
+ ['Schönbrunn Palace|Morning|The gardens and the Gloriette viewpoint.','Belvedere Palace|Golden hour|A palace with a mirror pond.','Café Central|Morning|A grand old coffee house.'],
+ ['Imperial Vienna|Hofburg, the Ring and a coffee house.','Schönbrunn|Palace and gardens.','Museums and music|A concert or opera night.'],
+ ['Wiener schnitzel|A veal or pork cutlet.|Local dish|$$','Sachertorte|A chocolate cake from a historic café.|Sweet|$','Coffee and cake|A Viennese ritual.|Sweet|$'],
+ [140,260,520],'Transit works|The U-Bahn and trams are easy.',
+ ['Opera and concerts|Book ahead|Popular shows sell out.','Palace tickets|Optional|Timed tickets save waiting.'],
+ 'Ball or concert in a palace|Classical music in a grand hall.|Book ahead.');
+/* ---------- Asia ---------- */
+P('tokyo','Tokyo','Tokyo','Japan',[3,4,5,10,11],['city','culture','festival'],'temperate',335,'city',{ev:'Cherry blossoms usually peak in late March to early April. Autumn color peaks in late November.',shop:'Tourists can shop tax-free at many stores, and Japan is changing its tax-free system to a refund after purchase from late 2026. Ask the store how it works and carry your passport.'},
+ 'Neon crossings, quiet shrines, tiny bars and some of the world’s best food.','Get a transit IC card on arrival. Trains are punctual and cover almost everything.',
+ ['Shibuya Crossing|Evening|The busiest crossing in the world, best from above.','Senso-ji Temple|Sunrise|Quiet at dawn, lively by day.','Meiji Shrine|Morning|A forest path to a calm shrine.'],
+ ['Asakusa and Ueno|Senso-ji, a market and a park walk.','Shibuya and Harajuku|Crossing, Meiji Shrine and street fashion.','Shinjuku|Skyline views and izakaya alleys.'],
+ ['Sushi and ramen|From a counter or a local shop.|Local dish|$$','Matcha soft serve|A green tea ice cream treat.|Sweet|$','Convenience store snacks|Surprisingly good and cheap.|Budget|$'],
+ [150,290,650],'Transit works|Trains and subways cover everything. Taxis are pricey.',
+ ['Restaurants|Book ahead|Popular sushi and tasting counters fill early.','Cherry blossom lodging|Book ahead|Spring fills early.'],
+ 'Rooftop bar in Shibuya|Neon skyline at night.|Book ahead.');
+P('chiangmai','Chiang Mai','Chiang Mai','Thailand',[11,12,1,2],['culture','festival'],'tropical',140,'forest',{ev:'Yi Peng and Loy Krathong lantern festivals take place in November.'},
+ 'Temples, night markets and mountain villages in northern Thailand.','Choose elephant sanctuaries that do not offer rides.',
+ ['Doi Suthep|Sunrise|A gilded temple above the city.','Old City temples|Morning|Wat Chedi Luang and Wat Phra Singh.','Sticky Waterfalls|Midday|Walk up a waterfall with grip.'],
+ ['Old City|Temples and a cooking class.','Doi Suthep|Temple and a night market.','Mountains|Doi Inthanon or an ethical elephant visit.'],
+ ['Khao soi|Curried noodle soup.|Local dish|$','Mango sticky rice|A classic Thai dessert.|Sweet|$','Night market street food|Grilled skewers and noodles.|Budget|$'],
+ [45,100,260],'Mixed|Songthaews and rideshare apps are cheap.',
+ ['Lantern festival lodging|Book ahead|November fills early.','Cooking class|Optional|Reserve a day ahead.'],
+ 'Boutique lanna-style stay|A teak courtyard hotel.|Book ahead.');
+P('halong','Ha Long Bay and Hanoi','Quang Ninh','Vietnam',[3,4,5,10,11],['nature','culture'],'tropical',185,'waves',{ev:'Summer brings heat and typhoon risk. Spring and autumn are drier.'},
+ 'Limestone islands, cruise boats and Hanoi’s food-filled old quarter.','Check the weather before a cruise and choose a reputable operator.',
+ ['Ha Long Bay at dawn|Sunrise|Karst islands in mist.','Hanoi Old Quarter|Morning|Motorbikes, shops and street food.','Train Street|Afternoon|Check current rules and stay safe.'],
+ ['Hanoi|Old Quarter, Hoan Kiem Lake and a food walk.','Ha Long Bay|A 2-day cruise with kayaking.','Ninh Binh|Boat rides through caves and rice fields.'],
+ ['Pho and bun cha|Broth with noodles and grilled pork.|Local dish|$','Egg coffee|A creamy Hanoi specialty.|Sweet|$','Banh mi|A baguette sandwich.|Budget|$'],
+ [50,110,300],'Mixed|Taxis and ride apps are cheap. Tours often include transfers.',
+ ['Overnight cruise|Book ahead|Popular ships sell out.','Hanoi lodging|Optional|Book ahead for holidays.'],
+ 'Luxury cruise|A private balcony cabin on the bay.|Book ahead.');
+P('dubai','Dubai','Dubai','United Arab Emirates',[11,12,1,2,3],['city','culture'],'desert',35,'city',{ev:'Summer is very hot. Winter is the main season.',shop:'The Dubai Shopping Festival and summer sales cut prices. Tourists can claim a VAT refund on eligible purchases at the airport.'},
+ 'Record-setting towers, desert dunes and a huge shopping scene.','Respect local rules on dress and public behavior, and stay hydrated.',
+ ['Burj Khalifa|Sunset|Go up at sunset for city and desert views.','Dubai Marina|Evening|A waterfront promenade.','Desert dunes|Sunrise|A morning safari or camp.'],
+ ['Downtown|Burj Khalifa, the fountain and Dubai Mall.','Old Dubai|Creek, souks and gold.','Desert|A dune safari with dinner.'],
+ ['Shawarma and mezze|Cheap and filling.|Local dish|$','Kunafa and dates|Traditional desserts.|Sweet|$','Brunch|A weekend tradition at hotels.|Splurge|$$$'],
+ [180,350,800],'Mixed|The metro is easy. Taxis are common.',
+ ['Burj Khalifa|Book ahead|Sunset slots sell out.','Desert safari|Book ahead|Reserve a day ahead.'],
+ 'Desert camp dinner|A starlit night in the dunes.|Book ahead.');
+P('petra','Petra and Wadi Rum','Ma’an','Jordan',[3,4,5,10,11],['culture','adventure'],'desert',25,'mesa',{ev:'Summer is very hot. Petra by Night runs on certain evenings.'},
+ 'A rose-red city carved into rock and a red desert with Bedouin camps.','Start at opening time. The walk is long and the sun is strong.',
+ ['The Treasury|Sunrise|Soft light on the carved facade.','The Monastery|Midday|A climb of several hundred steps.','Wadi Rum|Sunset|Red sand and rock arches.'],
+ ['Petra|The Siq, the Treasury and the Royal Tombs.','Petra heights|The Monastery and High Place of Sacrifice.','Wadi Rum|A jeep tour and a Bedouin camp.'],
+ ['Mansaf|A lamb dish with yogurt sauce.|Local dish|$$','Knafeh|A sweet cheese pastry.|Sweet|$','Falafel and hummus|Cheap and tasty.|Budget|$'],
+ [90,190,420],'Mixed|Taxis and tours reach Petra. Wadi Rum needs a jeep tour.',
+ ['Jordan Pass|Book ahead|Often covers the visa fee and entry fees if you meet the stay rules.','Wadi Rum camp|Book ahead|Reserve in peak season.'],
+ 'Bubble tent in Wadi Rum|A stargazing night.|Book ahead.');
+P('maldives','The Maldives','Malé Atoll','Maldives',[12,1,2,3,4],['beach'],'tropical',185,'waves',{ev:'The wet season runs from May to October. Winter is dry and calm.'},
+ 'Overwater villas, coral reefs and turquoise lagoons.','Local islands and guesthouses cost far less than resorts.',
+ ['Overwater villa|Sunrise|A deck over a clear lagoon.','House reef snorkel|Morning|Reef fish and turtles.','Sandbank picnic|Midday|A tiny strip of sand in the water.'],
+ ['Arrival|Speedboat or seaplane to your island.','Reef day|Snorkeling and a dolphin cruise.','Sandbank and sunset|A picnic and a sunset sail.'],
+ ['Fresh tuna and curry|Local fish dishes.|Local dish|$$','Hedhikaa snacks|Small fried snacks with tea.|Budget|$','Tropical fruit|Fresh mango and coconut.|Sweet|$'],
+ [150,400,1500],'Mixed|Boats and seaplanes link islands. Local ferries are cheap.',
+ ['Resort lodging|Required|Book months ahead.','Seaplane transfer|Required|Often part of your resort booking.'],
+ 'Overwater villa with a plunge pool|The classic splurge.|Book a year ahead.');
+P('everest','Everest Base Camp Trek','Khumbu','Nepal',[3,4,5,10,11],['adventure','nature'],'alpine',210,'peaks',{ev:'The best trekking seasons are spring and autumn. Monsoon brings rain and cloud from June to September.'},
+ 'A high Himalayan trek through Sherpa villages to the foot of the world’s tallest peak.','Add rest days for altitude. Do not rush the climb.',
+ ['Namche Bazaar|Morning|A Sherpa market town in the hills.','Kala Patthar|Sunrise|A viewpoint of Everest at dawn.','Tengboche Monastery|Afternoon|Mountains behind a prayer hall.'],
+ ['Lukla to Phakding|An easy first day.','Namche acclimatization|A rest day with short walks.','Higher camps|Dingboche to Base Camp over several days.'],
+ ['Dal bhat|Rice and lentils, with refills.|Local dish|$','Momos|Dumplings with chili sauce.|Budget|$','Sherpa stew|Hearty trekking meals.|Local dish|$'],
+ [40,90,220],'Mixed|A flight to Lukla and then on foot.',
+ ['Trekking permits|Required|Arrange through a licensed agency.','Lukla flights|Book ahead|Weather delays are common.'],
+ 'Teahouse with a mountain view|Simple rooms with huge views.|Book ahead.');
+P('jaipur','Jaipur','Rajasthan','India',[10,11,12,1,2,3],['culture','city'],'desert',20,'dome',{ev:'The Jaipur Literature Festival is held in January. The Pushkar camel fair is held in November nearby.',shop:'Jaipur is known for block-print textiles, jewelry and gemstones. Bargain politely and compare prices. Ask for a receipt.'},
+ 'Pink-hued palaces, forts and bazaars in Rajasthan’s capital.','Dress modestly for temples and keep small bills for tips.',
+ ['Hawa Mahal|Sunrise|The pink windowed facade in warm morning light.','Amber Fort|Morning|A hilltop fort with mirror halls.','Nahargarh Fort|Sunset|A sweeping city view.'],
+ ['Old City|Hawa Mahal, City Palace and Jantar Mantar.','Amber Fort|Fort, Panna Meena Kund and the bazaars.','Evening|Sunset at Nahargarh and a rooftop dinner.'],
+ ['Dal baati churma|A Rajasthani classic.|Local dish|$','Lassi|A creamy yogurt drink.|Drink|$','Ghewar and kulfi|Traditional sweets and ice cream.|Sweet|$'],
+ [40,100,300],'Mixed|Rickshaws, cabs and ride apps are cheap.',
+ ['Palace hotels|Book ahead|Festival season fills early.','Fort tickets|Optional|Buy online to save time.'],
+ 'Palace stay|A heritage hotel with a courtyard.|Book ahead.');
+P('kerala','Kerala Backwaters','Kerala','India',[10,11,12,1,2,3],['nature','culture'],'tropical',140,'forest',{ev:'Onam, a harvest festival, is held in August or September. Monsoon runs from June to September.'},
+ 'Houseboats on palm-lined backwaters, tea hills and spice markets.','Choose a houseboat with good reviews and clear inclusions.',
+ ['Alleppey backwaters|Morning|Mist over still water.','Munnar tea estates|Sunrise|Rolling green hills.','Fort Kochi|Golden hour|Chinese fishing nets at sunset.'],
+ ['Kochi|Fort Kochi, a Kathakali show and seafood.','Munnar|Tea gardens and viewpoints.','Alleppey|A houseboat overnight.'],
+ ['Appam and stew|A soft rice pancake with coconut stew.|Local dish|$','Karimeen fish fry|A local fish dish.|Local dish|$$','Payasam|A creamy sweet pudding.|Sweet|$'],
+ [40,100,300],'Mixed|Trains, buses and taxis are cheap.',
+ ['Houseboat|Book ahead|Reserve in peak season.','Lodging|Optional|Book ahead around Onam.'],
+ 'Private houseboat|A staffed boat with meals.|Book ahead.');
+P('seoul','Seoul','Seoul','South Korea',[4,5,9,10,11],['city','culture'],'temperate',350,'city',{ev:'Cherry blossoms bloom in early April and autumn color peaks in late October.',shop:'Seoul has skincare and fashion shops, and many offer tax-free refunds for tourists. Compare prices at Myeongdong, Hongdae and Garosugil.'},
+ 'Palaces, hanbok streets, skincare shops and street food.','Rent a hanbok for free entry to many palaces.',
+ ['Gyeongbokgung Palace|Morning|Guard changing and mountain backdrop.','Bukchon Hanok Village|Sunrise|Traditional homes with fewer visitors.','N Seoul Tower|Sunset|City skyline from a hilltop.'],
+ ['Palaces|Gyeongbokgung and Bukchon.','Markets|Gwangjang Market and Myeongdong.','Hongdae|Cafés, indie shops and nightlife.'],
+ ['Korean barbecue|Grilled meat with banchan.|Local dish|$$','Hotteok|A sweet filled pancake.|Sweet|$','Bingsu|Shaved ice dessert.|Sweet|$'],
+ [90,190,420],'Transit works|The subway is easy and cheap.',
+ ['Palaces|Optional|Check closing days.','Entry authorization|Check|Some visitors need K-ETA. Check the latest rules.'],
+ 'Hanbok photo shoot|A professional shoot at a palace.|Book ahead.');
+P('angkor','Angkor Wat','Siem Reap','Cambodia',[11,12,1,2],['culture','adventure'],'tropical',35,'dome',{ev:'Wet season runs from May to October. Angkor Wat sunrise is crowded.'},
+ 'Temple ruins of the Khmer empire in a jungle setting.','Dress modestly at temples. Cover shoulders and knees.',
+ ['Angkor Wat|Sunrise|Reflections in the lotus pond.','Ta Prohm|Morning|Giant tree roots over ruins.','Bayon Temple|Midday|Hundreds of stone faces.'],
+ ['Angkor Wat|Sunrise, then a long breakfast.','Angkor Thom|Bayon and Ta Prohm.','Beng Mealea|A jungle-covered temple.'],
+ ['Amok|A coconut curry steamed in banana leaf.|Local dish|$','Fresh coconut ice cream|A cold treat after temples.|Sweet|$','Pub Street|Street food and bars in Siem Reap.|Budget|$'],
+ [50,110,300],'Mixed|Tuk-tuks and bikes are the way to see the temples.',
+ ['Temple pass|Required|Buy a 1, 3 or 7-day pass.','Lodging|Optional|Book ahead for peak season.'],
+ 'Private tuk-tuk day|A driver for the whole temple circuit.|Book ahead.');
+P('singapore','Singapore','Singapore','Singapore',[2,3,4,5,6,7],['city','culture'],'tropical',185,'city',{shop:'Tourists can claim a refund on goods tax at participating stores above a minimum spend. Ask for an eTRS ticket at the shop.'},
+ 'Gardens, skyline and hawker centers in one tidy and walkable city-state.','Hawker centers serve excellent food at low prices.',
+ ['Gardens by the Bay|Sunset|Supertrees light up at night.','Marina Bay|Evening|The skyline and the light show.','Haw Par Villa or Chinatown|Morning|Colorful streets and murals.'],
+ ['Marina Bay|Gardens by the Bay and the Merlion.','Culture|Chinatown, Little India and Kampong Glam.','Sentosa|Beaches and attractions.'],
+ ['Chicken rice and laksa|Hawker center classics.|Local dish|$','Kaya toast and kopi|A traditional breakfast.|Budget|$','Chendol|A coconut dessert.|Sweet|$'],
+ [120,250,600],'Transit works|The MRT is clean and efficient.',
+ ['Attractions|Optional|Book timed tickets.','Hotel lodging|Optional|Book ahead for events.'],
+ 'Rooftop infinity pool|A skyline-view hotel pool.|Book ahead.');
+/* ---------- Africa ---------- */
+P('serengeti','Serengeti Safari','Arusha and Mara','Tanzania',[1,2,6,7,8,9,10],['nature','adventure'],'desert',45,'fields',{ev:'Calving season is January to March in the south. River crossings are usually July to October in the north.'},
+ 'Endless plains with lions, elephants and the Great Migration.','Book a reputable operator and keep distance from wildlife.',
+ ['Great Migration|Morning|Wildebeest herds across the plains.','Ngorongoro Crater|Morning|A wildlife-filled caldera.','Balloon safari|Sunrise|A flight above the plains.'],
+ ['Arusha|Arrive and transfer to the park.','Serengeti game drives|Dawn and dusk drives.','Ngorongoro|Crater rim and a crater floor drive.'],
+ ['Nyama choma|Grilled meat.|Local dish|$','Ugali and stew|A staple.|Local dish|$','Zanzibar spice coffee|A drink in Arusha cafés.|Drink|$'],
+ [250,500,1100],'Mixed|Safaris use 4x4 vehicles or small planes.',
+ ['Safari and lodging|Required|Book 6 to 12 months ahead.','Park permits|Required|Handled by your operator.'],
+ 'Luxury tented camp|A private tent in the bush.|Book a year ahead.');
+P('capetown','Cape Town','Western Cape','South Africa',[11,12,1,2,3],['nature','city','beach'],'temperate',200,'coast',{south:true},
+ 'Table Mountain, penguins, beaches and winelands in one region.','Check the cableway weather and book early on clear days.',
+ ['Table Mountain|Sunrise|Hike or take the cableway on a clear day.','Boulders Beach|Morning|African penguins on the sand.','Chapman’s Peak Drive|Sunset|A cliffside road above the sea.'],
+ ['City Bowl|Table Mountain and Bo-Kaap.','Peninsula|Cape Point and Boulders Beach.','Winelands|Stellenbosch or Franschhoek.'],
+ ['Braai|A South African barbecue.|Local dish|$$','Bobotie|A spiced mince dish with egg.|Local dish|$$','Koeksisters|A sweet braided pastry.|Sweet|$'],
+ [90,200,450],'Mixed|Ride apps are common. A car helps for the peninsula.',
+ ['Table Mountain cableway|Book ahead|Buy online.','Winery tastings|Optional|Book ahead.'],
+ 'Winelands stay|Vineyard rooms and a restaurant.|Book ahead.');
+P('egypt','Cairo, Giza and Luxor','Giza and Luxor','Egypt',[10,11,12,1,2,3,4],['culture','adventure'],'desert',40,'mesa',{ev:'Summer is very hot. Early morning is the best time to visit sites.'},
+ 'Pyramids, temples and a Nile cruise.','Hire a licensed guide and agree on prices up front.',
+ ['Giza Pyramids|Sunrise|Soft light on the pyramids.','Karnak Temple|Morning|Giant columns and carvings.','Valley of the Kings|Morning|Painted royal tombs.'],
+ ['Giza|Pyramids and the Sphinx.','Cairo|Grand Egyptian Museum and Khan el-Khalili.','Luxor|Karnak and the Valley of the Kings.'],
+ ['Koshari|A cheap and filling bowl of rice, lentils and pasta.|Local dish|$','Ful medames and ta’ameya|Breakfast beans and falafel.|Budget|$','Basbousa|A semolina cake.|Sweet|$'],
+ [60,140,350],'Mixed|Ride apps work in Cairo. Nile cruises link Luxor and Aswan.',
+ ['Nile cruise|Book ahead|Reserve in peak season.','Entry authorization|Check|Many visitors need a visa or e-visa.'],
+ 'Luxury Nile cruise|Temples and sunset on deck.|Book ahead.');
+P('victoriafalls','Victoria Falls','Livingstone','Zambia',[3,4,5,9,10,11],['nature','adventure'],'tropical',185,'waves',{south:true,loc:'Zambia and Zimbabwe',ev:'Water is highest from March to May. Devil’s Pool is usually open when the river is low, around September to December.'},
+ 'One of the world’s largest waterfalls, with views from both Zambia and Zimbabwe.','Bring a rain jacket for the spray and a dry bag for your phone.',
+ ['Knife-Edge Bridge|Morning|Mist and a rainbow.','Devil’s Pool|Midday|A swim at the edge in low water season.','Sunset cruise on the Zambezi|Sunset|Hippos and elephants.'],
+ ['Falls viewpoints|Walk the main trails.','Adventure|Bungee, rafting or helicopter flights.','Sunset cruise|Wildlife on the river.'],
+ ['Nshima and stew|A staple meal.|Local dish|$','Braai|Barbecue at a lodge.|Local dish|$$','Fresh fruit|Roadside stands.|Sweet|$'],
+ [120,260,600],'Mixed|Taxis and tours link both sides.',
+ ['Activities|Book ahead|Reserve popular tours.','Lodging|Optional|Book ahead.'],
+ 'Zambezi lodge stay|A riverside lodge with views.|Book ahead.');
+/* ---------- Oceania and Antarctica ---------- */
+P('sydney','Sydney','New South Wales','Australia',[9,10,11,12,1,2,3,4,5],['city','beach'],'temperate',200,'coast',{south:true,ev:'Vivid Sydney lights up the harbor from late May to mid June.'},
+ 'Harbor, beaches and a famous opera house.','Take the ferry across the harbor for views.',
+ ['Sydney Opera House|Sunrise|The sails in morning light.','Bondi to Coogee walk|Morning|A coastal path with ocean pools.','Blue Mountains|Midday|Cliffs and eucalyptus forest.'],
+ ['Harbor|Opera House and the Botanic Garden.','Beaches|Bondi to Coogee coastal walk.','Blue Mountains|The Three Sisters.'],
+ ['Meat pie|A classic snack.|Local dish|$','Flat white|An Australian coffee staple.|Drink|$','Gelato Messina|A Sydney-born gelato brand.|Gelato|$'],
+ [150,280,600],'Transit works|Trains, ferries and buses are covered by an Opal card.',
+ ['Opera House tours|Book ahead|Popular times sell out.','Blue Mountains day trip|Optional|Book a tour or take the train.'],
+ 'Harbor sunset cruise|Skyline views from the water.|Book ahead.');
+P('queenstown','Queenstown and Milford Sound','Otago and Southland','New Zealand',[12,1,2,3,6,7,8,9],['adventure','nature'],'alpine',210,'peaks',{south:true,ev:'Summer is December to March. Ski season runs from June to September.'},
+ 'Alpine lakes, bungee jumping and fiords.','Book the Milford Sound cruise early and check road status in winter.',
+ ['Lake Wakatipu|Sunrise|Mountains over a clear lake.','Milford Sound|Morning|Waterfalls dropping from cliffs.','Glenorchy|Golden hour|Wide valleys.'],
+ ['Queenstown|Lake views and the gondola.','Milford Sound|A long road trip and a cruise.','Glenorchy|Scenic drive and a short hike.'],
+ ['Fergburger|A famous local burger.|Local dish|$','Pavlova|A meringue dessert.|Sweet|$','Lamb|Local lamb dishes.|Local dish|$$'],
+ [130,260,550],'Mixed|A car is best. Buses run to Milford Sound.',
+ ['Milford Sound cruise|Book ahead|Popular times sell out.','Adventure activities|Optional|Book ahead in season.'],
+ 'Helicopter over Milford|A scenic flight.|Book ahead.');
+P('greatbarrier','Great Barrier Reef','Queensland','Australia',[6,7,8,9,10],['nature','beach','adventure'],'tropical',185,'waves',{south:true,ev:'Stinger season runs from about November to May. Winter has clearer, calmer water.'},
+ 'The world’s largest coral reef system, with snorkeling and diving.','Use reef-safe sunscreen and choose operators with strong environmental practices.',
+ ['Outer reef pontoon|Midday|Clear water and colorful coral.','Whitehaven Beach|Morning|White silica sand.','Daintree Rainforest|Morning|Tropical rainforest meeting the coast.'],
+ ['Cairns|Reef trip.','Port Douglas|Beach and Daintree.','Whitsundays|Sailing and Whitehaven Beach.'],
+ ['Barramundi|Local fish.|Local dish|$$','Tropical fruit|Mango and passionfruit.|Sweet|$','Seafood platter|Fresh prawns.|Local dish|$$$'],
+ [160,300,650],'Mixed|Boats, flights and rental cars.',
+ ['Reef tours|Book ahead|Popular boats sell out.','Lodging|Optional|Book ahead for school holidays.'],
+ 'Liveaboard dive trip|Multi-day reef diving.|Book months ahead.');
+P('borabora','Bora Bora','Society Islands','French Polynesia',[5,6,7,8,9,10],['beach'],'tropical',185,'waves',{south:true},
+ 'Turquoise lagoons, overwater bungalows and Mount Otemanu.','Pack reef shoes and book overwater stays far ahead.',
+ ['Overwater bungalow|Sunrise|A deck above clear water.','Matira Beach|Golden hour|A white sand beach.','Mount Otemanu|Morning|A volcanic peak.'],
+ ['Lagoon tour|A boat day with snorkeling.','Matira Beach|Beach day.','Island tour|A drive or jeep tour.'],
+ ['Poisson cru|Raw fish in coconut milk.|Local dish|$$','Fresh pineapple|Sweet local fruit.|Sweet|$','Coconut bread|Local bakery staple.|Budget|$'],
+ [250,600,2000],'Mixed|Boats are the main transport.',
+ ['Overwater bungalow|Required|Book many months ahead.','Boat transfers|Required|Often included.'],
+ 'Overwater bungalow|The classic splurge.|Book a year ahead.');
+P('antarctica','Antarctic Peninsula','Antarctic Peninsula','Antarctica',[11,12,1,2,3],['nature','adventure'],'alpine',200,'peaks',{south:true,loc:'Antarctica',ev:'The season runs from November to March. Penguin chicks hatch in December and January.'},
+ 'Icebergs, penguins and whales on an expedition cruise from the tip of South America.','Book a year ahead and expect rough seas on the Drake Passage.',
+ ['Penguin colonies|Morning|Gentoo and chinstrap penguins on the shore.','Lemaire Channel|Midday|A narrow channel between cliffs.','Zodiac cruising|Afternoon|Icebergs up close.'],
+ ['Ushuaia|Board your ship.','Drake Passage|Two sea days.','Peninsula landings|Daily landings and zodiac trips.'],
+ ['Ship meals|All meals are included on expedition cruises.|Budget|$$$','Hot chocolate on deck|A cold-weather treat.|Sweet|$','Chilean wine|Often offered at dinner.|Drink|$$'],
+ [500,900,1800],'Mixed|Expedition ships sail from Ushuaia.',
+ ['Expedition cruise|Required|Book 12 months ahead.','Travel insurance|Required|Cover medical evacuation.'],
+ 'Polar cabin with a balcony|Wildlife from your room.|Book early.');
+/* Entry rules by destination country and passport. Compiled from government pages and travel sites on Oct 3, 2026. Rules change. */
+const CODE={'United States':'us','Canada':'ca','Japan':'jp','Indonesia':'id','Turkey':'tr','Morocco':'ma','Chile':'cl','United Kingdom':'gb','India':'in'};
+const SCH=['Austria','Belgium','Bulgaria','Croatia','Czechia','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Iceland','Italy','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Netherlands','Norway','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden','Switzerland'];
+const ccOf=c=>CODE[c]||(SCH.includes(c)?'eu':'xx');
+
+const PASS=[['us','United States'],['in','India'],['ca','Canada'],['uk','United Kingdom'],['au','Australia'],['other','Another country']];
+const VL={free:'Visa-free',home:'No visa needed',auth:'Online approval',voa:'Visa on arrival',visa:'Visa needed',check:'Check rules'};
+const CHECKED='Oct 3, 2026';
+const LINK={
+ us:'https://travel.state.gov/content/travel/en/us-visas/tourism-visit/visitor.html',
+ esta:'https://esta.cbp.dhs.gov/',
+ ca:'https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada.html',
+ jp:'https://www.mofa.go.jp/j_info/visit/visa/index.html',
+ eu:'https://travel-europe.europa.eu/etias_en',
+ id:'https://evisa.imigrasi.go.id/',
+ tr:'https://www.evisa.gov.tr/en/',
+ ma:'https://www.acces-maroc.ma/',
+ cl:'https://www.iatatravelcentre.com/',
+ gb:'https://www.gov.uk/check-uk-visa',
+ in:'https://indianvisaonline.gov.in/evisa/',
+ xx:'https://www.iatatravelcentre.com/'
+};
+const EU_FREE='Visa-free for up to 90 days in any 180. EU ETIAS approval is not required yet. The EU has planned it for late 2026 and may delay it, so check before you go. You may be registered at the border under the EU Entry/Exit System.';
+const EU_VISA='A Schengen visa is needed, even if you hold a US visa or green card. Apply through the consulate or its visa center well before you travel.';
+const PASSNAME=Object.fromEntries(PASS);
+function entry(d,pp,st){
+  const c=ccOf(d.country);
+  const link=c==='eu'?LINK.eu:LINK[c];
+  if(!pp)return ['check','Choose your passport in the filters to see visa rules for this place.',link];
+  if(pp==='other')return ['check','Rules depend on your passport. Check the official site or ask the consulate before you book.',link];
+  const us=pp==='in'&&st==='visa', gc=pp==='in'&&st==='gc', has=us||gc;
+  if(c==='us'){
+    if(pp==='us')return ['home','Domestic trip. Carry a REAL ID or passport for flights.',link];
+    if(pp==='ca')return ['free','Canadian citizens do not need a visa for tourism. Bring your passport.',link];
+    if(pp==='uk'||pp==='au')return ['auth','Apply for ESTA online under the Visa Waiver Program before you fly.',LINK.esta];
+    return has?['home','Travel inside the US needs no extra visa. Carry your passport and your visa or green card.',link]:['visa','A US visitor (B-2) visa is needed. Interview wait times can be long, so apply early.',link];
+  }
+  if(c==='ca'){
+    if(pp==='ca')return ['home','Domestic trip. Carry your passport or other ID.',link];
+    if(pp==='us')return ['free','US citizens do not need a visa or eTA. Bring your passport.',link];
+    if(pp==='uk'||pp==='au')return ['auth','If you fly in, you need an eTA. Apply online before you board.',link];
+    return gc?['free','US green card holders do not need a visa or eTA. Carry your green card and passport.',link]:['visa','A Canadian visitor visa is needed. Indian passport holders cannot use the eTA, even with a US visa.',link];
+  }
+  if(c==='jp'){
+    return pp==='in'?['visa','A tourist visa is needed. An eVisa is open to eligible applicants. Fees may change.',link]:['free','Visa-free for tourism up to 90 days.',link];
+  }
+  if(c==='eu')return pp==='in'?['visa',EU_VISA,link]:['free',EU_FREE,link];
+  if(c==='id')return ['voa','Visa on arrival or e-visa for up to 30 days. Passport must be valid 6+ months. Bali charges a separate tourist levy (IDR 150,000).',link];
+  if(c==='tr'){
+    if(pp==='us')return ['free','No visa for tourism up to 90 days. Passport must be valid 6+ months.',link];
+    if(pp==='uk')return ['free','Visa-exempt for up to 90 days. Passport must be valid 6+ months.',link];
+    if(pp==='ca'||pp==='au')return ['auth','An e-Visa is applied for online before you travel. Confirm on the official site.',link];
+    return has?['auth','An e-Visa is possible with a valid US, UK, Schengen or Irish visa or residence permit. Confirm on the official e-Visa site.',link]:['visa','A visa from a Turkish embassy is usually needed. An e-Visa needs a valid US, UK, Schengen or Irish visa or residence permit.',link];
+  }
+  if(c==='ma')return pp==='in'?['visa','A visa is needed and an e-visa is offered. A US or Schengen visa does not exempt you.',link]:['free','Visa-free for tourism up to 90 days. Passport must be valid 6+ months.',link];
+  if(c==='cl'){
+    if(pp==='in')return has?['free','Indian citizens with a US green card, or a US visa valid for 6+ months, can enter without a Chilean visa. Carry proof.',link]:['visa','A Chilean tourist visa is needed unless you hold a US green card or a US visa valid for 6+ months.',link];
+    return ['free','Visa-free for tourism up to 90 days.',link];
+  }
+  if(c==='gb'){
+    if(pp==='uk')return ['home','Domestic trip. Carry photo ID.',link];
+    if(pp==='in')return ['visa','A UK Standard Visitor visa is needed for most Indian passport holders. Apply online well ahead.',link];
+    return ['auth','A UK Electronic Travel Authorisation (ETA) is needed before you travel for short visits. Apply online or in the UK ETA app.',link];
+  }
+  if(c==='in'){
+    if(pp==='in')return ['home','Domestic trip. Carry photo ID. Some areas need permits.',link];
+    return ['auth','Most visitors apply for an Indian e-visa online before travel. Confirm your eligibility on the official site.',link];
+  }
+  return ['check','Entry rules depend on your passport and change often. Check the official source or the IATA Travel Centre before you book.',link];
+}
+/* Generated landscape art: every place gets its own scene, drawn from a seed so it stays the same each visit. */
+const MOTIF={bigbend:'mesa',hillcountry:'fields',marfa:'mesa',paloduro:'mesa',padre:'waves',guadalupe:'peaks',abq:'balloons',zion:'mesa',sedona:'mesa',newengland:'forest',bigsur:'coast',maui:'waves',alaska:'peaks',banff:'peaks',kyoto:'torii',santorini:'coast',iceland:'peaks',amalfi:'coast',bali:'fields',cappadocia:'balloons',swiss:'peaks',patagonia:'peaks',marrakech:'dome',tulips:'fields'};
+const FIELD={tulips:['#d7263d','#f4b942','#ff6f91','#f08a4b'],hillcountry:['#4b3fa0','#6a5acd','#3b7a57','#2e5e43'],bali:['#2f7d32','#4caf50','#7cb342','#1b5e20']};
+const AW=400,AH=220;
+function rngOf(str){let s=2166136261;for(let i=0;i<str.length;i++){s^=str.charCodeAt(i);s=Math.imul(s,16777619)>>>0;}return()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
+const hs=(h,s,l,a)=>(a===undefined?'hsl(':'hsla(')+(((Math.round(h)%360)+360)%360)+','+s+'%,'+l+'%'+(a===undefined?')':','+a+')');
+function zig(r,base,amp,a,b){let x=-20,up=true,p='M-20,'+AH+' L-20,'+base;while(x<AW+40){x+=a+r()*(b-a);const y=base-(up?amp*(.35+.65*r()):amp*.1*r());p+=' L'+x.toFixed(1)+','+y.toFixed(1);up=!up;}return p+' L'+(AW+40)+','+AH+' Z';}
+function rolling(r,base,amp,k){let p='M-10,'+AH+' L-10,'+base;const ph=r()*6;for(let x=-10;x<=AW+10;x+=8)p+=' L'+x+','+(base-Math.sin(x/AW*k*Math.PI+ph)*amp).toFixed(1);return p+' L'+(AW+10)+','+AH+' Z';}
+function mesas(r,base,hmax,col){let out='',x=-30;while(x<AW+20){const w=50+r()*70,h=hmax*(.4+.6*r()),t=.55+r()*.25;out+='<path d="M'+x.toFixed(1)+','+AH+' V'+(base-h*.6).toFixed(1)+' h6 V'+(base-h).toFixed(1)+' h'+(w*t).toFixed(1)+' V'+(base-h*.6).toFixed(1)+' h'+(w*(1-t)-6).toFixed(1)+' V'+AH+' Z" fill="'+col+'"/>';x+=w-10+r()*20;}return out;}
+function waves(r,y0,n,h){let out='';for(let k=0;k<n;k++){const base=y0+k*((AH-y0)/n),amp=3+k*1.5,ph=r()*6,f=2+k*.6;let p='M-10,'+AH+' L-10,'+base.toFixed(1);for(let x=-10;x<=AW+10;x+=8)p+=' L'+x+','+(base+Math.sin(x/AW*f*Math.PI*2+ph)*amp).toFixed(1);p+=' L'+(AW+10)+','+AH+' Z';out+='<path d="'+p+'" fill="'+hs(h+k*4,60,36-k*5)+'"/>';}return out;}
+function trees(r,base,rows,cols){let out='';for(let k=0;k<rows;k++){const y=base+k*18,s=16+k*8;for(let x=-10+r()*10;x<AW+20;x+=s*.8+r()*s*.3){out+='<path d="M'+x.toFixed(1)+','+y+' l'+(-s/2).toFixed(1)+','+(s*1.6).toFixed(1)+' h'+s+' Z" fill="'+cols[Math.floor(r()*cols.length)]+'"/>';}}return out;}
+function balloons(r,n){let out='';const cols=['#e63946','#f4a261','#2a9d8f','#e9c46a','#7b2cbf','#4cc9f0'];for(let i=0;i<n;i++){const cx=40+r()*320,cy=36+r()*84,rx=12+r()*14,ry=rx*1.25;out+='<g opacity="'+(.85+r()*.15).toFixed(2)+'"><ellipse cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" rx="'+rx.toFixed(1)+'" ry="'+ry.toFixed(1)+'" fill="'+cols[i%cols.length]+'"/><path d="M'+(cx-rx*.35).toFixed(1)+','+(cy-ry).toFixed(1)+' Q'+cx.toFixed(1)+','+(cy+ry*.2).toFixed(1)+' '+(cx-rx*.2).toFixed(1)+','+(cy+ry*.98).toFixed(1)+'" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/><path d="M'+(cx-rx*.4).toFixed(1)+','+(cy+ry*.85).toFixed(1)+' L'+(cx-4).toFixed(1)+','+(cy+ry+10).toFixed(1)+' M'+(cx+rx*.4).toFixed(1)+','+(cy+ry*.85).toFixed(1)+' L'+(cx+4).toFixed(1)+','+(cy+ry+10).toFixed(1)+'" stroke="rgba(0,0,0,.45)" stroke-width="1"/><rect x="'+(cx-4).toFixed(1)+'" y="'+(cy+ry+10).toFixed(1)+'" width="8" height="6" fill="rgba(30,20,10,.8)"/></g>';}return out;}
+function torii(x,y,s,c){return '<g fill="'+c+'"><rect x="'+(x-34*s)+'" y="'+y+'" width="'+9*s+'" height="'+110*s+'"/><rect x="'+(x+25*s)+'" y="'+y+'" width="'+9*s+'" height="'+110*s+'"/><path d="M'+(x-48*s)+','+(y+6*s)+' Q'+x+','+(y-4*s)+' '+(x+48*s)+','+(y+6*s)+' L'+(x+46*s)+','+(y-4*s)+' Q'+x+','+(y-16*s)+' '+(x-46*s)+','+(y-4*s)+' Z"/><rect x="'+(x-38*s)+'" y="'+(y+24*s)+'" width="'+76*s+'" height="'+7*s+'"/></g>';}
+function skyline(r,col,nod){let out='',x=-10;while(x<AW+10){const w=26+r()*30,h=30+r()*60;out+='<rect x="'+x.toFixed(1)+'" y="'+(AH-h).toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+col+'"/>';if(!nod&&r()>.5)out+='<path d="M'+(x+3).toFixed(1)+','+(AH-h).toFixed(1)+' a'+(w/2-3).toFixed(1)+','+(w/2-3).toFixed(1)+' 0 0 1 '+(w-6).toFixed(1)+',0 Z" fill="'+col+'"/><rect x="'+(x+w/2-1).toFixed(1)+'" y="'+(AH-h-w/2-8).toFixed(1)+'" width="2" height="8" fill="'+col+'"/>';x+=w+2+r()*6;}return out;}
+function coast(r,houses,mode){const yAt=x=>60+Math.pow(Math.min(x,260)/260,1.5)*110;let p='M-10,'+AH+' L-10,'+yAt(0);for(let x=0;x<=260;x+=10)p+=' L'+x+','+yAt(x).toFixed(1);p+=' L300,'+(AH-8)+' L300,'+AH+' Z';let out='<rect y="150" width="'+AW+'" height="'+(AH-150)+'" fill="'+hs(205,65,34)+'"/><path d="'+p+'" fill="'+hs(190,22,22)+'"/>';for(let i=0;i<houses;i++){const x=6+i*(230/houses)+r()*6,y=yAt(x)+4+r()*10;const fill=mode==='pastel'?hs(10+r()*60,70,r()>.5?78:70):'#f6f3ee';out+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="11" height="8" fill="'+fill+'"/>';if(mode==='blue'&&r()>.6)out+='<path d="M'+(x+1).toFixed(1)+','+y.toFixed(1)+' a4.5,4.5 0 0 1 9,0 Z" fill="#2b6cb0"/>';}return out;}
+function art(o,motif,uid){
+  const r=rngOf(o.id+motif),h=o.h,h2=o.h2===undefined?h+35:o.h2;
+  let s='<svg class="art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="g'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+hs(h,55,18)+'"/><stop offset=".62" stop-color="'+hs(h2,70,50)+'"/><stop offset="1" stop-color="'+hs(h2,85,74)+'"/></linearGradient></defs><rect width="400" height="220" fill="url(#g'+uid+')"/>';
+  const sx=50+r()*300,sy=48+r()*36,sr=14+r()*10;
+  s+='<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="'+(sr*2.6).toFixed(1)+'" fill="'+hs(h2+10,100,90,.18)+'"/><circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="'+sr.toFixed(1)+'" fill="'+hs(h2+15,100,92,.95)+'"/>';
+  switch(motif){
+    case 'peaks':s+='<path d="'+zig(r,150,70,28,58)+'" fill="'+hs(h+10,35,46)+'"/><path d="'+zig(r,178,80,26,52)+'" fill="'+hs(h,40,30)+'"/><path d="'+zig(r,205,45,24,46)+'" fill="'+hs(h,45,15)+'"/>';break;
+    case 'mesa':s+=mesas(r,175,70,hs(h-5,45,36))+mesas(r,206,50,hs(h-8,50,20));break;
+    case 'waves':s+=waves(r,150,4,h)+'<rect x="'+(sx-3).toFixed(1)+'" y="150" width="6" height="50" fill="'+hs(h2+15,100,90,.35)+'"/>';break;
+    case 'balloons':s+=balloons(r,6)+'<path d="'+rolling(r,172,8,2)+'" fill="'+hs(h,35,30)+'"/><path d="'+rolling(r,196,8,3)+'" fill="'+hs(h,45,16)+'"/>';break;
+    case 'fields':{const c=FIELD[o.id]||['#6aa84f','#4f8f3a','#3b7a2c','#2e5e23'];s+='<path d="'+rolling(r,140,8,2)+'" fill="'+hs(h,35,32)+'"/>';for(let k=0;k<4;k++)s+='<path d="'+rolling(r,152+k*18,5+k*2,2+k)+'" fill="'+c[k]+'"/>';break;}
+    case 'forest':s+='<path d="'+rolling(r,150,14,3)+'" fill="'+hs(18,35,34)+'"/>'+trees(r,134,3,['hsl(15,75%,45%)','hsl(35,85%,50%)','hsl(8,70%,38%)','hsl(100,40%,28%)']);break;
+    case 'torii':s+='<path d="'+rolling(r,140,18,2)+'" fill="'+hs(140,30,24)+'"/><path d="'+rolling(r,196,8,3)+'" fill="'+hs(140,35,12)+'"/>'+torii(200,92,.7,'#9c2a22')+torii(200,74,.9,'#b3261e')+torii(200,50,1.15,'#c8352b');break;
+    case 'city':s+='<path d="'+zig(r,150,30,30,60)+'" fill="'+hs(h,30,40)+'"/>'+skyline(r,hs(h-10,45,18),true);break;
+    case 'dome':s+='<path d="'+zig(r,150,40,30,60)+'" fill="'+hs(h,30,42)+'"/>'+skyline(r,hs(h-10,45,16));break;
+    case 'coast':s+=coast(r,o.id==='bigsur'?0:o.id==='amalfi'?22:18,o.id==='santorini'?'blue':o.id==='amalfi'?'pastel':'none');break;
+  }
+  return s+'</svg>';
+}
+/* PIN gate helpers: salted, stretched SHA-256 in plain JS so it works in every browser. Only the hash ships, never the code. */
+function sha256hex(msg){
+  const k=new Uint32Array([0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
+  const s=unescape(encodeURIComponent(msg)),l=s.length,nb=((l+9+63)>>6)<<6,w=new Uint8Array(nb);
+  for(let i=0;i<l;i++)w[i]=s.charCodeAt(i);
+  w[l]=0x80;
+  const dv=new DataView(w.buffer);
+  dv.setUint32(nb-4,(l*8)>>>0);dv.setUint32(nb-8,Math.floor(l*8/4294967296));
+  const h=new Uint32Array([0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]),x=new Uint32Array(64);
+  for(let o=0;o<nb;o+=64){
+    for(let i=0;i<16;i++)x[i]=dv.getUint32(o+i*4);
+    for(let i=16;i<64;i++){const p=x[i-15],q=x[i-2];x[i]=(x[i-16]+(((p>>>7)|(p<<25))^((p>>>18)|(p<<14))^(p>>>3))+x[i-7]+(((q>>>17)|(q<<15))^((q>>>19)|(q<<13))^(q>>>10)))>>>0;}
+    let a=h[0],b=h[1],c=h[2],d=h[3],e=h[4],f=h[5],g=h[6],t=h[7];
+    for(let i=0;i<64;i++){
+      const t1=(t+(((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7)))+((e&f)^(~e&g))+k[i]+x[i])>>>0;
+      const t2=((((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10)))+((a&b)^(a&c)^(b&c)))>>>0;
+      t=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
+    }
+    h[0]+=a;h[1]+=b;h[2]+=c;h[3]+=d;h[4]+=e;h[5]+=f;h[6]+=g;h[7]+=t;
+  }
+  return Array.from(h,v=>v.toString(16).padStart(8,'0')).join('');
+}
+function stretch(pin,salt,n){let h=sha256hex(salt+pin);for(let i=1;i<n;i++)h=sha256hex(h+salt+pin);return h;}
+const GATE={salt:"cfea520bf97d6c28",n:3000,hash:"65a6d3251892dd1978a1a1f616a3454e4a2bf10700f3f58b51a2364fae9b6672"};
+const nowM=new Date().getMonth()+1;
+const state={cont:'all',country:'all',region:'all',month:0,tag:'all',budget:'all',tier:1,days:3,ppl:2,q:'',saved:false,visaOk:false,view:null,tab:'overview',season:null,pp:'',st:'none'};
+let store={saved:[],packed:{},pp:'',st:'none',custom:[]};
+try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];}}catch(e){}
+state.pp=store.pp;state.st=store.st;
+function persist(){store.pp=state.pp;store.st=state.st;try{localStorage.setItem('wanderseason',JSON.stringify(store));}catch(e){}}
+
+const $=s=>document.querySelector(s);
+
+const esc=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const clip=(v,n)=>esc(String(v==null?'':v).replace(/\s+/g,' ').trim().slice(0,n));
+const MOTIFS=['peaks','mesa','waves','balloons','fields','forest','torii','dome','coast','city'];
+const ZONES=['temperate','desert','tropical','alpine'];
+const pairs=(a,k,n,lens)=>{if(!Array.isArray(a))throw new Error('bad');const o=a.slice(0,k).map(r=>{if(!Array.isArray(r)||r.length<n)throw new Error('bad');return lens.map((l,i)=>clip(r[i],l));});if(o.length<1)throw new Error('bad');return o;};
+function cleanPlace(raw){
+  const r=raw||{};
+  const slug=String(r.id||r.n||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
+  if(!slug||!r.n)throw new Error('bad');
+  const country=ALLC.includes(r.country)?r.country:clip(r.country,60);
+  const mm=Array.isArray(r.m)?Array.from(new Set(r.m.map(Number).filter(x=>x>=1&&x<=12))).sort((a,b)=>a-b):[];
+  if(!mm.length)throw new Error('bad');
+  const bud=Array.isArray(r.bud)&&r.bud.length>=3?r.bud.slice(0,3).map(x=>Math.max(10,Math.min(5000,Math.round(Number(x))||0))):null;
+  if(!bud||bud.some(x=>!x))throw new Error('bad');
+  const reg=clip(r.reg,60);
+  const eat=pairs(r.eat,6,4,[80,200,24,4]);
+  const d={id:'c-'+slug,n:clip(r.n,80),reg,reg2:'',country,cont:CONT_OF[country]||(CONTS.includes(r.cont)?r.cont:'Europe'),sc:'world',custom:true,
+    m:mm,tags:(Array.isArray(r.tags)?r.tags:[]).filter(t=>TAGS.includes(t)).slice(0,3),z:ZONES.includes(r.z)?r.z:'temperate',h:Math.max(0,Math.min(360,Math.round(Number(r.h))||200)),
+    motif:MOTIFS.includes(r.motif)?r.motif:'peaks',south:!!r.south,intl:country!=='United States',
+    b:clip(r.b,320),ev:clip(r.ev,240),tip:clip(r.tip,240),
+    spots:pairs(r.spots,5,3,[80,40,200]),it:pairs(r.it,5,2,[60,220]),eat:eat,bud:bud.sort((a,b)=>a-b),
+    ride:pairs([r.ride],1,2,[30,240])[0],book:pairs(r.book,5,3,[80,24,200]),shop:r.shop?clip(r.shop,320):null,
+    stay:pairs(r.stay,4,2,[70,200]),fancy:pairs([r.fancy],1,3,[80,200,160])[0],gear:(Array.isArray(r.gear)?r.gear:[]).slice(0,6).map(x=>clip(x,90)).filter(Boolean)};
+  d.loc=reg?reg+', '+country:country;
+  if(!d.tags.length)d.tags=['culture'];
+  if(!d.gear.length)d.gear=GEAR0[d.z];
+  if(!d.stay.length)d.stay=STAY0;
+  return d;
+}
+store.custom=store.custom.filter(c=>{try{const d=cleanPlace(c);if(D.some(x=>x.id===d.id))return false;D.push(d);return true;}catch(e){return false;}});
+function showErr(msg){const b=$('#errbar');if(!b)return;b.textContent=msg;b.hidden=false;}
+window.addEventListener('error',e=>showErr('Something went wrong: '+(e&&e.message?e.message:'unknown error')+'. Reload the page to try again.'));
+window.addEventListener('unhandledrejection',e=>{const r=e&&e.reason;if(r&&r.code)return;showErr('Something went wrong. Reload the page to try again.');});
+const seasonOf=(mo,south)=>{let i=Math.floor((mo%12)/3);if(south)i=(i+2)%4;return SEASONS[i];};
+function rangeText(m){
+  const on=Array.from({length:12},(_,i)=>m.includes(i+1));
+  if(on.every(Boolean))return 'Year-round';
+  const out=[];
+  for(let i=0;i<12;i++){
+    if(on[i]&&!on[(i+11)%12]){
+      let len=1;while(on[(i+len)%12])len++;
+      out.push(len===1?MN[i]:MN[i]+'–'+MN[(i+len-1)%12]);
+    }
+  }
+  return out.join(', ');
+}
+const isSaved=id=>store.saved.includes(id);
+const heartSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5-9.5-10C1.5 7.5 4 4.5 7 4.5c2 0 3.7 1 5 3 1.3-2 3-3 5-3 3 0 5.5 3 4.5 6.5C20 16 12 21 12 21z"/></svg>';
+const motifOf=d=>MOTIF[d.id]||d.motif||'peaks';
+
+function results(){
+  const q=state.q.trim().toLowerCase();
+  const ref=state.month||nowM;
+  return D.filter(d=>
+    (state.cont==='all'||d.cont===state.cont)&&
+    (state.country==='all'||d.country===state.country)&&
+    (state.region==='all'||d.reg===state.region||d.reg2===state.region)&&
+    (state.month===0||d.m.includes(state.month))&&
+    (state.tag==='all'||d.tags.includes(state.tag))&&
+    (state.budget==='all'||budgetClass(d)===state.budget)&&
+    (!state.visaOk||!state.pp||entry(d,state.pp,state.st)[0]!=='visa')&&
+    (!state.saved||isSaved(d.id))&&
+    (!q||(d.n+' '+d.loc+' '+d.country+' '+d.cont+' '+d.b+' '+d.tags.join(' ')+' '+d.eat.map(e=>e[0]+' '+e[1]).join(' ')).toLowerCase().includes(q))
+  ).sort((a,b)=>(state.month?0:(b.m.includes(ref)-a.m.includes(ref)))||a.m.length-b.m.length||a.n.localeCompare(b.n));
+}
+function monthBar(d,big){
+  return '<div class="mbar'+(big?' big':'')+'" aria-hidden="true">'+MN.map((n,i)=>'<span class="'+(d.m.includes(i+1)?'on':'')+(state.month===i+1?' sel':'')+'">'+(big?n:'')+'</span>').join('')+'</div>';
+}
+function visaChip(d){
+  if(!state.pp)return '';
+  const e=entry(d,state.pp,state.st);
+  return '<span class="vb v-'+e[0]+'">'+VL[e[0]]+'</span>';
+}
+function card(d){
+  const ref=state.month||nowM;
+  const inSeason=d.m.includes(ref);
+  return '<article class="card"><a class="card-link" href="#'+d.id+'" data-open="'+d.id+'"><div class="cover">'+art(d,motifOf(d),'c'+d.id)+'<span class="wm">© Wanderseason</span>'+'<div class="pills"><span class="pill">'+d.cont+'</span>'+(d.custom?'<span class="pill ai">Made by Claude</span>':'')+(inSeason?'<span class="pill now">'+(state.month?'In season':'In season now')+'</span>':'')+'</div><h3>'+d.n+'</h3><p>'+d.loc+'</p></div><div class="cbody"><p class="blurb">'+d.b+'</p><div class="facts"><span>~'+fmt(d.bud[1])+'/day</span><span>'+d.ride[0]+'</span><span>'+bookLevel(d)+'</span>'+visaChip(d)+'</div>'+monthBar(d)+'<p class="best">Best: '+rangeText(d.m)+'</p></div></a><button class="heart" data-save="'+d.id+'" aria-pressed="'+isSaved(d.id)+'" aria-label="Save '+d.n+'">'+heartSvg+'</button></article>';
+}
+function passUI(sfx){
+  return '<label class="sel"><span>Passport</span><select data-pp id="pp'+sfx+'"><option value="">Select</option>'+PASS.map(p=>'<option value="'+p[0]+'"'+(state.pp===p[0]?' selected':'')+'>'+p[1]+'</option>').join('')+'</select></label>'+
+    (state.pp==='in'?'<label class="sel"><span>US status</span><select data-st id="st'+sfx+'">'+[['none','No US visa'],['visa','US visa holder'],['gc','US green card']].map(o=>'<option value="'+o[0]+'"'+(state.st===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select></label>':'');
+}
+
+function countsBy(key,filter){const m={};D.forEach(d=>{if(filter&&!filter(d))return;const k=d[key];if(k)m[k]=(m[k]||0)+1;});return m;}
+function renderGeo(){
+  $('#conts').innerHTML=['all'].concat(CONTS).map(c=>'<button data-cont="'+c+'" aria-pressed="'+(state.cont===c)+'">'+(c==='all'?'Whole world':c)+'</button>').join('');
+  const inCont=c=>state.cont==='all'||CONT_OF[c]===state.cont;
+  const have=countsBy('country',d=>state.cont==='all'||d.cont===state.cont);
+  const withG=Object.keys(have).sort((a,b)=>a.localeCompare(b));
+  const others=ALLC.filter(c=>inCont(c)&&!have[c]);
+  let h='<label class="sel"><span>Country</span><select data-country aria-label="Country"><option value="all">All countries</option>';
+  if(withG.length)h+='<optgroup label="With guides">'+withG.map(c=>'<option value="'+esc(c)+'"'+(state.country===c?' selected':'')+'>'+esc(c)+' ('+have[c]+')</option>').join('')+'</optgroup>';
+  if(others.length)h+='<optgroup label="Ask Claude for a guide">'+others.map(c=>'<option value="'+esc(c)+'"'+(state.country===c?' selected':'')+'>'+esc(c)+'</option>').join('')+'</optgroup>';
+  h+='</select></label>';
+  if(state.country==='United States'){
+    const hv=countsBy('reg',d=>d.country==='United States');D.forEach(d=>{if(d.country==='United States'&&d.reg2)hv[d.reg2]=(hv[d.reg2]||0)+1;});
+    h+='<label class="sel"><span>State</span><select data-region aria-label="State"><option value="all">All states</option>'+US_STATES.map(t=>'<option value="'+t+'"'+(state.region===t?' selected':'')+'>'+t+(hv[t]?' ('+hv[t]+')':'')+'</option>').join('')+'</select></label>';
+  }else if(state.country!=='all'){
+    const hv=countsBy('reg',d=>d.country===state.country),rs=Object.keys(hv).sort();
+    if(rs.length>1)h+='<label class="sel"><span>Region</span><select data-region aria-label="Region"><option value="all">All regions</option>'+rs.map(t=>'<option value="'+esc(t)+'"'+(state.region===t?' selected':'')+'>'+esc(t)+' ('+hv[t]+')</option>').join('')+'</select></label>';
+  }
+  $('#geo').innerHTML=h;
+}
+function renderControls(){
+  renderGeo();
+  const rb=$('#ribbon'),keep=rb.scrollLeft;
+  $('#ribbon').innerHTML='<button class="mbtn" data-month="0" aria-pressed="'+(state.month===0)+'">All</button>'+MN.map((n,i)=>'<button class="mbtn'+(i+1===nowM?' now':'')+'" data-month="'+(i+1)+'" aria-pressed="'+(state.month===i+1)+'" aria-label="'+MF[i]+'">'+n+'</button>').join('');
+  rb.scrollLeft=keep;
+  $('#chips').innerHTML=['all'].concat(TAGS).map(t=>'<button class="chip" data-tag="'+t+'" aria-pressed="'+(state.tag===t)+'">'+(t==='all'?'Any vibe':t.charAt(0).toUpperCase()+t.slice(1))+'</button>').join('');
+  $('#budgets').innerHTML=[['all','Any budget'],['budget','Under $150 a day'],['mid','$150 to $260'],['splurge','Splurge']].map(b=>'<button class="chip" data-budget="'+b[0]+'" aria-pressed="'+(state.budget===b[0])+'">'+b[1]+'</button>').join('');
+  $('#visaf').innerHTML='<button class="chip" data-visaok aria-pressed="'+state.visaOk+'">Hide places that need a visa</button>';
+  $('#passHome').innerHTML=passUI('H');
+  $('#savedBtn').setAttribute('aria-pressed',state.saved);
+  $('#savedBtn').textContent='Saved ('+store.saved.length+')';
+}
+function renderHero(){
+  const m=state.month||nowM,se=seasonOf(m,false);
+  const P={Winter:{h:215,h2:190},Spring:{h:165,h2:48},Summer:{h:205,h2:36},Fall:{h:250,h2:20}}[se];
+  $('#heroart').innerHTML=art({id:'hero'+se,h:P.h,h2:P.h2},'peaks','hero');
+  $('#h1').innerHTML=state.month?'Where to go in <em>'+MF[state.month-1]+'</em>':'Where to go, <em>any time of year</em>';
+}
+
+let sampleFn=null,askBusy=false,askMsg='',askCtl=null;
+if(window.claude&&claude.use){claude.use('sample').then(f=>{sampleFn=f||null;if(f&&!state.view)renderHome();}).catch(()=>{});}
+function askTarget(){
+  const q=state.q.trim();
+  if(q.length>=2)return q;
+  const reg=state.region!=='all'?state.region:'',c=state.country!=='all'?state.country:'';
+  if(reg||c)return [reg,c].filter(Boolean).join(', ');
+  return '';
+}
+function askCard(n){
+  const t=askTarget();if(!t)return '';
+  const et=esc(t.slice(0,80));
+  if(!sampleFn)return '<div class="ask"><h3>More places on request</h3><p>The Claude-hosted version of Wanderseason can build a full guide for “'+et+'” on the spot. Open it from the shared link to try that.</p></div>';
+  if(askBusy)return '<div class="ask"><h3>Building “'+et+'”…</h3><p>Claude is writing the guide. This usually takes about a minute.</p><button class="btn" data-askstop>Stop</button></div>';
+  return '<div class="ask"><h3>'+(n?'Want something else?':'Not in the library yet')+'</h3><p>Ask Claude to build a full guide for “'+et+'”: best months, itinerary, photo spots, food, budget and packing.</p>'+(askMsg?'<p class="err">'+esc(askMsg)+'</p>':'')+'<button class="btn sun" data-ask="'+et+'">Build a guide for “'+et+'”</button><p class="s">Made with AI, so check details before you book. Uses your Claude account.</p></div>';
+}
+const PROMPT=t=>'You are a travel researcher. Build a concise travel guide for this destination: '+JSON.stringify(t)+'.\n'+
+'Reply with ONLY one JSON object, no markdown, using exactly these keys:\n'+
+'{"n":"place name","reg":"state, province or region (empty if none)","country":"country name in English","cont":"one of North America, South America, Europe, Asia, Africa, Oceania, Antarctica",'+
+'"m":[best months as numbers 1-12],"tags":[up to 3 of nature,adventure,beach,culture,city,festival],"z":"temperate|desert|tropical|alpine","h":hue 0-360,"motif":"peaks|mesa|waves|balloons|fields|forest|torii|dome|coast|city","south":true if southern hemisphere,'+
+'"b":"one-sentence summary","ev":"a notable festival or seasonal event, or empty","tip":"one insider tip",'+
+'"spots":[["photo spot","best time","short description"] x3],"it":[["day title","short plan"] x3],"gear":["4 packing items specific to the place"],'+
+'"bud":[shoestring,comfortable,splurge USD per person per day, excluding flights],"ride":["Car needed|Transit works|Mixed","getting-around note"],'+
+'"eat":[["place or dish","note","Local dish|Budget|Sweet|Gelato|Splurge|Drink","$|$$|$$$"] x4],'+
+'"book":[["what to reserve","Required|Book ahead|Optional","note"] x3],"stay":[["tip","note"] x3],"shop":"shopping or tax-refund tip, or empty","fancy":["fancy spot","why","booking note"]}\n'+
+'Use real, well-known places and stay general where you are not sure of a price or rule. If the destination is a whole country or state, pick the single best region to feature and name it.';
+async function askClaude(t){
+  if(!sampleFn||askBusy)return;
+  askBusy=true;askMsg='';askCtl=new AbortController();renderHome();
+  try{
+    const raw=await sampleFn.json(PROMPT(t),{signal:askCtl.signal,cache:false});
+    const d=cleanPlace(raw);
+    const i=D.findIndex(x=>x.id===d.id);
+    if(i>=0){if(!D[i].custom)throw new Error('dup');D.splice(i,1);}
+    D.push(d);
+    store.custom=store.custom.filter(c=>'c-'+String(c.id||c.n).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)!==d.id);
+    store.custom.push(raw);persist();
+    askBusy=false;askCtl=null;openDetail(d.id);return;
+  }catch(e){
+    const c=e&&e.code;
+    askMsg=c==='cancelled'?'':c==='not_granted'?'Claude access was declined, so no guide was built.':c==='rate_limited'?'Too many requests. Wait a minute and try again.':'Claude could not build that guide. Try a more specific place name.';
+  }
+  askBusy=false;askCtl=null;if(!state.view)renderHome();
+}
+function renderHome(){
+  renderControls();renderHero();
+  const r=results();
+  $('#sub').textContent=r.length+' of '+D.length+(r.length===1?' place':' places')+(state.month?' at their best this month.':'. Places in season now come first.')+' Pick a country or state, or search for any place on earth.';
+  $('#grid').innerHTML=(r.length?r.map(card).join(''):'<div class="empty"><p>No guides match these filters yet.</p><button class="btn" data-reset>Show all places</button></div>')+askCard(r.length);
+}
+
+function packList(d,season){
+  const base=d.intl?['Passport valid 6+ months','Check visa and entry rules','Travel insurance','Power adapter','Tell your bank you are traveling','Phone plan or eSIM for data']:['Photo ID or driver’s license','Cards and some cash'];
+  const common=['Phone charger and power bank','Reusable water bottle','Medications and a small first-aid kit','Offline maps downloaded'];
+  return [['Documents and basics',base.concat(common)],['Clothing for '+season.toLowerCase(),CLOTH[d.z][season]],['Gear for this place',d.gear],['Photo kit',PHOTO]];
+}
+function packSeason(d){
+  const base=(state.month&&d.m.includes(state.month))?state.month:d.m[0];
+  return state.season||seasonOf(base,d.south);
+}
+function packKey(d,cur,si,ii){return d.id+'|'+(si===1?cur:'x')+'|'+si+'|'+ii;}
+function packCounts(d){
+  const cur=packSeason(d);let total=0,done=0;
+  packList(d,cur).forEach((s,si)=>s[1].forEach((t,ii)=>{total++;if(store.packed[packKey(d,cur,si,ii)])done++;}));
+  return {total,done};
+}
+function packHTML(d){
+  const cur=packSeason(d),secs=packList(d,cur),c=packCounts(d);
+  return '<div class="seasons" role="group" aria-label="Season">'+SEASONS.map(s=>'<button class="chip" data-season="'+s+'" aria-pressed="'+(s===cur)+'">'+s+'</button>').join('')+'</div>'+
+  '<div class="prog"><i id="progBar" style="width:'+Math.round(100*c.done/c.total)+'%"></i></div><p class="count" id="progTxt">'+c.done+' of '+c.total+' packed</p>'+
+  secs.map((s,si)=>'<section class="pk"><h3>'+s[0]+'</h3><ul>'+s[1].map((t,ii)=>{const k=packKey(d,cur,si,ii);return '<li><label><input type="checkbox" data-check="'+k+'"'+(store.packed[k]?' checked':'')+'><span>'+t+'</span></label></li>';}).join('')+'</ul></section>').join('')+
+  '<div class="actions"><button class="btn" data-copy>Copy list</button><button class="btn" data-clear>Uncheck all</button></div><textarea class="copybox" id="copybox" hidden readonly aria-label="Packing list text"></textarea>';
+}
+function budgetCard(d){
+  const names=['Shoestring','Comfortable','Splurge'];
+  return '<div class="tcard"><div class="tt">Your budget</div><div class="tiers">'+d.bud.map((v,i)=>'<button class="tier" data-tier="'+i+'" aria-pressed="'+(state.tier===i)+'"><span>'+names[i]+'</span><b>'+fmt(v)+'</b><small>per person a day</small></button>').join('')+'</div>'+
+    '<div class="est"><label>Days<input id="days" type="number" inputmode="numeric" min="1" max="30" value="'+state.days+'"></label><label>Travelers<input id="ppl" type="number" inputmode="numeric" min="1" max="12" value="'+state.ppl+'"></label><div class="total"><small>Estimated trip total</small><b id="bTotal">'+fmt(d.bud[state.tier]*state.days*state.ppl)+'</b></div></div>'+
+    '<p class="muted s">Covers lodging, food, local transport and activities. Flights and visa fees are not included.</p></div>';
+}
+function entryCard(d){
+  const e=entry(d,state.pp,state.st);
+  const who=state.pp&&state.pp!=='other'?'Rules for a '+PASSNAME[state.pp]+' passport. ':'';
+  return '<div class="tcard"><div class="tt">Entry and visa</div><div class="row">'+passUI('D')+'</div><div><span class="vb v-'+e[0]+'">'+VL[e[0]]+'</span></div><p>'+e[1]+'</p><p class="muted s">'+who+'Last checked '+CHECKED+'. <a href="'+e[2]+'" target="_blank" rel="noopener">Official source</a></p></div>';
+}
+function panelHTML(d){
+  const t=state.tab;
+  if(t==='itinerary')return '<h3>3-day plan</h3><ol class="days">'+d.it.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x[0]+'</h4><p>'+x[1]+'</p></div></li>').join('')+'</ol>';
+  if(t==='spots')return '<h3>Photo spots</h3><ul class="spots">'+d.spots.map(s=>'<li class="spot"><h4>'+s[0]+' <span class="when">'+s[1]+'</span></h4><p>'+s[2]+'</p></li>').join('')+'</ul><h3 class="sp">Fancy and worth the splurge</h3><ul class="spots"><li class="spot"><h4>'+d.fancy[0]+'</h4><p>'+d.fancy[1]+'</p><p>'+d.fancy[2]+'</p></li></ul>';
+  if(t==='eat')return '<h3>Where to eat</h3><p class="muted">$ is cheap and $$$ is a splurge.</p><ul class="spots">'+d.eat.map(e=>'<li class="spot"><h4>'+e[0]+' <span class="when alt">'+e[2]+'</span> <span class="price">'+e[3]+'</span></h4><p>'+e[1]+'</p></li>').join('')+'</ul>';
+  if(t==='stay')return '<h3>Ways to save on where you sleep</h3><ul class="spots">'+d.stay.map(s=>'<li class="spot"><h4>'+s[0]+'</h4><p>'+s[1]+'</p></li>').join('')+'</ul>';
+  if(t==='book')return '<h3>Getting around</h3><div class="ride"><span class="when">'+d.ride[0]+'</span><p>'+d.ride[1]+'</p></div><h3>What to reserve</h3><ul class="spots">'+d.book.map(b=>'<li class="spot"><h4>'+b[0]+' <span class="urg u-'+b[1].replace(/\W/g,'')+'">'+b[1]+'</span></h4><p>'+b[2]+'</p></li>').join('')+'</ul>';
+  if(t==='shop')return '<h3>Shopping and better prices</h3><p class="lead">'+d.shop+'</p><p class="muted">Tax-refund rules and minimum spends change. Ask the store, and keep your receipts and passport handy.</p>';
+  if(t==='pack')return packHTML(d);
+  const e=entry(d,state.pp,state.st);
+  return '<p class="lead">'+d.b+'</p><div class="glance"><div><small>Typical daily cost</small><b>'+fmt(d.bud[1])+'</b></div><div><small>Getting around</small><b>'+d.ride[0]+'</b></div><div><small>Booking</small><b>'+bookLevel(d)+'</b></div><div><small>Entry</small><b>'+(state.pp?VL[e[0]]:'Pick passport')+'</b></div></div>'+
+    (d.ev?'<p class="note"><b>Good to know</b>'+d.ev+'</p>':'')+'<p class="note"><b>Insider tip</b>'+d.tip+'</p><h3>Best months</h3>'+monthBar(d,true)+'<div class="tagrow">'+d.tags.map(x=>'<span>'+x+'</span>').join('')+'</div>';
+}
+function renderDetail(){
+  const d=state.view;
+  const tabs=[['overview','Overview'],['itinerary','Itinerary'],['spots','Photo spots'],['eat','Eat'],['stay','Stay & save'],['book','Book & rides']].concat(d.shop?[['shop','Shop']]:[]).concat([['pack','Packing list']]);
+  $('#detail').innerHTML='<button class="back" data-back>← All places</button>'+
+    '<div class="dcover">'+art(d,motifOf(d),'d'+d.id)+'<span class="wm">© Wanderseason</span>'+'<div class="pills"><span class="pill">'+d.cont+'</span>'+(d.custom?'<span class="pill ai">Made by Claude</span>':'')+'</div><h2>'+d.n+'</h2><p>'+d.loc+'</p><p class="meta">Best: '+rangeText(d.m)+'</p><button class="heart" data-save="'+d.id+'" aria-pressed="'+isSaved(d.id)+'" aria-label="Save '+d.n+'">'+heartSvg+'</button></div>'+
+    (d.custom?'<p class="aibadge">This guide was built by Claude from general knowledge. Check hours, prices and rules before you book.<button class="btn" data-rmcustom="'+d.id+'">Remove guide</button></p>':'')+'<div class="trip">'+budgetCard(d)+entryCard(d)+'</div>'+
+    '<div class="tabs" role="tablist">'+tabs.map(t=>'<button class="tab" role="tab" data-tab="'+t[0]+'" aria-selected="'+(state.tab===t[0])+'">'+t[1]+'</button>').join('')+'</div>'+
+    '<div class="panel" role="tabpanel">'+panelHTML(d)+'</div>';
+}
+function openDetail(id){
+  const d=D.find(x=>x.id===id);if(!d)return;
+  state.view=d;state.tab='overview';state.season=null;
+  $('#home').hidden=true;$('#detail').hidden=false;
+  renderDetail();window.scrollTo(0,0);
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+}
+function closeDetail(){
+  state.view=null;$('#detail').hidden=true;$('#home').hidden=false;renderHome();
+  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+}
+function packText(d){
+  const cur=packSeason(d);
+  return d.n+' packing list ('+cur+')\n\n'+packList(d,cur).map((s,si)=>s[0]+'\n'+s[1].map((t,ii)=>(store.packed[packKey(d,cur,si,ii)]?'[x] ':'[ ] ')+t).join('\n')).join('\n\n');
+}
+function copyText(text){
+  const box=$('#copybox');
+  const fallback=()=>{box.hidden=false;box.value=text;box.focus();box.select();};
+  try{
+    navigator.clipboard.writeText(text).then(()=>{const b=document.querySelector('[data-copy]');if(b){b.textContent='Copied';setTimeout(()=>{b.textContent='Copy list';},1600);}},fallback);
+  }catch(e){fallback();}
+}
+const rerender=()=>{state.view?renderDetail():renderHome();};
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
+  if(!t)return;
+  if(t.dataset.open){e.preventDefault();openDetail(t.dataset.open);return;}
+  if(t.dataset.cont){state.cont=t.dataset.cont;if(state.country!=='all'&&state.cont!=='all'&&CONT_OF[state.country]!==state.cont){state.country='all';state.region='all';}renderHome();return;}
+  if(t.dataset.ask){askClaude(t.dataset.ask.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'));return;}
+  if(t.dataset.askstop!==undefined){if(askCtl)askCtl.abort();return;}
+  if(t.dataset.rmcustom){const id=t.dataset.rmcustom,i=D.findIndex(x=>x.id===id&&x.custom);if(i>=0)D.splice(i,1);store.custom=store.custom.filter(c=>{try{return cleanPlace(c).id!==id;}catch(e){return false;}});const j=store.saved.indexOf(id);if(j>=0)store.saved.splice(j,1);persist();closeDetail();return;}
+  if(t.dataset.month!==undefined){state.month=+t.dataset.month;renderHome();return;}
+  if(t.dataset.tag){state.tag=t.dataset.tag;renderHome();return;}
+  if(t.dataset.budget){state.budget=t.dataset.budget;renderHome();return;}
+  if(t.dataset.visaok!==undefined){state.visaOk=!state.visaOk;renderHome();return;}
+  if(t.dataset.tier!==undefined){state.tier=+t.dataset.tier;renderDetail();return;}
+  if(t.dataset.save){
+    const id=t.dataset.save,i=store.saved.indexOf(id);
+    if(i>=0)store.saved.splice(i,1);else store.saved.push(id);
+    persist();rerender();return;
+  }
+  if(t.dataset.tab){state.tab=t.dataset.tab;renderDetail();return;}
+  if(t.dataset.season){state.season=t.dataset.season;renderDetail();return;}
+  if(t.dataset.back!==undefined){closeDetail();return;}
+  if(t.dataset.copy!==undefined){copyText(packText(state.view));return;}
+  if(t.dataset.clear!==undefined){
+    const d=state.view,cur=packSeason(d);
+    packList(d,cur).forEach((s,si)=>s[1].forEach((x,ii)=>{delete store.packed[packKey(d,cur,si,ii)];}));
+    persist();renderDetail();return;
+  }
+  if(t.dataset.reset!==undefined){state.cont='all';state.country='all';state.region='all';state.month=0;state.tag='all';state.budget='all';state.visaOk=false;state.q='';state.saved=false;$('#q').value='';renderHome();return;}
+  if(t.id==='savedBtn'){state.saved=!state.saved;renderHome();return;}
+  if(t.id==='surprise'){
+    const pool=results();const list=pool.length?pool:D;
+    openDetail(list[Math.floor(Math.random()*list.length)].id);
+  }
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.matches&&t.matches('[data-country]')){state.country=t.value;state.region='all';if(t.value!=='all')state.cont='all';renderHome();return;}
+  if(t.matches&&t.matches('[data-region]')){state.region=t.value;renderHome();return;}
+  if(t.matches&&t.matches('[data-pp]')){state.pp=t.value;persist();rerender();return;}
+  if(t.matches&&t.matches('[data-st]')){state.st=t.value;persist();rerender();return;}
+  const k=t.dataset&&t.dataset.check;
+  if(!k)return;
+  if(t.checked)store.packed[k]=true;else delete store.packed[k];
+  persist();
+  const c=packCounts(state.view);
+  $('#progBar').style.width=Math.round(100*c.done/c.total)+'%';
+  $('#progTxt').textContent=c.done+' of '+c.total+' packed';
+});
+document.addEventListener('input',e=>{
+  const id=e.target.id;
+  if(id!=='days'&&id!=='ppl')return;
+  const max=id==='days'?30:12;
+  state[id]=Math.max(1,Math.min(max,parseInt(e.target.value,10)||1));
+  const el=$('#bTotal');
+  if(el&&state.view)el.textContent=fmt(state.view.bud[state.tier]*state.days*state.ppl);
+});
+$('#q').addEventListener('input',e=>{state.q=e.target.value;renderHome();});
+$('#sform').addEventListener('submit',e=>{e.preventDefault();state.q=$('#q').value;renderHome();const g=$('#grid');if(g&&g.scrollIntoView)g.scrollIntoView({behavior:'smooth',block:'start'});});
+
+renderHome();
+(function(){
+  const id=(location.hash||'').slice(1);
+  if(id&&D.some(x=>x.id===id))openDetail(id);
+})();
+(function(){
+  const gate=document.getElementById('gate'),appw=document.getElementById('appwrap');
+  gate.querySelector('.gart').innerHTML=art({id:'gate',h:222,h2:28},'peaks','gate');
+  function openApp(){gate.hidden=true;appw.hidden=false;try{sessionStorage.setItem('ws-ok',GATE.hash);}catch(e){}window.scrollTo(0,0);}
+  let ok=false;try{ok=sessionStorage.getItem('ws-ok')===GATE.hash;}catch(e){}
+  if(ok){openApp();return;}
+  const form=document.getElementById('gform'),pin=document.getElementById('pin'),msg=document.getElementById('gmsg'),btn=document.getElementById('gbtn');
+  let tries=0,lock=0;
+  pin.addEventListener('input',()=>{pin.value=pin.value.replace(/\D/g,'').slice(0,4);msg.textContent='';});
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(Date.now()<lock){msg.textContent='Too many tries. Wait a few seconds and try again.';return;}
+    const v=pin.value;
+    if(!/^\d{4}$/.test(v)){msg.textContent='Enter all 4 digits.';return;}
+    btn.disabled=true;msg.textContent='Checking...';
+    setTimeout(()=>{
+      const good=stretch(v,GATE.salt,GATE.n)===GATE.hash;
+      btn.disabled=false;
+      if(good){openApp();return;}
+      tries++;pin.value='';
+      if(tries>=5){lock=Date.now()+30000;tries=0;msg.textContent='Too many tries. Wait 30 seconds.';}
+      else msg.textContent='That code is not right. Try again.';
+      pin.focus();
+    },30);
+  });
+})();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+</body></html>

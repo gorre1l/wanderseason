@@ -1,0 +1,13 @@
+{
+  "name": "Wanderseason",
+  "short_name": "Wanderseason",
+  "description": "Best places to visit by month, with itineraries, photo spots, food, budgets, visa rules and packing lists.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0F6E7B",
+  "theme_color": "#0F6E7B",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
