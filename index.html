@@ -228,6 +228,10 @@ h3.sp{margin-top:24px}
 .mp{font-size:13px;color:var(--accent);margin-left:6px;white-space:nowrap}
 .bk{color:var(--ink)!important;font-size:14px}
 .area{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.sug{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;width:100%}
+.sug li{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px}
+.sug li>div{flex:1 1 220px;min-width:0}
+.sug p{margin:2px 0 0;color:var(--muted)}
 </style>
 </head><body>
 
@@ -1078,6 +1082,71 @@ P('antarctica','Antarctic Peninsula','Antarctic Peninsula','Antarctica',[11,12,1
  [500,900,1800],'Mixed|Expedition ships sail from Ushuaia.',
  ['Expedition cruise|Required|Book 12 months ahead.','Travel insurance|Required|Cover medical evacuation.'],
  'Polar cabin with a balcony|Wildlife from your room.|Book early.');
+/* ---------- More of India ---------- */
+P('agra','Agra and the Taj Mahal','Uttar Pradesh','India',[10,11,12,1,2,3],['culture','city'],'desert',35,'dome',{ev:'The Taj Mahal is closed on Fridays. Winter mornings can be foggy.',shop:'Marble inlay and leather are Agra specialties. Compare prices and buy from government-run emporiums if you want fixed prices.'},
+ 'The white marble Taj Mahal, Mughal forts and a day trip to an abandoned red sandstone city.','Buy Taj tickets online and arrive at opening for the best light and fewer crowds.',
+ ['Taj Mahal|Sunrise|Soft pink light on the marble. Go at opening.','Mehtab Bagh|Sunset|A garden across the river with a Taj view.','Agra Fort|Morning|Red sandstone halls with Taj views from the walls.'],
+ ['Taj Mahal|Sunrise visit, then a long breakfast.','Agra Fort and old city|Fort, Itimad-ud-Daulah and the markets.','Fatehpur Sikri|A half-day trip, then Mehtab Bagh at sunset.'],
+ ['Petha|Agra’s famous sweet made from ash gourd.|Sweet|$','Mughlai food|Kebabs, biryani and rich curries.|Local dish|$$','Bedai and jalebi|A local breakfast.|Budget|$'],
+ [40,100,300],'Mixed|Rickshaws and cabs are cheap. Trains from Delhi take under 3 hours.',
+ ['Taj Mahal tickets|Book ahead|Buy online. Closed Fridays.','Lodging|Optional|Book Taj-view rooms ahead.'],
+ 'Taj-view rooftop dinner|A rooftop restaurant with the dome in sight.|Book ahead.');
+P('delhi','Delhi','Delhi','India',[10,11,12,1,2,3],['city','culture'],'desert',25,'city',{ev:'Winter air quality can be poor. Check the AQI before outdoor days.',shop:'Dilli Haat and Khan Market are good for crafts and clothing. Bargain at markets and ask for a receipt.'},
+ 'Mughal monuments, bustling old-city lanes and some of India’s best street food.','Start early. Delhi is hot and sprawling, and the Metro is the fastest way around.',
+ ['Humayun’s Tomb|Golden hour|A garden tomb with red sandstone and white marble.','Red Fort|Morning|A Mughal fort. Closed Mondays.','India Gate|Evening|Lit up after dark.'],
+ ['Old Delhi|Jama Masjid, Chandni Chowk and Red Fort.','New Delhi|India Gate, Humayun’s Tomb and Lodhi Garden.','South Delhi|Qutub Minar, Lotus Temple and Hauz Khas.'],
+ ['Chaat and parathas|At Chandni Chowk and Paranthe Wali Gali.|Local dish|$','Butter chicken|A Delhi classic.|Local dish|$$','Kulfi and jalebi|Sweet street stops.|Sweet|$'],
+ [40,100,300],'Transit works|The Delhi Metro is clean and cheap. Ride apps are common.',
+ ['Monument tickets|Optional|Buy online to skip lines.','Food walks|Optional|Book with a trusted guide.'],
+ 'Heritage haveli stay|A restored home in the old city.|Book ahead.');
+P('varanasi','Varanasi','Uttar Pradesh','India',[10,11,12,1,2,3],['culture'],'tropical',35,'dome',{ev:'Dev Deepawali, the festival of lights on the ghats, is in November.'},
+ 'The spiritual heart of India on the Ganges, with evening aarti and sunrise boat rides.','Dress modestly and respect photography rules near cremation ghats.',
+ ['Ganges at sunrise|Sunrise|A boat ride past the ghats as the city wakes.','Dashashwamedh Ghat aarti|Evening|A nightly fire ceremony.','Sarnath|Morning|A Buddhist site where the Buddha gave his first sermon.'],
+ ['Ghats|A sunrise boat ride and a walk through old lanes.','Temples and Sarnath|Kashi Vishwanath area and Sarnath.','Evening aarti|Arrive early for a good spot.'],
+ ['Kachori and jalebi|A Varanasi breakfast.|Local dish|$','Banarasi paan|A betel leaf treat.|Sweet|$','Malaiyo|A foamy winter milk dessert.|Sweet|$'],
+ [30,80,250],'Mixed|Cycle rickshaws and boats. The old lanes are on foot.',
+ ['Boat rides|Optional|Agree on a price first.','Lodging|Book ahead|Festival dates fill early.'],
+ 'Riverside heritage hotel|A balcony over the Ganges.|Book ahead.');
+P('goa','Goa','Goa','India',[11,12,1,2,3],['beach','culture'],'tropical',185,'coast',{ev:'Season runs from November to March. Monsoon from June to September closes many beach shacks.'},
+ 'Beaches, Portuguese-era churches and a laid-back coastal pace.','Rent a scooter only if you are an experienced rider and have a license.',
+ ['Palolem Beach|Sunset|A crescent bay in South Goa.','Fontainhas|Morning|Colorful Portuguese-style lanes in Panjim.','Basilica of Bom Jesus|Morning|A UNESCO church in Old Goa.'],
+ ['North Goa|Beaches, markets and a sunset spot.','Old Goa and Panjim|Churches and Fontainhas.','South Goa|Palolem or Agonda.'],
+ ['Goan fish curry|Rice and coconut curry.|Local dish|$$','Bebinca|A layered Goan dessert.|Sweet|$','Beach shack seafood|Grilled fish.|Local dish|$$'],
+ [50,130,350],'Mixed|Taxis and scooters. Distances between beaches are long.',
+ ['Lodging|Book ahead|December fills early.','Spice plantation tours|Optional|Reserve a day ahead.'],
+ 'Beachfront villa|A private villa near the sea.|Book ahead.');
+P('udaipur','Udaipur','Rajasthan','India',[10,11,12,1,2,3],['culture','city'],'desert',30,'dome',{},
+ 'The City of Lakes, with palaces and sunset boat rides.','Book lake-view rooms early in winter.',
+ ['City Palace|Morning|A palace complex above Lake Pichola.','Lake Pichola sunset boat|Sunset|Palaces glowing across the water.','Ambrai Ghat|Evening|A classic view of the city palace.'],
+ ['City Palace|Palace, Jagdish Temple and old city.','Lakes|Saheliyon-ki-Bari and a sunset boat.','Day trip|Kumbhalgarh Fort or Ranakpur Jain temples.'],
+ ['Dal baati churma|A Rajasthani staple.|Local dish|$','Rooftop thali|With a lake view.|Local dish|$$','Lassi and kulfi|Cool treats.|Sweet|$'],
+ [45,120,400],'Mixed|Rickshaws and cabs are cheap.',
+ ['Lake-view lodging|Book ahead|Winter fills early.','Sunset boat|Book ahead|Reserve a day ahead.'],
+ 'Lake Palace dinner|A palace-hotel setting.|Book ahead.');
+P('ladakh','Ladakh','Ladakh','India',[6,7,8,9],['adventure','nature'],'alpine',210,'peaks',{ev:'Main roads open from about June to September. Altitude is above 3,500 meters.'},
+ 'High desert, monasteries and turquoise lakes in the Himalaya.','Rest for two days in Leh before going higher and avoid rushing the altitude.',
+ ['Pangong Lake|Sunrise|A blue lake that changes color through the day.','Nubra Valley|Midday|Sand dunes and double-humped camels.','Thiksey Monastery|Morning|A hilltop monastery with morning prayers.'],
+ ['Leh|Rest and acclimatize. Leh Palace and the market.','Monasteries|Thiksey, Hemis and Shey.','Pangong or Nubra|A long day or overnight trip.'],
+ ['Thukpa|Noodle soup.|Local dish|$','Butter tea|A salty Ladakhi tea.|Drink|$','Apricot treats|Local dried fruit and jam.|Sweet|$'],
+ [40,100,300],'Mixed|Taxis and tours. Roads can close in bad weather.',
+ ['Inner Line Permits|Required|Needed for some areas. Arrange online or through an agent.','Lodging|Book ahead|July fills early.'],
+ 'Camp by the lake|A tent stay with stars.|Book ahead.');
+P('mumbai','Mumbai','Maharashtra','India',[11,12,1,2,3],['city','culture'],'tropical',30,'city',{ev:'Monsoon runs from June to September with heavy rain.'},
+ 'Colonial buildings, Bollywood and the Arabian Sea.','Take local trains outside rush hour and keep valuables close.',
+ ['Gateway of India|Sunrise|Quiet in the morning, busy by midday.','Marine Drive|Sunset|The Queen’s Necklace curve of lights.','Elephanta Caves|Morning|A ferry ride to rock-cut temples.'],
+ ['South Mumbai|Gateway of India, Colaba and Fort.','Marine Drive|Chowpatty, street food and sunset.','Elephanta Caves|Ferry trip and a late lunch.'],
+ ['Vada pav|Mumbai’s fast food.|Local dish|$','Bombay sandwich and pav bhaji|Street favorites.|Local dish|$','Kulfi at Chowpatty|Sweet treats.|Sweet|$'],
+ [50,130,400],'Transit works|Local trains, taxis and ride apps.',
+ ['Elephanta ferry|Optional|Check timings.','Lodging|Book ahead|Winter fills.'],
+ 'Heritage hotel tea|A grand harbor-front hotel.|Reserve ahead.');
+P('rishikesh','Rishikesh and the Himalayan foothills','Uttarakhand','India',[9,10,11,2,3,4],['adventure','culture'],'tropical',140,'forest',{ev:'River rafting is closed during the monsoon, roughly July to mid September.'},
+ 'Yoga, the Ganges at its fastest and Himalayan foothills.','Choose licensed rafting and yoga operators.',
+ ['Triveni Ghat aarti|Evening|A fire ceremony on the Ganges.','Laxman Jhula|Morning|A suspension bridge over the river.','Neer Garh Waterfall|Morning|A short forest walk.'],
+ ['Ghats and ashrams|Ganga aarti and a yoga class.','River day|Rafting or a quiet walk.','Waterfalls|A morning hike and cafes.'],
+ ['Satvik thali|Simple vegetarian meals.|Local dish|$','Cafés along the river|Healthy and cheap.|Budget|$','Chai and sweets|Local stops.|Sweet|$'],
+ [30,80,220],'Mixed|Rickshaws, taxis and walking.',
+ ['Rafting|Book ahead|Reserve with licensed operators.','Yoga courses|Optional|Book ahead.'],
+ 'Riverside camp|A tent camp on the Ganges.|Book ahead.');
 /* Hand-ordered day plans for popular cities. Each day groups stops by area and puts each stop at the time of day it works best.
    Stop format: best time | place | time to allow | note | what to book (optional). Days are ordered best first, so a shorter trip keeps the top days. */
 const PLANS={
@@ -1481,6 +1550,29 @@ function askCard(n){
   if(askBusy)return '<div class="ask"><h3>Building “'+et+'”…</h3><p>Claude is writing the guide. This usually takes about a minute.</p><button class="btn" data-askstop>Stop</button></div>';
   return '<div class="ask"><h3>'+(n?'Want something else?':'Not in the library yet')+'</h3><p>Ask Claude to build a full guide for “'+et+'”: best months, itinerary, photo spots, food, budget and packing.</p>'+(askMsg?'<p class="err">'+esc(askMsg)+'</p>':'')+'<button class="btn sun" data-ask="'+et+'">Build a guide for “'+et+'”</button><p class="s">Made with AI, so check details before you book. Uses your Claude account.</p></div>';
 }
+
+let sugBusy=false,sugMsg='';const sugs={};
+async function suggestMore(c){
+  if(!sampleFn||sugBusy)return;
+  sugBusy=true;sugMsg='';renderHome();
+  const have=D.filter(d=>d.country===state.country&&(state.region==='all'||d.reg===state.region||d.reg2===state.region)).map(d=>d.n);
+  try{
+    const raw=await sampleFn.json('List the 10 best places to visit in '+JSON.stringify(c)+' that a traveler should not miss, covering different regions and seasons. Skip these ones we already have: '+JSON.stringify(have)+'.\nReply with ONLY one JSON object, no markdown: {"places":[{"n":"place name","reg":"state or region","why":"one short sentence","m":"best months in words"}]}',{cache:false});
+    if(!raw||!Array.isArray(raw.places)||!raw.places.length)throw new Error('bad');
+    sugs[c]=raw.places.slice(0,10).map(p=>({n:clip(p&&p.n,70),reg:clip(p&&p.reg,50),why:clip(p&&p.why,160),m:clip(p&&p.m,50)})).filter(p=>p.n);
+  }catch(e){sugMsg=e&&e.code==='not_granted'?'Claude access was declined.':e&&e.code==='rate_limited'?'Too many requests. Wait a minute.':'Claude could not suggest places. Try again.';}
+  sugBusy=false;if(!state.view)renderHome();
+}
+function sugCard(){
+  const c=state.country;if(c==='all'||!sampleFn)return '';
+  const list=sugs[c];
+  let h='<div class="ask"><h3>More places in '+esc(c)+'</h3>';
+  if(sugBusy)return h+'<p>Finding the best places…</p></div>';
+  if(list)h+='<ul class="sug">'+list.map(p=>'<li><div><b>'+p.n+'</b>'+(p.reg?' <span class="muted">'+p.reg+'</span>':'')+'<p>'+p.why+(p.m?' Best: '+p.m+'.':'')+'</p></div><button class="btn" data-ask="'+esc(p.n+', '+c)+'">Build guide</button></li>').join('')+'</ul>';
+  else h+='<p>Ask Claude for the top places to visit in '+esc(c)+' that are not in the library yet. Then build a full guide for any of them.</p>';
+  h+=(sugMsg?'<p class="err">'+esc(sugMsg)+'</p>':'')+'<button class="btn" data-sug="'+esc(c)+'">'+(list?'Suggest different places':'Suggest the best places')+'</button></div>';
+  return h;
+}
 const PROMPT=t=>'You are a travel researcher. Build a concise travel guide for this destination: '+JSON.stringify(t)+'.\n'+
 'Reply with ONLY one JSON object, no markdown, using exactly these keys:\n'+
 '{"n":"place name","reg":"state, province or region (empty if none)","country":"country name in English","cont":"one of North America, South America, Europe, Asia, Africa, Oceania, Antarctica",'+
@@ -1513,7 +1605,7 @@ function renderHome(){
   renderControls();renderHero();
   const r=results();
   $('#sub').textContent=r.length+' of '+D.length+(r.length===1?' place':' places')+(state.month?' at their best this month.':'. Places in season now come first.')+' Pick a country or state, or search for any place on earth.';
-  $('#grid').innerHTML=(r.length?r.map(card).join(''):'<div class="empty"><p>No guides match these filters yet.</p><button class="btn" data-reset>Show all places</button></div>')+askCard(r.length);
+  $('#grid').innerHTML=(r.length?r.map(card).join(''):'<div class="empty"><p>No guides match these filters yet.</p><button class="btn" data-reset>Show all places</button></div>')+sugCard()+askCard(r.length);
 }
 
 function packList(d,season){
@@ -1593,6 +1685,29 @@ async function curatePlan(){
   }
   planBusy=false;planCtl=null;if(state.view===d)renderDetail();
 }
+
+const moreMap={};let moreBusy=false,moreMsg='';
+async function moreStops(){
+  const d=state.view;if(!d||!sampleFn||moreBusy)return;
+  moreBusy=true;moreMsg='';renderDetail();
+  const plan=store.plans[planKey(d)]||baseDays(d,state.days);
+  const have=[].concat.apply([],plan.map(x=>x.stops.map(p=>p.n)));
+  try{
+    const raw=await sampleFn.json('List 8 more worthwhile places or experiences in or near '+JSON.stringify(d.n+', '+d.loc)+' that are NOT already in this list: '+JSON.stringify(have)+'. Include famous themed experiences, day trips, viewpoints, markets and food spots. Do not invent exact prices or opening hours.\nReply with ONLY one JSON object, no markdown: {"stops":[{"n":"name","area":"neighborhood or town","t":"best time of day","d":"time to allow","note":"one short sentence on why it is worth it","b":"what to book or closing days, or empty"}]}',{cache:false});
+    if(!raw||!Array.isArray(raw.stops)||!raw.stops.length)throw new Error('bad');
+    moreMap[d.id]=raw.stops.slice(0,10).map(p=>({n:clip(p&&p.n,90),area:clip(p&&p.area,60),t:clip(p&&p.t,40),d:clip(p&&p.d,24),note:clip(p&&p.note,220),b:clip(p&&p.b,140)})).filter(p=>p.n);
+  }catch(e){moreMsg=e&&e.code==='not_granted'?'Claude access was declined.':e&&e.code==='rate_limited'?'Too many requests. Wait a minute.':'Claude could not find more places. Try again.';}
+  moreBusy=false;if(state.view===d)renderDetail();
+}
+function moreHTML(d){
+  if(!sampleFn)return '';
+  const list=moreMap[d.id];
+  let h='<h3 class="sp">More places to add</h3>';
+  if(moreBusy)return h+'<p class="muted">Finding more places…</p>';
+  if(list)h+='<ul class="stops">'+list.map(p=>'<li><span class="tm">'+(p.t||'Any time')+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a>'+(p.area?'<p class="area">'+p.area+'</p>':'')+'<p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul>';
+  h+=(moreMsg?'<p class="err">'+esc(moreMsg)+'</p>':'')+'<div class="actions"><button class="btn" data-more>'+(list?'Find different places':'Find more places near this plan')+'</button></div>';
+  return h;
+}
 const mapUrl=(n,d)=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(String(n).replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"')+' '+String(d.n).replace(/&amp;/g,'&'));
 function planHTML(d){
   const n=state.days,ai=store.plans[planKey(d)],days=ai||baseDays(d,n);
@@ -1602,7 +1717,7 @@ function planHTML(d){
     if(planBusy)h+='<p class="note"><b>Curating your '+n+'-day plan…</b> This usually takes about a minute.</p><button class="btn" data-planstop>Stop</button>';
     else h+='<div class="actions"><button class="btn sun" data-plan>'+(ai?'Redo with Claude':'Curate my '+n+'-day plan with Claude')+'</button>'+(ai?'<button class="btn" data-planreset>Show library plan</button>':'')+'</div>'+(planMsg?'<p class="err">'+esc(planMsg)+'</p>':'')+(ai?'<p class="muted s">Made by Claude. Check hours and prices before you book.</p>':'');
   }
-  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4>'+(x.area?'<p class="area">'+x.area+'</p>':'')+'<ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a><p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul></div></li>').join('')+'</ol>';
+  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4>'+(x.area?'<p class="area">'+x.area+'</p>':'')+'<ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a><p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul></div></li>').join('')+'</ol>'+moreHTML(d);
   return h;
 }
 function panelHTML(d){
@@ -1652,10 +1767,12 @@ function copyText(text){
 const rerender=()=>{state.view?renderDetail():renderHome();};
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
+  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-sug],[data-more],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
   if(!t)return;
   if(t.dataset.open){e.preventDefault();openDetail(t.dataset.open);return;}
   if(t.dataset.cont){state.cont=t.dataset.cont;if(state.country!=='all'&&state.cont!=='all'&&CONT_OF[state.country]!==state.cont){state.country='all';state.region='all';}renderHome();return;}
+  if(t.dataset.more!==undefined){moreStops();return;}
+  if(t.dataset.sug){suggestMore(state.country);return;}
   if(t.dataset.ask){askClaude(t.dataset.ask.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'));return;}
   if(t.dataset.plan!==undefined){curatePlan();return;}
   if(t.dataset.planstop!==undefined){if(planCtl)planCtl.abort();return;}
