@@ -224,6 +224,10 @@ h3.sp{margin-top:24px}
 .stops p{margin:2px 0 0;color:var(--muted)}
 .err{color:#b3261e}
 @media (max-width:420px){.stops li{grid-template-columns:1fr}.stops .tm{justify-self:start}}
+.dur{font:500 11px var(--mono);background:var(--sun);color:var(--on-sun);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.mp{font-size:13px;color:var(--accent);margin-left:6px;white-space:nowrap}
+.bk{color:var(--ink)!important;font-size:14px}
+.area{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
 </style>
 </head><body>
 
@@ -1074,6 +1078,134 @@ P('antarctica','Antarctic Peninsula','Antarctic Peninsula','Antarctica',[11,12,1
  [500,900,1800],'Mixed|Expedition ships sail from Ushuaia.',
  ['Expedition cruise|Required|Book 12 months ahead.','Travel insurance|Required|Cover medical evacuation.'],
  'Polar cabin with a balcony|Wildlife from your room.|Book early.');
+/* Hand-ordered day plans for popular cities. Each day groups stops by area and puts each stop at the time of day it works best.
+   Stop format: best time | place | time to allow | note | what to book (optional). Days are ordered best first, so a shorter trip keeps the top days. */
+const PLANS={
+london:[
+['Royal Westminster and the South Bank','Westminster',[
+ 'Morning 9:00|Big Ben and Westminster Bridge|30 min|The best photos are from the bridge. Westminster Abbey and Parliament are right beside it.',
+ 'Morning 9:30|Westminster Abbey|1.5 hrs|Coronations, royal weddings and poets’ graves. Closed to sightseers on Sundays.|Book a timed ticket online',
+ 'Late morning|St James’s Park and Buckingham Palace|1 hr|Walk the park, then the palace gates. Check the Changing of the Guard schedule, which is not daily.',
+ 'Lunch|Covent Garden or a pub near Whitehall|1 hr|Keep lunch light to save time.',
+ 'Sunset|London Eye|30 min|A flight is about 30 minutes. Pick a slot at sunset.|Book a timed sunset slot',
+ 'Night|South Bank walk to Waterloo Bridge|45 min|The river, Parliament and the skyline are lit after dark.']],
+['Medieval London, the City and Southwark','Tower Hill to Borough',[
+ 'Morning 9:00|Tower of London|2.5–3 hrs|Go straight to the Crown Jewels first, then the White Tower and the walls. Arrive at opening to skip the queues.|Book ahead online',
+ 'Midday|Tower Bridge viewpoint|20 min|Photograph it from the riverside path just downstream of the Tower.',
+ 'Lunch|Leadenhall Market|45 min|The covered market that stood in for Diagon Alley. Pick up lunch nearby.',
+ 'Afternoon|St Paul’s Cathedral and Millennium Bridge|1.5 hrs|Climb the dome for the view, then cross the Millennium Bridge, used in Half-Blood Prince.|Buy tickets online',
+ 'Late afternoon|Borough Market|1–1.5 hrs|Best from Wednesday to Saturday. Eat here, since it is also the Leaky Cauldron filming spot. Some stalls are closed early in the week.',
+ 'Evening|Shakespeare’s Globe|2.5 hrs|Take in a play or just the riverside walk.|Book a play weeks ahead']],
+['Harry Potter day','Leavesden and King’s Cross',[
+ 'Morning 9:00|Warner Bros. Studio Tour London, The Making of Harry Potter|4–5 hrs|Real sets and props, plus the Great Hall and Diagon Alley. Allow time for the full tour and food. Train from Euston to Watford Junction takes about 20 minutes, then a shuttle bus about 15.|Tickets sell out. Book weeks ahead and pick an early slot',
+ 'Late afternoon|Platform 9¾ at King’s Cross|45 min–1 hr|The photo spot and a shop. The queue can take 30 to 60 minutes, so go on a weekday if you can.',
+ 'Evening|St Pancras station and Coal Drops Yard|1.5 hrs|Walk the red-brick station and then the canal-side restaurants for dinner.']],
+['Museums and the West End','Bloomsbury, Soho and Covent Garden',[
+ 'Morning 10:00|British Museum|2.5–3 hrs|The Rosetta Stone and the Egyptian galleries. Free, with a timed entry slot.|Reserve a free timed entry slot',
+ 'Lunch|Soho and House of MinaLima|1.5 hrs|A free gallery of the graphic design behind the Harry Potter films, then lunch nearby.',
+ 'Afternoon|Covent Garden and Leicester Square|1.5 hrs|Street performers and shops. Walk on to Piccadilly Circus.',
+ 'Evening|Piccadilly Circus lights|20 min|Go after dark for the neon.',
+ 'Night 7:30|West End show|2.5–3 hrs|Day-of tickets can be cheaper from the Leicester Square booth.|Book popular shows weeks ahead']],
+['Notting Hill, Kensington and Primrose Hill','West London',[
+ 'Morning 9:00|Notting Hill and Portobello Road|2 hrs|Pastel houses on Lancaster Road area and a market that peaks on Saturday morning.',
+ 'Midday|Kensington Gardens and Kensington Palace|1.5 hrs|Walk through the park to the palace. Entry to the state rooms is ticketed.',
+ 'Afternoon|Natural History Museum or V&A|2 hrs|Both are free. Pick one so the day does not run long.',
+ 'Late afternoon 3:30|Afternoon tea|1.5–2 hrs|A London tradition. Book a hotel or a tea room.|Reserve a table ahead',
+ 'Sunset|Primrose Hill|45 min|A free skyline view from the top.']],
+['Greenwich and the Thames','Greenwich',[
+ 'Morning 9:30|Thames Clipper from Westminster or Embankment to Greenwich|50–60 min|A scenic ride down the river instead of the Tube.',
+ 'Late morning|Cutty Sark and the Royal Observatory|2 hrs|Stand on the Prime Meridian line and see the skyline from the park.',
+ 'Lunch|Greenwich Market|1 hr|Street food in a covered market.',
+ 'Sunset|Sky Garden or Up at The O2|1–1.5 hrs|Sky Garden is free and has a sunset view. Up at The O2 is a ticketed rooftop climb.|Book Sky Garden free tickets weeks ahead']]
+],
+paris:[
+['Île de la Cité and the Latin Quarter','Île de la Cité and Left Bank',[
+ 'Morning 9:00|Notre-Dame Cathedral|45 min|The cathedral has reopened to visitors after its restoration. Check the latest entry rules on the official site.',
+ 'Late morning|Sainte-Chapelle|1 hr|Stained glass glows best in the morning light.|Book a timed ticket',
+ 'Midday|Latin Quarter and Shakespeare and Company|1 hr|Walk the lanes and browse the bookshop.',
+ 'Lunch|A bistro in the Latin Quarter|1 hr|Order a prix fixe lunch.',
+ 'Afternoon|Jardin du Luxembourg|1 hr|Sit by the pond with a coffee.',
+ 'Golden hour|Pont des Arts and the Seine|45 min|A classic sunset walk along the river.']],
+['The Eiffel Tower and the Left Bank museums','7th arrondissement',[
+ 'Sunrise|Trocadéro viewpoint|30 min|The Eiffel Tower in soft light with few people.',
+ 'Morning 9:30|Eiffel Tower|2 hrs|Go up the summit or the second floor, then walk the Champ de Mars.|Book a timed ticket weeks ahead',
+ 'Afternoon|Musée d’Orsay|2 hrs|Impressionist masterpieces in a former train station. Closed Mondays.|Buy a timed ticket',
+ 'Late afternoon|Pont Alexandre III and Invalides|1 hr|Gilded lamps and Napoleon’s tomb.',
+ 'Dusk|Seine cruise|1 hr|Boats run into the evening, and the Eiffel Tower sparkles on the hour after dark.']],
+['The Louvre and the Right Bank','1st and 2nd arrondissements',[
+ 'Morning 9:00|Louvre Museum|3–4 hrs|Arrive at opening and plan three or four galleries instead of everything. Closed Tuesdays.|Book a timed ticket',
+ 'Lunch|Palais-Royal and Galerie Vivienne|1.5 hrs|A quiet garden and a glass-roofed passage.',
+ 'Afternoon|Tuileries Garden and Place Vendôme|1 hr|Walk from the Louvre toward Place Vendôme.',
+ 'Late afternoon|Palais Garnier|1 hr|A grand opera house. Visit the interior on a self-guided ticket.',
+ 'Golden hour|Galeries Lafayette rooftop|30 min|A free terrace view over Paris.']],
+['Montmartre and the Marais','18th and 4th arrondissements',[
+ 'Sunrise|Sacré-Cœur and Montmartre steps|1.5 hrs|A quiet climb at sunrise before the crowds.',
+ 'Morning|Place du Tertre and Moulin Rouge|1 hr|Artists’ square and the famous windmill from outside.',
+ 'Lunch|Rue des Rosiers in the Marais|1 hr|Falafel and pastries in the old Jewish quarter.',
+ 'Afternoon|Place des Vosges and the Marais|2 hrs|A Paris square with arcades and boutiques.',
+ 'Evening|Canal Saint-Martin|1 hr|Locals picnic along the canal at dusk.']],
+['Versailles day trip','Versailles',[
+ 'Morning 9:00|Palace of Versailles|3–4 hrs|The Hall of Mirrors, the state apartments and the gardens. RER C takes about 45 to 60 minutes from central Paris. Closed Mondays.|Book a timed ticket',
+ 'Midday|Gardens and Grand Canal|2 hrs|Rent a bike or walk. Musical fountain shows run on set days in season.',
+ 'Evening|Trocadéro at night|1 hr|Back in Paris, the Eiffel Tower sparkles for five minutes on the hour.']]
+],
+nyc:[
+['Brooklyn Bridge, 9/11 Memorial and the harbor','Lower Manhattan and DUMBO',[
+ 'Sunrise|DUMBO and the Brooklyn Bridge walk|1.5 hrs|Photograph the bridge frame on Washington Street, then walk across to Manhattan.',
+ 'Lunch|Chinatown or Little Italy|1 hr|Dumplings or a slice before the next stop.',
+ 'Afternoon|9/11 Memorial and Museum|2–3 hrs|The memorial pools are free. The museum is timed.|Book museum tickets ahead',
+ 'Golden hour|Staten Island Ferry|1 hr|A free round trip with Lady Liberty views.']],
+['Statue of Liberty, Ellis Island and Broadway','Battery Park and Midtown',[
+ 'Morning 9:00|Statue of Liberty and Ellis Island|4–5 hrs|Take an early ferry. Add pedestal or crown access if you want it.|Book ferry tickets weeks ahead',
+ 'Lunch|Battery Park|45 min|A quick bite and a harbor walk.',
+ 'Afternoon|The Oculus and St Paul’s Chapel|1 hr|A modern station and a quiet historic chapel.',
+ 'Night 7:30|Broadway show|2.5 hrs|Same-day tickets are available at TKTS.|Book popular shows ahead']],
+['Central Park and the museums','Upper East and West Side',[
+ 'Morning 8:30|Bow Bridge and Bethesda Terrace|1 hr|Soft light and few people.',
+ 'Late morning|The Metropolitan Museum of Art|3 hrs|Pick four or five galleries. Closed Wednesdays.|Buy tickets online',
+ 'Afternoon|The Mall and Strawberry Fields|1 hr|A walk along elm-lined paths.',
+ 'Sunset|Top of the Rock|1 hr|A view that includes the Empire State Building.|Book a sunset slot']],
+['Midtown icons and the High Line','Midtown and Chelsea',[
+ 'Morning|Grand Central and the New York Public Library|1 hr|Look up at the ceiling and the reading room.',
+ 'Midday|Bryant Park and Rockefeller Center|1 hr|Lunch in the park or at the plaza.',
+ 'Afternoon|High Line, Little Island and Chelsea Market|3 hrs|Walk the elevated park and eat at the market.',
+ 'Sunset|Edge at Hudson Yards|1 hr|A skyline from a glass-floor deck.|Book ahead']],
+['Brooklyn and the Village','Greenwich Village and Williamsburg',[
+ 'Morning|Greenwich Village and Washington Square Park|1.5 hrs|Walk the brownstone streets.',
+ 'Lunch|SoHo|1.5 hrs|Shops and cast-iron buildings.',
+ 'Afternoon|Williamsburg and Brooklyn Bridge Park|2.5 hrs|Waterfront skyline views.',
+ 'Evening|Rooftop bar or a pizza slice|1.5 hrs|End the trip with a skyline sunset.']]
+],
+tokyo:[
+['Asakusa and Ueno','Asakusa and Ueno',[
+ 'Dawn 6:00|Senso-ji Temple|1 hr|Quiet at dawn. Walk Nakamise Street after 9 am for snacks.',
+ 'Morning|Sumida River walk and Tokyo Skytree|1.5 hrs|Skytree has an observation deck. Book the sunset slot.|Book tickets ahead',
+ 'Lunch|Ameyoko Market|1 hr|Street food and shops next to Ueno Station.',
+ 'Afternoon|Ueno Park|1.5 hrs|A museum park. Cherry blossoms in spring.',
+ 'Evening|Izakaya in Asakusa|1.5 hrs|A casual dinner.']],
+['Harajuku, Shibuya and the lights','Shibuya and Harajuku',[
+ 'Morning 8:30|Meiji Jingu Shrine|1.5 hrs|A forest path to a quiet shrine.',
+ 'Late morning|Takeshita Street and Omotesando|1.5 hrs|Youth fashion and then architect-designed shops.',
+ 'Sunset|Shibuya Sky|1 hr|A rooftop view of the crossing at sunset.|Book a sunset slot online',
+ 'Night|Shibuya Crossing and Nonbei Yokocho|1.5 hrs|Watch the crossing from street level, then a tiny bar alley.']],
+['Tsukiji, Ginza and teamLab','Tsukiji, Ginza and Toyosu',[
+ 'Morning 7:00|Tsukiji Outer Market|1.5 hrs|Seafood breakfast and street food.',
+ 'Late morning|Imperial Palace East Gardens|1 hr|Free garden. Closed Monday and Friday.',
+ 'Afternoon|teamLab Planets or Ginza|2 hrs|A digital art space in Toyosu. Check current status and hours.|Book a timed ticket well ahead',
+ 'Evening|Shinjuku Omoide Yokocho and Golden Gai|2 hrs|Smoky yakitori alleys and tiny bars.']],
+['Kamakura day trip','Kamakura and Enoshima',[
+ 'Morning 8:30|Kamakura Great Buddha|1 hr|About an hour by train from Tokyo.',
+ 'Late morning|Hasedera Temple|1 hr|Hillside gardens and sea views.',
+ 'Afternoon|Komachi Street|1 hr|Snacks and shops.',
+ 'Sunset|Enoshima Island|1.5 hrs|Walk the island at sunset.']],
+['Ghibli, Kichijoji and Akihabara','Mitaka, Kichijoji and Akihabara',[
+ 'Morning 10:00|Ghibli Museum|2 hrs|Tickets are sold in advance and are hard to get. Check the release date.|Book tickets as soon as they open',
+ 'Afternoon|Inokashira Park and Kichijoji|2 hrs|Boats on the pond and small shops.',
+ 'Evening|Akihabara|2 hrs|Anime stores and arcades.']]
+]
+};
+const parseStop=s=>{const p=s.split('|');return {t:p[0],n:p[1],d:p[2]||'',note:p[3]||'',b:p[4]||''};};
+Object.keys(PLANS).forEach(k=>{PLANS[k]=PLANS[k].map(x=>({title:x[0],area:x[1],stops:x[2].map(parseStop)}));});
 /* Entry rules by destination country and passport. Compiled from government pages and travel sites on Oct 3, 2026. Rules change. */
 const CODE={'United States':'us','Canada':'ca','Japan':'jp','Indonesia':'id','Turkey':'tr','Morocco':'ma','Chile':'cl','United Kingdom':'gb','India':'in'};
 const SCH=['Austria','Belgium','Bulgaria','Croatia','Czechia','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Iceland','Italy','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Netherlands','Norway','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden','Switzerland'];
@@ -1421,6 +1553,7 @@ function entryCard(d){
 const TORD=[['sunrise',0],['dawn',0],['breakfast',1],['morning',1],['midday',2],['lunch',2],['noon',2],['afternoon',3],['golden',4],['sunset',4.5],['dusk',4.5],['dinner',5],['evening',5],['night',6]];
 const tOrd=w=>{w=String(w).toLowerCase();for(const k of TORD)if(w.includes(k[0]))return k[1];return 3;};
 function baseDays(d,n){
+  if(PLANS[d.id])return PLANS[d.id].slice(0,n);
   const out=[];
   for(let i=0;i<n&&i<d.it.length;i++){
     const sp=d.spots[i%d.spots.length],e=d.eat[i%d.eat.length];
@@ -1436,13 +1569,13 @@ let planBusy=false,planMsg='',planCtl=null;
 function planPrompt(d){
   const mo=state.month?MF[state.month-1]:'its best season ('+rangeText(d.m)+')';
   return 'Plan a '+state.days+'-day trip to '+JSON.stringify(d.n+', '+d.loc)+' for '+state.ppl+' traveler(s), visiting in '+mo+'.\n'+
-  'Curate the best of the best and use the time well: 5 to 6 stops per day that cover sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group nearby stops to save travel time and put each place at the time of day it looks best (for example sunrise for east-facing views, golden hour for photos, night for lit-up skylines). Include meals with local food and gelato or sweets where fitting, and say what to reserve.\n'+
+  'Curate the best of the best so no day is wasted. Order the days so the most important days come first. Use 5 to 6 stops per day covering sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group stops by neighborhood to cut travel time, and put each place at the time of day it works best (sunrise for quiet views, golden hour for photos, night for lit-up skylines). Include the famous themed experiences and day trips travelers ask about (for example the Harry Potter studio tour for London), plus meals with local food and gelato or sweets where fitting. For each stop give the time to allow, travel or transfer time if it is more than a few minutes, and what to book ahead or closing days if relevant. Do not invent exact prices or opening hours you are unsure of.\n'+
   'Known highlights you can use: photo spots '+JSON.stringify(d.spots.map(x=>x[0]+' ('+x[1]+')'))+'; food '+JSON.stringify(d.eat.map(x=>x[0]))+'. Add other well-known places too.\n'+
-  'Reply with ONLY one JSON object, no markdown: {"days":[{"title":"short theme for the day","stops":[{"t":"time label such as Sunrise 6:30 AM, Morning, Lunch, Golden hour, Night view","n":"stop name","note":"why this time is best plus one tip, 1 to 2 sentences"}]}]} with exactly '+state.days+' days.';
+  'Reply with ONLY one JSON object, no markdown: {"days":[{"title":"short theme for the day","stops":[{"t":"time label such as Sunrise 6:30 AM, Morning, Lunch, Golden hour, Night view","n":"stop name","d":"time to allow, e.g. 2–3 hrs","note":"why this time is best plus one tip, 1 to 2 sentences","b":"what to book ahead or closing days, or empty"}]}]} with exactly '+state.days+' days.';
 }
 function cleanPlan(raw,n){
   const ds=raw&&raw.days;if(!Array.isArray(ds)||!ds.length)throw new Error('bad');
-  return ds.slice(0,14).map(x=>{if(!x||!Array.isArray(x.stops)||x.stops.length<2)throw new Error('bad');return {title:clip(x.title,80),stops:x.stops.slice(0,9).map(p=>({t:clip(p&&p.t,40),n:clip(p&&p.n,90),note:clip(p&&p.note,260)})).filter(p=>p.n)};});
+  return ds.slice(0,14).map(x=>{if(!x||!Array.isArray(x.stops)||x.stops.length<2)throw new Error('bad');return {title:clip(x.title,80),stops:x.stops.slice(0,9).map(p=>({t:clip(p&&p.t,40),n:clip(p&&p.n,90),d:clip(p&&p.d,24),note:clip(p&&p.note,300),b:clip(p&&p.b,160)})).filter(p=>p.n)};});
 }
 async function curatePlan(){
   const d=state.view;if(!d||!sampleFn||planBusy)return;
@@ -1460,6 +1593,7 @@ async function curatePlan(){
   }
   planBusy=false;planCtl=null;if(state.view===d)renderDetail();
 }
+const mapUrl=(n,d)=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(String(n).replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"')+' '+String(d.n).replace(/&amp;/g,'&'));
 function planHTML(d){
   const n=state.days,ai=store.plans[planKey(d)],days=ai||baseDays(d,n);
   let h='<div class="planhead"><h3>'+n+'-day plan</h3><label class="sel"><span>Days</span><select data-days aria-label="Number of days">'+Array.from({length:14},(_,i)=>'<option value="'+(i+1)+'"'+(n===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label></div>';
@@ -1468,7 +1602,7 @@ function planHTML(d){
     if(planBusy)h+='<p class="note"><b>Curating your '+n+'-day plan…</b> This usually takes about a minute.</p><button class="btn" data-planstop>Stop</button>';
     else h+='<div class="actions"><button class="btn sun" data-plan>'+(ai?'Redo with Claude':'Curate my '+n+'-day plan with Claude')+'</button>'+(ai?'<button class="btn" data-planreset>Show library plan</button>':'')+'</div>'+(planMsg?'<p class="err">'+esc(planMsg)+'</p>':'')+(ai?'<p class="muted s">Made by Claude. Check hours and prices before you book.</p>':'');
   }
-  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4><ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b><p>'+p.note+'</p></div></li>').join('')+'</ul></div></li>').join('')+'</ol>';
+  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4>'+(x.area?'<p class="area">'+x.area+'</p>':'')+'<ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a><p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul></div></li>').join('')+'</ol>';
   return h;
 }
 function panelHTML(d){
