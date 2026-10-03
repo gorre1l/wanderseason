@@ -215,6 +215,15 @@ h3.sp{margin-top:24px}
 .pill.ai{background:var(--sun);color:var(--on-sun)}
 .aibadge{margin:0 0 12px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--soft);font-size:14px}
 .aibadge .btn{margin-left:8px;min-height:34px;padding:4px 12px}
+
+.planhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.planhead h3{margin:0}
+.stops{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.stops li{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:start}
+.stops .tm{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;background:var(--soft);color:var(--accent);border-radius:999px;padding:5px 9px;text-align:center}
+.stops p{margin:2px 0 0;color:var(--muted)}
+.err{color:#b3261e}
+@media (max-width:420px){.stops li{grid-template-columns:1fr}.stops .tm{justify-self:start}}
 </style>
 </head><body>
 
@@ -1195,8 +1204,8 @@ function stretch(pin,salt,n){let h=sha256hex(salt+pin);for(let i=1;i<n;i++)h=sha
 const GATE={salt:"cfea520bf97d6c28",n:3000,hash:"65a6d3251892dd1978a1a1f616a3454e4a2bf10700f3f58b51a2364fae9b6672"};
 const nowM=new Date().getMonth()+1;
 const state={cont:'all',country:'all',region:'all',month:0,tag:'all',budget:'all',tier:1,days:3,ppl:2,q:'',saved:false,visaOk:false,view:null,tab:'overview',season:null,pp:'',st:'none'};
-let store={saved:[],packed:{},pp:'',st:'none',custom:[]};
-try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];}}catch(e){}
+let store={saved:[],packed:{},pp:'',st:'none',custom:[],plans:{}};
+try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];store.plans=(p.plans&&typeof p.plans==='object')?p.plans:{};}}catch(e){}
 state.pp=store.pp;state.st=store.st;
 function persist(){store.pp=state.pp;store.st=state.st;try{localStorage.setItem('wanderseason',JSON.stringify(store));}catch(e){}}
 
@@ -1400,7 +1409,7 @@ function packHTML(d){
 function budgetCard(d){
   const names=['Shoestring','Comfortable','Splurge'];
   return '<div class="tcard"><div class="tt">Your budget</div><div class="tiers">'+d.bud.map((v,i)=>'<button class="tier" data-tier="'+i+'" aria-pressed="'+(state.tier===i)+'"><span>'+names[i]+'</span><b>'+fmt(v)+'</b><small>per person a day</small></button>').join('')+'</div>'+
-    '<div class="est"><label>Days<input id="days" type="number" inputmode="numeric" min="1" max="30" value="'+state.days+'"></label><label>Travelers<input id="ppl" type="number" inputmode="numeric" min="1" max="12" value="'+state.ppl+'"></label><div class="total"><small>Estimated trip total</small><b id="bTotal">'+fmt(d.bud[state.tier]*state.days*state.ppl)+'</b></div></div>'+
+    '<div class="est"><label>Days<input id="days" type="number" inputmode="numeric" min="1" max="14" value="'+state.days+'"></label><label>Travelers<input id="ppl" type="number" inputmode="numeric" min="1" max="12" value="'+state.ppl+'"></label><div class="total"><small>Estimated trip total</small><b id="bTotal">'+fmt(d.bud[state.tier]*state.days*state.ppl)+'</b></div></div>'+
     '<p class="muted s">Covers lodging, food, local transport and activities. Flights and visa fees are not included.</p></div>';
 }
 function entryCard(d){
@@ -1408,9 +1417,63 @@ function entryCard(d){
   const who=state.pp&&state.pp!=='other'?'Rules for a '+PASSNAME[state.pp]+' passport. ':'';
   return '<div class="tcard"><div class="tt">Entry and visa</div><div class="row">'+passUI('D')+'</div><div><span class="vb v-'+e[0]+'">'+VL[e[0]]+'</span></div><p>'+e[1]+'</p><p class="muted s">'+who+'Last checked '+CHECKED+'. <a href="'+e[2]+'" target="_blank" rel="noopener">Official source</a></p></div>';
 }
+
+const TORD=[['sunrise',0],['dawn',0],['breakfast',1],['morning',1],['midday',2],['lunch',2],['noon',2],['afternoon',3],['golden',4],['sunset',4.5],['dusk',4.5],['dinner',5],['evening',5],['night',6]];
+const tOrd=w=>{w=String(w).toLowerCase();for(const k of TORD)if(w.includes(k[0]))return k[1];return 3;};
+function baseDays(d,n){
+  const out=[];
+  for(let i=0;i<n&&i<d.it.length;i++){
+    const sp=d.spots[i%d.spots.length],e=d.eat[i%d.eat.length];
+    const stops=[{t:'Morning',n:d.it[i][0],note:d.it[i][1]},{t:sp[1],n:sp[0],note:sp[2]},{t:i%2?'Dinner':'Lunch',n:e[0],note:e[1]}];
+    if(i===Math.min(n,d.it.length)-1&&d.fancy)stops.push({t:'Evening',n:d.fancy[0],note:d.fancy[1]});
+    stops.sort((a,b)=>tOrd(a.t)-tOrd(b.t));
+    out.push({title:d.it[i][0],stops});
+  }
+  return out;
+}
+const planKey=d=>d.id+'|'+state.days+'|'+state.ppl+'|'+(state.month||0);
+let planBusy=false,planMsg='',planCtl=null;
+function planPrompt(d){
+  const mo=state.month?MF[state.month-1]:'its best season ('+rangeText(d.m)+')';
+  return 'Plan a '+state.days+'-day trip to '+JSON.stringify(d.n+', '+d.loc)+' for '+state.ppl+' traveler(s), visiting in '+mo+'.\n'+
+  'Curate the best of the best and use the time well: 5 to 6 stops per day that cover sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group nearby stops to save travel time and put each place at the time of day it looks best (for example sunrise for east-facing views, golden hour for photos, night for lit-up skylines). Include meals with local food and gelato or sweets where fitting, and say what to reserve.\n'+
+  'Known highlights you can use: photo spots '+JSON.stringify(d.spots.map(x=>x[0]+' ('+x[1]+')'))+'; food '+JSON.stringify(d.eat.map(x=>x[0]))+'. Add other well-known places too.\n'+
+  'Reply with ONLY one JSON object, no markdown: {"days":[{"title":"short theme for the day","stops":[{"t":"time label such as Sunrise 6:30 AM, Morning, Lunch, Golden hour, Night view","n":"stop name","note":"why this time is best plus one tip, 1 to 2 sentences"}]}]} with exactly '+state.days+' days.';
+}
+function cleanPlan(raw,n){
+  const ds=raw&&raw.days;if(!Array.isArray(ds)||!ds.length)throw new Error('bad');
+  return ds.slice(0,14).map(x=>{if(!x||!Array.isArray(x.stops)||x.stops.length<2)throw new Error('bad');return {title:clip(x.title,80),stops:x.stops.slice(0,9).map(p=>({t:clip(p&&p.t,40),n:clip(p&&p.n,90),note:clip(p&&p.note,260)})).filter(p=>p.n)};});
+}
+async function curatePlan(){
+  const d=state.view;if(!d||!sampleFn||planBusy)return;
+  const key=planKey(d);
+  planBusy=true;planMsg='';planCtl=new AbortController();if(state.view===d)renderDetail();
+  try{
+    const raw=await sampleFn.json(planPrompt(d),{signal:planCtl.signal,cache:false});
+    const plan=cleanPlan(raw,state.days);
+    store.plans[key]=plan;
+    const ks=Object.keys(store.plans);while(ks.length>30)delete store.plans[ks.shift()];
+    persist();
+  }catch(e){
+    const c=e&&e.code;
+    planMsg=c==='cancelled'?'':c==='not_granted'?'Claude access was declined, so no plan was built.':c==='rate_limited'?'Too many requests. Wait a minute and try again.':'Claude could not build that plan. Try again.';
+  }
+  planBusy=false;planCtl=null;if(state.view===d)renderDetail();
+}
+function planHTML(d){
+  const n=state.days,ai=store.plans[planKey(d)],days=ai||baseDays(d,n);
+  let h='<div class="planhead"><h3>'+n+'-day plan</h3><label class="sel"><span>Days</span><select data-days aria-label="Number of days">'+Array.from({length:14},(_,i)=>'<option value="'+(i+1)+'"'+(n===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label></div>';
+  if(!ai&&n>days.length)h+='<p class="note"><b>The library plan covers '+days.length+' days.</b>'+(sampleFn?' Ask Claude to curate all '+n+' days with the best time for each stop.':' The Claude-hosted version can curate all '+n+' days.')+'</p>';
+  if(sampleFn){
+    if(planBusy)h+='<p class="note"><b>Curating your '+n+'-day plan…</b> This usually takes about a minute.</p><button class="btn" data-planstop>Stop</button>';
+    else h+='<div class="actions"><button class="btn sun" data-plan>'+(ai?'Redo with Claude':'Curate my '+n+'-day plan with Claude')+'</button>'+(ai?'<button class="btn" data-planreset>Show library plan</button>':'')+'</div>'+(planMsg?'<p class="err">'+esc(planMsg)+'</p>':'')+(ai?'<p class="muted s">Made by Claude. Check hours and prices before you book.</p>':'');
+  }
+  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4><ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b><p>'+p.note+'</p></div></li>').join('')+'</ul></div></li>').join('')+'</ol>';
+  return h;
+}
 function panelHTML(d){
   const t=state.tab;
-  if(t==='itinerary')return '<h3>3-day plan</h3><ol class="days">'+d.it.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x[0]+'</h4><p>'+x[1]+'</p></div></li>').join('')+'</ol>';
+  if(t==='itinerary')return planHTML(d);
   if(t==='spots')return '<h3>Photo spots</h3><ul class="spots">'+d.spots.map(s=>'<li class="spot"><h4>'+s[0]+' <span class="when">'+s[1]+'</span></h4><p>'+s[2]+'</p></li>').join('')+'</ul><h3 class="sp">Fancy and worth the splurge</h3><ul class="spots"><li class="spot"><h4>'+d.fancy[0]+'</h4><p>'+d.fancy[1]+'</p><p>'+d.fancy[2]+'</p></li></ul>';
   if(t==='eat')return '<h3>Where to eat</h3><p class="muted">$ is cheap and $$$ is a splurge.</p><ul class="spots">'+d.eat.map(e=>'<li class="spot"><h4>'+e[0]+' <span class="when alt">'+e[2]+'</span> <span class="price">'+e[3]+'</span></h4><p>'+e[1]+'</p></li>').join('')+'</ul>';
   if(t==='stay')return '<h3>Ways to save on where you sleep</h3><ul class="spots">'+d.stay.map(s=>'<li class="spot"><h4>'+s[0]+'</h4><p>'+s[1]+'</p></li>').join('')+'</ul>';
@@ -1455,11 +1518,14 @@ function copyText(text){
 const rerender=()=>{state.view?renderDetail():renderHome();};
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
+  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
   if(!t)return;
   if(t.dataset.open){e.preventDefault();openDetail(t.dataset.open);return;}
   if(t.dataset.cont){state.cont=t.dataset.cont;if(state.country!=='all'&&state.cont!=='all'&&CONT_OF[state.country]!==state.cont){state.country='all';state.region='all';}renderHome();return;}
   if(t.dataset.ask){askClaude(t.dataset.ask.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'));return;}
+  if(t.dataset.plan!==undefined){curatePlan();return;}
+  if(t.dataset.planstop!==undefined){if(planCtl)planCtl.abort();return;}
+  if(t.dataset.planreset!==undefined){delete store.plans[planKey(state.view)];persist();renderDetail();return;}
   if(t.dataset.askstop!==undefined){if(askCtl)askCtl.abort();return;}
   if(t.dataset.rmcustom){const id=t.dataset.rmcustom,i=D.findIndex(x=>x.id===id&&x.custom);if(i>=0)D.splice(i,1);store.custom=store.custom.filter(c=>{try{return cleanPlace(c).id!==id;}catch(e){return false;}});const j=store.saved.indexOf(id);if(j>=0)store.saved.splice(j,1);persist();closeDetail();return;}
   if(t.dataset.month!==undefined){state.month=+t.dataset.month;renderHome();return;}
@@ -1490,6 +1556,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('change',e=>{
   const t=e.target;
+  if(t.matches&&t.matches('[data-days]')){state.days=+t.value;renderDetail();return;}
   if(t.matches&&t.matches('[data-country]')){state.country=t.value;state.region='all';if(t.value!=='all')state.cont='all';renderHome();return;}
   if(t.matches&&t.matches('[data-region]')){state.region=t.value;renderHome();return;}
   if(t.matches&&t.matches('[data-pp]')){state.pp=t.value;persist();rerender();return;}
@@ -1505,10 +1572,11 @@ document.addEventListener('change',e=>{
 document.addEventListener('input',e=>{
   const id=e.target.id;
   if(id!=='days'&&id!=='ppl')return;
-  const max=id==='days'?30:12;
+  const max=id==='days'?14:12;
   state[id]=Math.max(1,Math.min(max,parseInt(e.target.value,10)||1));
   const el=$('#bTotal');
   if(el&&state.view)el.textContent=fmt(state.view.bud[state.tier]*state.days*state.ppl);
+  if(state.view&&state.tab==='itinerary'){const pn=document.querySelector('.panel');if(pn&&!planBusy)pn.innerHTML=panelHTML(state.view);}
 });
 $('#q').addEventListener('input',e=>{state.q=e.target.value;renderHome();});
 $('#sform').addEventListener('submit',e=>{e.preventDefault();state.q=$('#q').value;renderHome();const g=$('#grid');if(g&&g.scrollIntoView)g.scrollIntoView({behavior:'smooth',block:'start'});});
