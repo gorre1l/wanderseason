@@ -232,6 +232,12 @@ h3.sp{margin-top:24px}
 .sug li{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px}
 .sug li>div{flex:1 1 220px;min-width:0}
 .sug p{margin:2px 0 0;color:var(--muted)}
+.btn.busy{opacity:1;display:inline-flex;align-items:center;gap:8px;cursor:progress}
+.btn[disabled]{cursor:progress}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;display:inline-block;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.lnk{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;padding:0;margin-left:6px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
 </style>
 </head><body>
 
@@ -644,6 +650,10 @@ const CONTS=Object.keys(WORLD);
 const ALLC=[].concat.apply([],CONTS.map(k=>WORLD[k])).sort((a,b)=>a.localeCompare(b));
 const CONT_OF={};CONTS.forEach(k=>WORLD[k].forEach(c=>{CONT_OF[c]=k;}));
 const US_STATES=['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
+const REGIONS={'United States':US_STATES,
+'India':['Andaman and Nicobar Islands','Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chandigarh','Chhattisgarh','Delhi','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu and Kashmir','Jharkhand','Karnataka','Kerala','Ladakh','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Puducherry','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal'],
+'Canada':['Alberta','British Columbia','Manitoba','New Brunswick','Newfoundland and Labrador','Northwest Territories','Nova Scotia','Nunavut','Ontario','Prince Edward Island','Quebec','Saskatchewan','Yukon'],
+'Australia':['Australian Capital Territory','New South Wales','Northern Territory','Queensland','South Australia','Tasmania','Victoria','Western Australia']};
 /* Where each curated place is (region, country, continent), plus more places from every continent. */
 const META={
 bigbend:['Texas','United States'],hillcountry:['Texas','United States'],marfa:['Texas','United States'],paloduro:['Texas','United States'],padre:['Texas','United States'],guadalupe:['Texas','United States'],
@@ -1147,6 +1157,47 @@ P('rishikesh','Rishikesh and the Himalayan foothills','Uttarakhand','India',[9,1
  [30,80,220],'Mixed|Rickshaws, taxis and walking.',
  ['Rafting|Book ahead|Reserve with licensed operators.','Yoga courses|Optional|Book ahead.'],
  'Riverside camp|A tent camp on the Ganges.|Book ahead.');
+/* ---------- Telangana and Andhra Pradesh ---------- */
+P('hyderabad','Hyderabad','Telangana','India',[10,11,12,1,2,3],['city','culture'],'tropical',30,'dome',{shop:'Laad Bazaar near Charminar is known for bangles and pearls. Hyderabad pearls are a classic buy. Bargain politely and buy from established shops.',ev:'Ramoji Film City is a full-day outing on the edge of the city. Summer is very hot.'},
+ 'Nizam-era palaces, the Charminar, Golconda Fort and the biryani that put the city on the food map.','Visit monuments early and eat biryani at lunch, when it is freshest.',
+ ['Charminar|Evening|A 16th-century monument with the old city lit around it.','Golconda Fort|Morning|A hilltop fort with sweeping views. The light-and-sound show runs in the evening.','Qutb Shahi Tombs|Golden hour|Domed royal tombs in a quiet park.'],
+ ['Old city|Charminar, Laad Bazaar and Mecca Masjid, then Chowmahalla Palace.','Fort and tombs|Golconda in the morning and the Qutb Shahi Tombs at golden hour.','Lakes and film city|Hussain Sagar and Buddha statue, or a day at Ramoji Film City.'],
+ ['Hyderabadi dum biryani|Slow-cooked rice and meat in a sealed pot.|Local dish|$$','Irani chai and Osmania biscuits|A classic Hyderabadi tea stop.|Budget|$','Double ka meetha and Khubani ka meetha|Bread pudding and apricot dessert.|Sweet|$'],
+ [40,100,300],'Mixed|The Metro, buses and ride apps cover the city. Taxis are cheap.',
+ ['Ramoji Film City|Book ahead|Allow a full day. Buy tickets online.','Golconda light-and-sound show|Optional|Check the language and timing.','Salar Jung Museum|Optional|Closed on Fridays.'],
+ 'Chowmahalla Palace dinner|A royal setting for a heritage evening.|Check availability.');
+P('warangal','Warangal and Ramappa Temple','Telangana','India',[10,11,12,1,2],['culture'],'tropical',20,'dome',{ev:'The Ramappa Temple near Palampet is a UNESCO World Heritage Site.'},
+ 'Kakatiya-era temples, a ruined fort and a UNESCO-listed temple of floating bricks.','Start early and combine sites in one day with a driver.',
+ ['Ramappa Temple|Morning|Intricately carved stone in soft morning light.','Thousand Pillar Temple|Midday|A star-shaped Kakatiya temple in Hanamkonda.','Warangal Fort|Golden hour|Carved gateways and ruined walls.'],
+ ['Warangal city|Fort, Thousand Pillar Temple and Bhadrakali Temple.','Ramappa Temple|A drive of about 70 km to Palampet.','Lakes and sunset|Ramappa Lake at sunset.'],
+ ['Local Telangana meals|Spicy, tamarind-rich food.|Local dish|$','Sarva Pindi|A crispy rice flour pancake.|Local dish|$','Chai and snacks|Roadside stops.|Budget|$'],
+ [30,70,200],'Mixed|A hired car or taxi is best between sites. Trains run from Hyderabad.',
+ ['Taxi for the day|Book ahead|Arrange a driver for Ramappa.','Lodging|Optional|Book ahead for weekends.'],
+ 'Heritage resort stay|A quiet stay near the temple.|Book ahead.');
+P('vizag','Visakhapatnam and Araku Valley','Andhra Pradesh','India',[10,11,12,1,2],['nature','beach','adventure'],'tropical',185,'coast',{ev:'The scenic Araku train ride has many tunnels and bridges. Monsoon has heavy rain.'},
+ 'Beaches, hills, a coffee region and cave systems along Andhra’s coast.','Book the Araku train in advance for the daytime window seats.',
+ ['Kailasagiri|Sunset|A hilltop park with views over the coast.','Borra Caves|Morning|Limestone caves in the Eastern Ghats.','RK Beach|Evening|A city beach with food stalls.'],
+ ['Vizag city|Kailasagiri, RK Beach and the submarine museum.','Araku Valley|The scenic train ride, a coffee museum and tribal market.','Borra Caves|Caves and viewpoints before heading back.'],
+ ['Seafood on the coast|Fresh fish and prawns.|Local dish|$$','Andhra meals|Spicy rice plates with pickles.|Local dish|$','Araku coffee|Local grown coffee.|Drink|$'],
+ [40,100,280],'Mixed|Taxis and the Araku train. Local buses connect main towns.',
+ ['Araku train|Book ahead|Reserve window seats.','Lodging|Optional|Book ahead for weekends.'],
+ 'Beach-view hotel|A sea-facing room.|Book ahead.');
+P('tirupati','Tirupati and Tirumala','Andhra Pradesh','India',[9,10,11,12,1,2],['culture'],'tropical',35,'dome',{ev:'Brahmotsavam in autumn draws huge crowds.'},
+ 'One of the most visited pilgrimage sites in the world, on the Tirumala hills.','Dress modestly and book darshan through the official temple trust before you travel.',
+ ['Sri Venkateswara Temple|Dawn|A hilltop temple. Darshan queues are long. Go with a booked slot.','Sri Padmavathi Temple|Morning|A temple in Tiruchanoor.','Silathoranam|Morning|A natural rock arch in Tirumala.'],
+ ['Tirupati|Govindaraja Swamy Temple and the town.','Tirumala|Darshan with a booked slot.','Nearby|Kapila Theertham and Sri Kalahasti.'],
+ ['Temple laddu|The famous prasadam sweet.|Sweet|$','Andhra meals|Simple rice plates.|Local dish|$','Idli and dosa|Light breakfast.|Budget|$'],
+ [25,60,180],'Mixed|Buses and taxis run up the hill. The walking path is open for pilgrims.',
+ ['Darshan tickets|Required|Book on the official temple site, as slots sell out.','Lodging|Book ahead|Pilgrim rooms fill fast.'],
+ 'Early morning darshan|A quieter slot on weekdays.|Book ahead.');
+P('gandikota','Gandikota Grand Canyon','Andhra Pradesh','India',[10,11,12,1,2],['nature','adventure'],'desert',20,'mesa',{ev:'Often called the Grand Canyon of India. Camping and sunrise views are popular in winter.'},
+ 'A river gorge cut through red rock above the Penna River.','Plan one night and carry water and snacks. Services are limited.',
+ ['Gorge viewpoint|Sunrise|Red cliffs above the river bend.','Gandikota Fort|Morning|Ruins with views of the gorge.','Madhavaraya Temple|Afternoon|A small temple inside the fort.'],
+ ['Arrival|Drive from Hyderabad or Kadapa and see the fort.','Sunrise|The gorge viewpoint and a river boat.','Return|A scenic drive back.'],
+ ['Packed meals|Pack lunches before you go.|Budget|$','Local Andhra meals|At small eateries.|Local dish|$','Chai|Roadside stops.|Budget|$'],
+ [30,70,160],'Car needed|A car or taxi is best from Hyderabad or Kadapa.',
+ ['Camping or stays|Book ahead|Reserve winter weekends.','Boating|Optional|Check timings.'],
+ 'Riverside tent camp|A stay by the gorge.|Book ahead.');
 /* Hand-ordered day plans for popular cities. Each day groups stops by area and puts each stop at the time of day it works best.
    Stop format: best time | place | time to allow | note | what to book (optional). Days are ordered best first, so a shorter trip keeps the top days. */
 const PLANS={
@@ -1406,7 +1457,7 @@ const GATE={salt:"cfea520bf97d6c28",n:3000,hash:"65a6d3251892dd1978a1a1f616a3454
 const nowM=new Date().getMonth()+1;
 const state={cont:'all',country:'all',region:'all',month:0,tag:'all',budget:'all',tier:1,days:3,ppl:2,q:'',saved:false,visaOk:false,view:null,tab:'overview',season:null,pp:'',st:'none'};
 let store={saved:[],packed:{},pp:'',st:'none',custom:[],plans:{}};
-try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];store.plans=(p.plans&&typeof p.plans==='object')?p.plans:{};}}catch(e){}
+try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];store.plans=(p.plans&&typeof p.plans==='object')?p.plans:{};store.mine=(p.mine&&typeof p.mine==='object')?p.mine:{};}}catch(e){}
 state.pp=store.pp;state.st=store.st;
 function persist(){store.pp=state.pp;store.st=state.st;try{localStorage.setItem('wanderseason',JSON.stringify(store));}catch(e){}}
 
@@ -1506,9 +1557,10 @@ function renderGeo(){
   if(withG.length)h+='<optgroup label="With guides">'+withG.map(c=>'<option value="'+esc(c)+'"'+(state.country===c?' selected':'')+'>'+esc(c)+' ('+have[c]+')</option>').join('')+'</optgroup>';
   if(others.length)h+='<optgroup label="Ask Claude for a guide">'+others.map(c=>'<option value="'+esc(c)+'"'+(state.country===c?' selected':'')+'>'+esc(c)+'</option>').join('')+'</optgroup>';
   h+='</select></label>';
-  if(state.country==='United States'){
-    const hv=countsBy('reg',d=>d.country==='United States');D.forEach(d=>{if(d.country==='United States'&&d.reg2)hv[d.reg2]=(hv[d.reg2]||0)+1;});
-    h+='<label class="sel"><span>State</span><select data-region aria-label="State"><option value="all">All states</option>'+US_STATES.map(t=>'<option value="'+t+'"'+(state.region===t?' selected':'')+'>'+t+(hv[t]?' ('+hv[t]+')':'')+'</option>').join('')+'</select></label>';
+  const RL=REGIONS[state.country];
+  if(RL){
+    const hv=countsBy('reg',d=>d.country===state.country);D.forEach(d=>{if(d.country===state.country&&d.reg2)hv[d.reg2]=(hv[d.reg2]||0)+1;});
+    h+='<label class="sel"><span>'+(state.country==='United States'||state.country==='Australia'?'State':state.country==='Canada'?'Province':'State')+'</span><select data-region aria-label="State or province"><option value="all">All</option>'+RL.map(t=>'<option value="'+esc(t)+'"'+(state.region===t?' selected':'')+'>'+esc(t)+(hv[t]?' ('+hv[t]+')':'')+'</option>').join('')+'</select></label>';
   }else if(state.country!=='all'){
     const hv=countsBy('reg',d=>d.country===state.country),rs=Object.keys(hv).sort();
     if(rs.length>1)h+='<label class="sel"><span>Region</span><select data-region aria-label="Region"><option value="all">All regions</option>'+rs.map(t=>'<option value="'+esc(t)+'"'+(state.region===t?' selected':'')+'>'+esc(t)+' ('+hv[t]+')</option>').join('')+'</select></label>';
@@ -1534,6 +1586,12 @@ function renderHero(){
   $('#h1').innerHTML=state.month?'Where to go in <em>'+MF[state.month-1]+'</em>':'Where to go, <em>any time of year</em>';
 }
 
+
+const PH={guide:['Searching…','Researching the best months…','Picking photo spots and food…','Building your guide…'],plan:['Searching top places…','Grouping nearby stops…','Choosing the best time for each…','Curating your plan…'],more:['Searching nearby places…','Checking what fits…','Picking the best ones…'],sug:['Searching the country…','Picking the best places…','Almost there…'],add:['Looking it up…','Finding the best time…','Checking how it fits…']};
+let busyT0=Date.now();
+const phrase=k=>{const a=PH[k];return a[Math.floor((Date.now()-busyT0)/3500)%a.length];};
+const busyBtn=(k,stop)=>'<button class="btn sun busy" disabled aria-live="polite"><span class="spin"></span><span class="busytxt" data-k="'+k+'">'+phrase(k)+'</span></button>'+(stop?'<button class="btn" '+stop+'>Stop</button>':'');
+setInterval(()=>{document.querySelectorAll('.busytxt').forEach(e=>{e.textContent=phrase(e.dataset.k);});},1200);
 let sampleFn=null,askBusy=false,askMsg='',askCtl=null;
 if(window.claude&&claude.use){claude.use('sample').then(f=>{sampleFn=f||null;if(f&&!state.view)renderHome();}).catch(()=>{});}
 function askTarget(){
@@ -1547,14 +1605,14 @@ function askCard(n){
   const t=askTarget();if(!t)return '';
   const et=esc(t.slice(0,80));
   if(!sampleFn)return '<div class="ask"><h3>More places on request</h3><p>The Claude-hosted version of Wanderseason can build a full guide for “'+et+'” on the spot. Open it from the shared link to try that.</p></div>';
-  if(askBusy)return '<div class="ask"><h3>Building “'+et+'”…</h3><p>Claude is writing the guide. This usually takes about a minute.</p><button class="btn" data-askstop>Stop</button></div>';
-  return '<div class="ask"><h3>'+(n?'Want something else?':'Not in the library yet')+'</h3><p>Ask Claude to build a full guide for “'+et+'”: best months, itinerary, photo spots, food, budget and packing.</p>'+(askMsg?'<p class="err">'+esc(askMsg)+'</p>':'')+'<button class="btn sun" data-ask="'+et+'">Build a guide for “'+et+'”</button><p class="s">Made with AI, so check details before you book. Uses your Claude account.</p></div>';
+  if(askBusy)return '<div class="ask"><h3>Building “'+et+'”</h3><p>Claude is writing the guide. This usually takes about a minute.</p><div class="actions">'+busyBtn('guide','data-askstop')+'</div></div>';
+  return '<div class="ask"><h3>'+(n?'Want something else?':'Not in the library yet')+'</h3><p>Ask Claude to build a full guide for “'+et+'”: best months, itinerary, photo spots, food, budget and packing.</p>'+(askMsg?'<p class="err">'+esc(askMsg)+'</p>':'')+'<button class="btn sun" data-ask="'+et+'">Build guide and itinerary for “'+et+'”</button><p class="s">Made with AI, so check details before you book. Uses your Claude account.</p></div>';
 }
 
 let sugBusy=false,sugMsg='';const sugs={};
 async function suggestMore(c){
   if(!sampleFn||sugBusy)return;
-  sugBusy=true;sugMsg='';renderHome();
+  sugBusy=true;busyT0=Date.now();sugMsg='';renderHome();
   const have=D.filter(d=>d.country===state.country&&(state.region==='all'||d.reg===state.region||d.reg2===state.region)).map(d=>d.n);
   try{
     const raw=await sampleFn.json('List the 10 best places to visit in '+JSON.stringify(c)+' that a traveler should not miss, covering different regions and seasons. Skip these ones we already have: '+JSON.stringify(have)+'.\nReply with ONLY one JSON object, no markdown: {"places":[{"n":"place name","reg":"state or region","why":"one short sentence","m":"best months in words"}]}',{cache:false});
@@ -1567,7 +1625,7 @@ function sugCard(){
   const c=state.country;if(c==='all'||!sampleFn)return '';
   const list=sugs[c];
   let h='<div class="ask"><h3>More places in '+esc(c)+'</h3>';
-  if(sugBusy)return h+'<p>Finding the best places…</p></div>';
+  if(sugBusy)return h+'<p>Claude is finding the best places.</p><div class="actions">'+busyBtn('sug')+'</div></div>';
   if(list)h+='<ul class="sug">'+list.map(p=>'<li><div><b>'+p.n+'</b>'+(p.reg?' <span class="muted">'+p.reg+'</span>':'')+'<p>'+p.why+(p.m?' Best: '+p.m+'.':'')+'</p></div><button class="btn" data-ask="'+esc(p.n+', '+c)+'">Build guide</button></li>').join('')+'</ul>';
   else h+='<p>Ask Claude for the top places to visit in '+esc(c)+' that are not in the library yet. Then build a full guide for any of them.</p>';
   h+=(sugMsg?'<p class="err">'+esc(sugMsg)+'</p>':'')+'<button class="btn" data-sug="'+esc(c)+'">'+(list?'Suggest different places':'Suggest the best places')+'</button></div>';
@@ -1585,7 +1643,7 @@ const PROMPT=t=>'You are a travel researcher. Build a concise travel guide for t
 'Use real, well-known places and stay general where you are not sure of a price or rule. If the destination is a whole country or state, pick the single best region to feature and name it.';
 async function askClaude(t){
   if(!sampleFn||askBusy)return;
-  askBusy=true;askMsg='';askCtl=new AbortController();renderHome();
+  askBusy=true;busyT0=Date.now();askMsg='';askCtl=new AbortController();renderHome();
   try{
     const raw=await sampleFn.json(PROMPT(t),{signal:askCtl.signal,cache:false});
     const d=cleanPlace(raw);
@@ -1662,6 +1720,7 @@ function planPrompt(d){
   const mo=state.month?MF[state.month-1]:'its best season ('+rangeText(d.m)+')';
   return 'Plan a '+state.days+'-day trip to '+JSON.stringify(d.n+', '+d.loc)+' for '+state.ppl+' traveler(s), visiting in '+mo+'.\n'+
   'Curate the best of the best so no day is wasted. Order the days so the most important days come first. Use 5 to 6 stops per day covering sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group stops by neighborhood to cut travel time, and put each place at the time of day it works best (sunrise for quiet views, golden hour for photos, night for lit-up skylines). Include the famous themed experiences and day trips travelers ask about (for example the Harry Potter studio tour for London), plus meals with local food and gelato or sweets where fitting. For each stop give the time to allow, travel or transfer time if it is more than a few minutes, and what to book ahead or closing days if relevant. Do not invent exact prices or opening hours you are unsure of.\n'+
+  ((store.mine[d.id]||[]).length?'The traveler specifically asked to include these places, so fit them into sensible days: '+JSON.stringify(store.mine[d.id].map(p=>p.n))+'.\n':'')+
   'Known highlights you can use: photo spots '+JSON.stringify(d.spots.map(x=>x[0]+' ('+x[1]+')'))+'; food '+JSON.stringify(d.eat.map(x=>x[0]))+'. Add other well-known places too.\n'+
   'Reply with ONLY one JSON object, no markdown: {"days":[{"title":"short theme for the day","stops":[{"t":"time label such as Sunrise 6:30 AM, Morning, Lunch, Golden hour, Night view","n":"stop name","d":"time to allow, e.g. 2–3 hrs","note":"why this time is best plus one tip, 1 to 2 sentences","b":"what to book ahead or closing days, or empty"}]}]} with exactly '+state.days+' days.';
 }
@@ -1672,7 +1731,7 @@ function cleanPlan(raw,n){
 async function curatePlan(){
   const d=state.view;if(!d||!sampleFn||planBusy)return;
   const key=planKey(d);
-  planBusy=true;planMsg='';planCtl=new AbortController();if(state.view===d)renderDetail();
+  planBusy=true;busyT0=Date.now();planMsg='';planCtl=new AbortController();if(state.view===d)renderDetail();
   try{
     const raw=await sampleFn.json(planPrompt(d),{signal:planCtl.signal,cache:false});
     const plan=cleanPlan(raw,state.days);
@@ -1689,7 +1748,7 @@ async function curatePlan(){
 const moreMap={};let moreBusy=false,moreMsg='';
 async function moreStops(){
   const d=state.view;if(!d||!sampleFn||moreBusy)return;
-  moreBusy=true;moreMsg='';renderDetail();
+  moreBusy=true;busyT0=Date.now();moreMsg='';renderDetail();
   const plan=store.plans[planKey(d)]||baseDays(d,state.days);
   const have=[].concat.apply([],plan.map(x=>x.stops.map(p=>p.n)));
   try{
@@ -1703,9 +1762,32 @@ function moreHTML(d){
   if(!sampleFn)return '';
   const list=moreMap[d.id];
   let h='<h3 class="sp">More places to add</h3>';
-  if(moreBusy)return h+'<p class="muted">Finding more places…</p>';
+  if(moreBusy)return h+'<div class="actions">'+busyBtn('more')+'</div>';
   if(list)h+='<ul class="stops">'+list.map(p=>'<li><span class="tm">'+(p.t||'Any time')+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a>'+(p.area?'<p class="area">'+p.area+'</p>':'')+'<p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul>';
   h+=(moreMsg?'<p class="err">'+esc(moreMsg)+'</p>':'')+'<div class="actions"><button class="btn" data-more>'+(list?'Find different places':'Find more places near this plan')+'</button></div>';
+  return h;
+}
+
+store.mine=store.mine||{};
+let addBusy=false,addMsg='',addDraft='';
+async function addPlace(text){
+  const d=state.view;text=String(text||'').trim().slice(0,100);if(!d||!sampleFn||addBusy||text.length<2)return;
+  addBusy=true;busyT0=Date.now();addMsg='';addDraft=text;renderDetail();
+  const plan=store.plans[planKey(d)]||baseDays(d,state.days);
+  try{
+    const raw=await sampleFn.json('A traveler is planning '+state.days+' days in '+JSON.stringify(d.n+', '+d.loc)+' and wants to add this to the itinerary: '+JSON.stringify(text)+'.\nCurrent stops: '+JSON.stringify([].concat.apply([],plan.map(x=>x.stops.map(p=>p.n))))+'.\nIdentify the real place or experience (for example, "harry potter tour" in London means the Warner Bros. Studio Tour). If it is not in or near this destination, set "ok" to false. Do not invent exact prices or opening hours.\nReply with ONLY one JSON object, no markdown: {"ok":true,"n":"official name","area":"neighborhood or town","t":"best time of day","d":"time to allow","note":"why it is worth it and how to fit it into the plan, 1 to 2 sentences","b":"what to book or closing days, or empty","day":number of the day in the plan where it fits best}',{cache:false});
+    if(!raw||raw.ok===false||!raw.n)throw {code:'notfound'};
+    const st={n:clip(raw.n,90),area:clip(raw.area,60),t:clip(raw.t,40),d:clip(raw.d,24),note:clip(raw.note,260),b:clip(raw.b,160),day:Math.max(1,Math.min(14,Math.round(Number(raw.day))||1))};
+    (store.mine[d.id]=store.mine[d.id]||[]).push(st);persist();addDraft='';
+  }catch(e){addMsg=e&&e.code==='notfound'?'That does not look like a place in or near '+d.n+'. Try another name.':e&&e.code==='not_granted'?'Claude access was declined.':e&&e.code==='rate_limited'?'Too many requests. Wait a minute.':'Claude could not add that. Try again.';}
+  addBusy=false;if(state.view===d)renderDetail();
+}
+function addHTML(d){
+  const mine=store.mine[d.id]||[];
+  let h='<h3 class="sp">Add your own places</h3>';
+  if(mine.length)h+='<ul class="stops">'+mine.map((p,i)=>'<li><span class="tm">'+(p.day?'Day '+p.day:'')+(p.t?' · '+p.t:'')+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a> <button class="lnk" data-rmmine="'+i+'">Remove</button>'+(p.area?'<p class="area">'+p.area+'</p>':'')+'<p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul>';
+  if(!sampleFn)return h+'<p class="muted">Adding custom places works in the Claude-hosted version.</p>';
+  h+='<form class="sform" data-addform><input class="search" id="addq" type="search" placeholder="Type a place, e.g. Harry Potter tour" value="'+esc(addDraft)+'" aria-label="Add a place" autocomplete="off"'+(addBusy?' disabled':'')+'>'+(addBusy?busyBtn('add'):'<button class="btn sun" type="submit">Add to plan</button>')+'</form>'+(addMsg?'<p class="err">'+esc(addMsg)+'</p>':'');
   return h;
 }
 const mapUrl=(n,d)=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(String(n).replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"')+' '+String(d.n).replace(/&amp;/g,'&'));
@@ -1714,10 +1796,10 @@ function planHTML(d){
   let h='<div class="planhead"><h3>'+n+'-day plan</h3><label class="sel"><span>Days</span><select data-days aria-label="Number of days">'+Array.from({length:14},(_,i)=>'<option value="'+(i+1)+'"'+(n===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label></div>';
   if(!ai&&n>days.length)h+='<p class="note"><b>The library plan covers '+days.length+' days.</b>'+(sampleFn?' Ask Claude to curate all '+n+' days with the best time for each stop.':' The Claude-hosted version can curate all '+n+' days.')+'</p>';
   if(sampleFn){
-    if(planBusy)h+='<p class="note"><b>Curating your '+n+'-day plan…</b> This usually takes about a minute.</p><button class="btn" data-planstop>Stop</button>';
+    if(planBusy)h+='<p class="muted">Claude is curating your '+n+'-day plan. This usually takes about a minute.</p><div class="actions">'+busyBtn('plan','data-planstop')+'</div>';
     else h+='<div class="actions"><button class="btn sun" data-plan>'+(ai?'Redo with Claude':'Curate my '+n+'-day plan with Claude')+'</button>'+(ai?'<button class="btn" data-planreset>Show library plan</button>':'')+'</div>'+(planMsg?'<p class="err">'+esc(planMsg)+'</p>':'')+(ai?'<p class="muted s">Made by Claude. Check hours and prices before you book.</p>':'');
   }
-  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4>'+(x.area?'<p class="area">'+x.area+'</p>':'')+'<ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a><p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul></div></li>').join('')+'</ol>'+moreHTML(d);
+  h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4>'+(x.area?'<p class="area">'+x.area+'</p>':'')+'<ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a><p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul></div></li>').join('')+'</ol>'+addHTML(d)+moreHTML(d);
   return h;
 }
 function panelHTML(d){
@@ -1767,10 +1849,11 @@ function copyText(text){
 const rerender=()=>{state.view?renderDetail():renderHome();};
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-sug],[data-more],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
+  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-sug],[data-more],[data-rmmine],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
   if(!t)return;
   if(t.dataset.open){e.preventDefault();openDetail(t.dataset.open);return;}
   if(t.dataset.cont){state.cont=t.dataset.cont;if(state.country!=='all'&&state.cont!=='all'&&CONT_OF[state.country]!==state.cont){state.country='all';state.region='all';}renderHome();return;}
+  if(t.dataset.rmmine!==undefined){const L=store.mine[state.view.id]||[];L.splice(+t.dataset.rmmine,1);persist();renderDetail();return;}
   if(t.dataset.more!==undefined){moreStops();return;}
   if(t.dataset.sug){suggestMore(state.country);return;}
   if(t.dataset.ask){askClaude(t.dataset.ask.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'));return;}
@@ -1805,6 +1888,7 @@ document.addEventListener('click',e=>{
     openDetail(list[Math.floor(Math.random()*list.length)].id);
   }
 });
+document.addEventListener('submit',e=>{if(e.target.matches&&e.target.matches('[data-addform]')){e.preventDefault();const v=e.target.querySelector('#addq').value;addPlace(v);}});
 document.addEventListener('change',e=>{
   const t=e.target;
   if(t.matches&&t.matches('[data-days]')){state.days=+t.value;renderDetail();return;}
