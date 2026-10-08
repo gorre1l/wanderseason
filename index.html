@@ -238,6 +238,15 @@ h3.sp{margin-top:24px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .lnk{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;padding:0;margin-left:6px;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+.events{margin:0 0 20px}
+.evh{font:600 22px var(--serif,Fraunces,Georgia,serif);margin:0 0 10px}
+.evrow{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity}
+.ev{flex:0 0 min(290px,82%);scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.ev h4{margin:0;font-size:17px;line-height:1.25}
+.ev p{margin:0;font-size:14px}
+.ev .evw{font-weight:700}
+.pill.evk{background:var(--soft);color:var(--accent);backdrop-filter:none}
+.ev .btn{margin-top:auto;min-height:38px}
 </style>
 </head><body>
 
@@ -295,6 +304,8 @@ h3.sp{margin-top:24px}
       </details>
     </div>
 
+    <section class="events" id="events" hidden></section>
+
     <div class="grid" id="grid"></div>
   </section>
 
@@ -309,7 +320,7 @@ try{console.info('Wanderseason © 2026 Lalitha Priya Gorre. All rights reserved.
 const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MF=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const SC={tx:'Texas',usa:'USA',world:'World'};
-const TAGS=['nature','adventure','beach','culture','city','festival'];
+const TAGS=['nature','adventure','beach','culture','city','festival','fashion'];
 
 const D=[
 {id:'bigbend',n:'Big Bend National Park',loc:'West Texas',sc:'tx',m:[11,12,1,2,3],tags:['nature','adventure'],z:'desert',h:28,
@@ -687,7 +698,7 @@ P('yosemite','Yosemite Valley','California','United States',[4,5,6,9,10],['natur
  [120,230,480],'Car needed|A car is easiest. A free valley shuttle runs year-round.',
  ['Lodging or camping|Book ahead|Popular dates sell out months ahead.','Park entry|Check|Reservation rules change by season. Check the park website.'],
  'The Ahwahnee afternoon tea|Great Lounge views of the cliffs.|Check seasonal hours.');
-P('nyc','New York City','New York','United States',[4,5,6,9,10,11,12],['city','culture'],'temperate',230,'city',{shop:'Outlets at Woodbury Common offer designer discounts a bus ride north of the city. Sample sales and end-of-season sales (January and July) cut prices sharply in SoHo and Fifth Avenue.'},
+P('nyc','New York City','New York','United States',[4,5,6,9,10,11,12],['city','culture','fashion'],'temperate',230,'city',{shop:'Outlets at Woodbury Common offer designer discounts a bus ride north of the city. Sample sales and end-of-season sales (January and July) cut prices sharply in SoHo and Fifth Avenue.'},
  'Skyline, Broadway, museums and neighborhood food from every corner of the world.','Walk or take the subway. Taxis in traffic cost far more than they save.',
  ['Brooklyn Bridge at sunrise|Sunrise|Walk from Brooklyn toward Manhattan with fewer people.','Top of the Rock|Sunset|Skyline views that include the Empire State Building.','Central Park Bow Bridge|Morning|A classic photo with the San Remo towers behind.'],
  ['Midtown|Grand Central, the Public Library and Top of the Rock.','Downtown|Brooklyn Bridge, DUMBO, then a waterfront dinner.','Uptown|Central Park and a museum afternoon.'],
@@ -825,7 +836,7 @@ P('uyuni','Salar de Uyuni','Potosí','Bolivia',[1,2,3,7,8,9,10,11],['nature','ad
  ['Salt flats tours|Book ahead|Book with a reputable operator.','Lodging in Uyuni|Book ahead|Fills in peak season.'],
  'Salt hotel stay|A hotel built partly from salt blocks.|Book ahead.');
 /* ---------- Europe ---------- */
-P('paris','Paris','Île-de-France','France',[4,5,6,9,10,12],['city','culture'],'temperate',330,'city',{shop:'Visitors who live outside the EU can claim a VAT refund (détaxe) on purchases above a minimum in one store on one day. Ask for the form at checkout. Sales run in January and July. Look for outlet villages such as La Vallée Village near Paris.'},
+P('paris','Paris','Île-de-France','France',[4,5,6,9,10,12],['city','culture','fashion'],'temperate',330,'city',{shop:'Fashion lovers: Dior is at 30 Avenue Montaigne, Hermès at 24 Rue du Faubourg Saint-Honoré, Chanel at 31 Rue Cambon, and Louis Vuitton on the Champs-Élysées. Expect queues on weekends, so go on a weekday at opening. Hermès bags such as the Birkin and Kelly are not guaranteed to be in stock, so ask what is available instead of a specific model. Visitors who live outside the EU can claim a VAT refund (détaxe) above a minimum spend in one store on one day, so ask for the form at checkout. Sales run in January and July. Le Bon Marché and Galeries Lafayette are good for comparing brands under one roof.'},
  'Cafés, museums, bridges and boulevards in the city that invented the long, slow lunch.','Book the Louvre and the Eiffel Tower summit by timed ticket and arrive early.',
  ['Trocadéro|Sunrise|The Eiffel Tower in soft morning light with few people.','Montmartre|Morning|Cobbled lanes and Sacré-Cœur.','Pont Alexandre III|Golden hour|Gilded lamps over the Seine.'],
  ['Left Bank|Notre-Dame area, Latin Quarter and the Luxembourg Garden.','Louvre and Tuileries|Timed Louvre visit, a stroll to the Eiffel Tower.','Montmartre|Sacré-Cœur, a bistro lunch and a Seine sunset.'],
@@ -841,7 +852,7 @@ P('barcelona','Barcelona','Catalonia','Spain',[5,6,9,10],['city','culture','beac
  [140,260,520],'Transit works|The metro and buses are efficient. Many sights are walkable.',
  ['Sagrada Família and Park Güell|Required|Timed tickets sell out.','Flamenco or a food tour|Optional|Reserve a few days ahead.'],
  'Rooftop with Sagrada views|A hotel bar with a skyline view.|Book ahead.');
-P('london','London','England','United Kingdom',[5,6,7,9,12],['city','culture'],'temperate',220,'city',{shop:'The tourist VAT refund ended in 2021, so there is no tax-free shopping. Look for sales in January and July, and for Bicester Village outlet discounts outside the city.'},
+P('london','London','England','United Kingdom',[5,6,7,9,12],['city','culture','fashion'],'temperate',220,'city',{shop:'The tourist VAT refund ended in 2021, so there is no tax-free shopping. Look for sales in January and July, and for Bicester Village outlet discounts outside the city.'},
  'Royal sights, free museums, pubs and parks in one of the world’s great cities.','Many top museums are free. Spend on timed attractions instead.',
  ['Tower Bridge|Sunrise|Walk along the river from the Tower of London.','Primrose Hill|Sunset|A free view of the skyline.','Notting Hill|Morning|Pastel houses and Portobello Road.'],
  ['Westminster|Big Ben, the Abbey and St James’s Park.','Museums|British Museum, Covent Garden and a West End show.','Greenwich|Observatory hill and the river.'],
@@ -921,8 +932,16 @@ P('vienna','Vienna','Vienna','Austria',[4,5,6,9,11,12],['city','culture'],'tempe
  [140,260,520],'Transit works|The U-Bahn and trams are easy.',
  ['Opera and concerts|Book ahead|Popular shows sell out.','Palace tickets|Optional|Timed tickets save waiting.'],
  'Ball or concert in a palace|Classical music in a grand hall.|Book ahead.');
+P('milan','Milan','Lombardy','Italy',[2,4,5,6,9,10],['city','culture','fashion'],'temperate',350,'city',{ev:'Milan Fashion Week is usually held in February and September. Salone del Mobile design week is in April.',shop:'The Quadrilatero della Moda around Via Montenapoleone and Via della Spiga holds the major houses. Non-EU visitors can claim a VAT refund above a minimum spend in one store. Outlets such as Serravalle and Fidenza Village are a train or bus ride away.'},
+ 'Italy’s fashion and design capital, with a grand cathedral, Leonardo’s Last Supper and aperitivo at the canals.','Book The Last Supper weeks ahead, since entry is in small timed groups.',
+ ['Galleria Vittorio Emanuele II|Morning|A glass-roofed arcade beside the Duomo, quiet before 10.','Duomo di Milano rooftop|Sunset|Walk among the spires with the city below.','Navigli canals|Golden hour|Aperitivo along the water.'],
+ ['Duomo|Cathedral, rooftop and the Galleria.','Fashion Quarter|Montenapoleone, Via della Spiga and a fashion museum.','Lake Como|A day trip by train to Varenna or Como.'],
+ ['Risotto alla Milanese|Saffron risotto.|Local dish|$$','Aperitivo|Drinks with a snack buffet at the canals.|Budget|$$','Gelato|Many shops across the city.|Gelato|$'],
+ [160,300,700],'Transit works|The metro, trams and trains are efficient and the center is walkable.',
+ ['The Last Supper|Required|Timed entry in small groups. Book weeks or months ahead.','Fashion Week lodging|Book ahead|Hotels fill and prices jump.'],
+ 'Aperitivo at a rooftop bar|Skyline views of the Duomo.|Reserve for weekends.');
 /* ---------- Asia ---------- */
-P('tokyo','Tokyo','Tokyo','Japan',[3,4,5,10,11],['city','culture','festival'],'temperate',335,'city',{ev:'Cherry blossoms usually peak in late March to early April. Autumn color peaks in late November.',shop:'Tourists can shop tax-free at many stores, and Japan is changing its tax-free system to a refund after purchase from late 2026. Ask the store how it works and carry your passport.'},
+P('tokyo','Tokyo','Tokyo','Japan',[3,4,5,10,11],['city','culture','festival','fashion'],'temperate',335,'city',{ev:'Cherry blossoms usually peak in late March to early April. Autumn color peaks in late November.',shop:'Tourists can shop tax-free at many stores, and Japan is changing its tax-free system to a refund after purchase from late 2026. Ask the store how it works and carry your passport.'},
  'Neon crossings, quiet shrines, tiny bars and some of the world’s best food.','Get a transit IC card on arrival. Trains are punctual and cover almost everything.',
  ['Shibuya Crossing|Evening|The busiest crossing in the world, best from above.','Senso-ji Temple|Sunrise|Quiet at dawn, lively by day.','Meiji Shrine|Morning|A forest path to a calm shrine.'],
  ['Asakusa and Ueno|Senso-ji, a market and a park walk.','Shibuya and Harajuku|Crossing, Meiji Shrine and street fashion.','Shinjuku|Skyline views and izakaya alleys.'],
@@ -946,7 +965,7 @@ P('halong','Ha Long Bay and Hanoi','Quang Ninh','Vietnam',[3,4,5,10,11],['nature
  [50,110,300],'Mixed|Taxis and ride apps are cheap. Tours often include transfers.',
  ['Overnight cruise|Book ahead|Popular ships sell out.','Hanoi lodging|Optional|Book ahead for holidays.'],
  'Luxury cruise|A private balcony cabin on the bay.|Book ahead.');
-P('dubai','Dubai','Dubai','United Arab Emirates',[11,12,1,2,3],['city','culture'],'desert',35,'city',{ev:'Summer is very hot. Winter is the main season.',shop:'The Dubai Shopping Festival and summer sales cut prices. Tourists can claim a VAT refund on eligible purchases at the airport.'},
+P('dubai','Dubai','Dubai','United Arab Emirates',[11,12,1,2,3],['city','culture','fashion'],'desert',35,'city',{ev:'Summer is very hot. Winter is the main season.',shop:'The Dubai Shopping Festival and summer sales cut prices. Tourists can claim a VAT refund on eligible purchases at the airport.'},
  'Record-setting towers, desert dunes and a huge shopping scene.','Respect local rules on dress and public behavior, and stay hydrated.',
  ['Burj Khalifa|Sunset|Go up at sunset for city and desert views.','Dubai Marina|Evening|A waterfront promenade.','Desert dunes|Sunrise|A morning safari or camp.'],
  ['Downtown|Burj Khalifa, the fountain and Dubai Mall.','Old Dubai|Creek, souks and gold.','Desert|A dune safari with dinner.'],
@@ -994,7 +1013,7 @@ P('kerala','Kerala Backwaters','Kerala','India',[10,11,12,1,2,3],['nature','cult
  [40,100,300],'Mixed|Trains, buses and taxis are cheap.',
  ['Houseboat|Book ahead|Reserve in peak season.','Lodging|Optional|Book ahead around Onam.'],
  'Private houseboat|A staffed boat with meals.|Book ahead.');
-P('seoul','Seoul','Seoul','South Korea',[4,5,9,10,11],['city','culture'],'temperate',350,'city',{ev:'Cherry blossoms bloom in early April and autumn color peaks in late October.',shop:'Seoul has skincare and fashion shops, and many offer tax-free refunds for tourists. Compare prices at Myeongdong, Hongdae and Garosugil.'},
+P('seoul','Seoul','Seoul','South Korea',[4,5,9,10,11],['city','culture','fashion'],'temperate',350,'city',{ev:'Cherry blossoms bloom in early April and autumn color peaks in late October.',shop:'Seoul has skincare and fashion shops, and many offer tax-free refunds for tourists. Compare prices at Myeongdong, Hongdae and Garosugil.'},
  'Palaces, hanbok streets, skincare shops and street food.','Rent a hanbok for free entry to many palaces.',
  ['Gyeongbokgung Palace|Morning|Guard changing and mountain backdrop.','Bukchon Hanok Village|Sunrise|Traditional homes with fewer visitors.','N Seoul Tower|Sunset|City skyline from a hilltop.'],
  ['Palaces|Gyeongbokgung and Bukchon.','Markets|Gwangjang Market and Myeongdong.','Hongdae|Cafés, indie shops and nightlife.'],
@@ -1258,6 +1277,14 @@ paris:[
  'Afternoon|Tuileries Garden and Place Vendôme|1 hr|Walk from the Louvre toward Place Vendôme.',
  'Late afternoon|Palais Garnier|1 hr|A grand opera house. Visit the interior on a self-guided ticket.',
  'Golden hour|Galeries Lafayette rooftop|30 min|A free terrace view over Paris.']],
+['Fashion and luxury Paris: Dior, Hermès and the museums','Montaigne, Faubourg Saint-Honoré and Place Vendôme',[
+ 'Morning 10:00|Dior flagship, 30 Avenue Montaigne|1 hr|The house’s flagship with its famous façade and boutique. Go at opening on a weekday to avoid queues.',
+ 'Late morning|La Galerie Dior|1.5–2 hrs|A museum of the house’s history with dresses and archives, a short walk away.|Book a timed ticket ahead and check opening days',
+ 'Lunch|Café or restaurant at Dior, or a café on Avenue Montaigne|1–1.5 hrs|A fashionable lunch stop in the Golden Triangle.|Reserve ahead for restaurants',
+ 'Afternoon|Hermès flagship, 24 Rue du Faubourg Saint-Honoré|1 hr|Scarves, leather goods and the house’s history. Queues are common on weekends.|Visit on a weekday at opening',
+ 'Late afternoon|Rue du Faubourg Saint-Honoré, Rue Cambon and Place Vendôme|1.5 hrs|Walk past Chanel, Cartier and Van Cleef & Arpels, with the arcades and Vendôme column.',
+ 'Evening|Le Bon Marché and Hermès Rive Gauche|1.5 hrs|The department store in the 7th, with La Grande Épicerie. Hermès Rive Gauche sits nearby in a former Art Deco swimming pool.',
+ 'Optional|Palais Galliera or Musée Yves Saint Laurent Paris|1.5 hrs|Fashion museums for a quieter day. Both are closed Mondays.|Check current exhibitions and book timed tickets']],
 ['Montmartre and the Marais','18th and 4th arrondissements',[
  'Sunrise|Sacré-Cœur and Montmartre steps|1.5 hrs|A quiet climb at sunrise before the crowds.',
  'Morning|Place du Tertre and Moulin Rouge|1 hr|Artists’ square and the famous windmill from outside.',
@@ -1323,9 +1350,80 @@ tokyo:[
  'Afternoon|Inokashira Park and Kichijoji|2 hrs|Boats on the pond and small shops.',
  'Evening|Akihabara|2 hrs|Anime stores and arcades.']]
 ]
+,milan:[
+['Duomo, Galleria and The Last Supper','Centro Storico',[
+ 'Morning 9:00|Galleria Vittorio Emanuele II and Duomo di Milano|1.5 hrs|The arcade is quiet early. Then enter the cathedral and climb to the rooftop.|Book Duomo tickets online',
+ 'Late morning|The Last Supper|15 min inside, 1 hr around it|Leonardo’s mural at Santa Maria delle Grazie. Entry is in small timed groups.|Book weeks or months ahead',
+ 'Lunch|Panzerotti or risotto in the center|1 hr|A quick Milanese lunch.',
+ 'Afternoon|Castello Sforzesco and Parco Sempione|2 hrs|A castle with museums and a park behind it.',
+ 'Sunset|Duomo rooftop terraces|1 hr|Spires and city views at golden hour.|Book a late slot',
+ 'Evening|Aperitivo at the Navigli canals|1.5 hrs|Drinks with a snack buffet along the water.']],
+['Fashion Milan','Quadrilatero della Moda',[
+ 'Morning 10:00|Via Montenapoleone and Via della Spiga|2 hrs|Armani, Prada, Versace, Gucci and more. Many boutiques open around 10.',
+ 'Midday|Armani/Silos|1.5 hrs|A museum of the designer’s work. Closed Mondays.|Check hours and book ahead',
+ 'Lunch|Brera district|1.5 hrs|Cafés and galleries.',
+ 'Afternoon|Fondazione Prada|2 hrs|Contemporary art in a former distillery. Closed Tuesdays.|Check hours and book ahead',
+ 'Evening|10 Corso Como or Brera dinner|2 hrs|Concept store and dinner.']],
+['Lake Como day trip','Como',[
+ 'Morning 9:00|Train to Varenna or Como|1 hr|A scenic ride along the lake. Trains run from Milano Centrale.',
+ 'Midday|Varenna and Bellagio ferry|3 hrs|Lakeside lanes and villas.',
+ 'Evening|Back to Milan|1 hr|Dinner in the center.']]
+]
 };
 const parseStop=s=>{const p=s.split('|');return {t:p[0],n:p[1],d:p[2]||'',note:p[3]||'',b:p[4]||''};};
 Object.keys(PLANS).forEach(k=>{PLANS[k]=PLANS[k].map(x=>({title:x[0],area:x[1],stops:x[2].map(parseStop)}));});
+/* Annual events and festivals. Dates move each year, so "when" is a typical window. Format: id|name|library place id|city|country|months|typical timing|kind|note */
+const EVRAW=[
+'pfw|Paris Fashion Week, women’s|paris|Paris|France|2,3,9,10|Late February to early March, and late September to early October|fashion|Runway shows are by invitation. Visitors can still see street style outside venues, pop-up events and fashion museums. Hotels book up and prices rise.',
+'pfwm|Paris Men’s Fashion Week|paris|Paris|France|1,6|Mid January and late June|fashion|Mostly invitation-only. Brand flagships and pop-ups are open to everyone.',
+'couture|Paris Haute Couture Week|paris|Paris|France|1,7|Late January and early July|fashion|Couture shows are private. Galerie Dior and fashion museums are open to the public.',
+'mfw|Milan Fashion Week|milan|Milan|Italy|2,9|Late February and mid to late September|fashion|Shows are by invitation. Montenapoleone boutiques and events around the city are open to visitors.',
+'nyfw|New York Fashion Week|nyc|New York City|United States|2,9|Mid February and early to mid September|fashion|Most shows are invitation-only. Some pop-ups and events are open to the public.',
+'lfw|London Fashion Week|london|London|United Kingdom|2,9|Late February and mid to late September|fashion|Some events are open to the public. Check the official site for tickets.',
+'rfwt|Tokyo Fashion Week|tokyo|Tokyo|Japan|3,10|March and October|fashion|Shows and events are scattered across Shibuya and Harajuku. Street style is the free show.',
+'sfw|Seoul Fashion Week|seoul|Seoul|South Korea|3,10|March and October|fashion|Held at Dongdaemun Design Plaza. Some events are open to the public.',
+'cfw|Copenhagen Fashion Week||Copenhagen|Denmark|2,8|Early February and early August|fashion|Scandinavian design shows and showrooms.',
+'metgala|Met Gala arrivals|nyc|New York City|United States|5|First Monday in May|fashion|The gala is private, but the red carpet on Fifth Avenue draws crowds outside the museum.',
+'dubaisf|Dubai Shopping Festival|dubai|Dubai|United Arab Emirates|12,1|Mid December to late January|fashion|Sales, fireworks and events across the malls.',
+'sale_london|London winter and summer sales|london|London|United Kingdom|1,7|Starting around Boxing Day and in early summer|fashion|Fashion and department stores cut prices. Plan for queues on opening days.',
+'sale_paris|Paris soldes, the official sales|paris|Paris|France|1,7|Mid-January to February and late June to July|fashion|Prices drop at department stores and boutiques, including Le Bon Marché.',
+'cannes|Cannes Film Festival||Cannes|France|5|Mid to late May|film|Screenings are mostly for accredited guests. Red carpet and crowds are visible near the Palais des Festivals.',
+'venice_ff|Venice Film Festival||Venice|Italy|8,9|Late August to early September|film|The Lido hosts the festival. Book lodging far ahead.',
+'monaco|Monaco Grand Prix||Monaco|Monaco|5|Late May|sport|Tickets sell out and hotels in nearby towns fill. Plan well ahead.',
+'oktoberfest|Oktoberfest||Munich|Germany|9,10|Mid-September to early October|festival|Book tents and lodging early, and bring cash for some stalls.',
+'fringe|Edinburgh Festival Fringe||Edinburgh|United Kingdom|8|August|festival|The world’s largest arts festival. Book lodging and shows ahead.',
+'rio_carnival|Rio Carnival|rio|Rio de Janeiro|Brazil|2,3|Late February or early March|festival|Book lodging many months ahead. Samba parades need tickets.',
+'venice_c|Venice Carnival||Venice|Italy|2|Two weeks before Lent|festival|Masks, balls and crowds. Book early.',
+'holi|Holi|jaipur|Jaipur|India|3|March, on the full moon|festival|The festival of colors. Wear old clothes and protect your phone.',
+'diwali|Diwali, the festival of lights|jaipur|Jaipur|India|10,11|October or November|festival|Lights, sweets and fireworks. Markets are busiest the week before.',
+'devdeep|Dev Deepawali|varanasi|Varanasi|India|11|Full moon in November|festival|Thousands of lamps line the ghats. Book lodging well ahead.',
+'pushkar|Pushkar Camel Fair||Pushkar|India|11|November|festival|A giant livestock and cultural fair near Jaipur.',
+'jlf|Jaipur Literature Festival|jaipur|Jaipur|India|1|Late January|culture|Authors and crowds in a palace setting. Book lodging early.',
+'onam|Onam|kerala|Kerala|India|8,9|Late August or early September|festival|Harvest festival with boat races, flower carpets and feasts.',
+'ganesh|Ganesh Chaturthi|mumbai|Mumbai|India|8,9|Late August or September|festival|Giant idols and processions across the city.',
+'brahm|Tirumala Brahmotsavam|tirupati|Tirupati|India|9,10|September or October|festival|Huge crowds. Book darshan and lodging well ahead.',
+'bathukamma|Bathukamma and Dasara|hyderabad|Hyderabad|India|9,10|September to October|festival|Telangana’s flower festival with processions and songs.',
+'dod|Day of the Dead|oaxaca|Oaxaca|Mexico|10,11|October 31 to November 2|festival|Altars, cemeteries and parades. Book months ahead.',
+'songkran|Songkran, the Thai water festival|chiangmai|Chiang Mai|Thailand|4|Mid April|festival|A giant water fight. Protect your phone and bring a dry bag.',
+'loy|Yi Peng and Loy Krathong|chiangmai|Chiang Mai|Thailand|11|November, around the full moon|festival|Lantern releases and floating baskets. Book lodging early.',
+'sakura|Cherry blossom season|tokyo|Tokyo|Japan|3,4|Late March to early April|nature|Peak bloom moves each year. Check forecasts and book lodging ahead.',
+'xmas_vienna|Vienna Christmas markets|vienna|Vienna|Austria|11,12|Mid-November to late December|festival|Mulled wine and crafts in front of the Rathaus and other squares.',
+'xmas_prague|Prague Christmas markets|prague|Prague|Czechia|11,12|Late November to early January|festival|Old Town Square and Wenceslas Square.',
+'mardigras|Mardi Gras|neworleans|New Orleans|United States|2,3|February or March|festival|Parades and parties. Book lodging far ahead.',
+'jazzfest|New Orleans Jazz and Heritage Festival|neworleans|New Orleans|United States|4,5|Late April to early May|festival|Music, food and crowds.',
+'sxsw|SXSW|austin|Austin|United States|3|March|festival|A film, music and tech festival. Hotels fill and prices jump.',
+'acl|Austin City Limits Music Festival|austin|Austin|United States|10|Early to mid October|festival|Two weekends of live music at Zilker Park.',
+'balloon|Albuquerque International Balloon Fiesta|abq|Albuquerque|United States|10|Early October|festival|Mass ascensions at dawn. Book lodging a year ahead.',
+'tulips_ev|Keukenhof tulip season|tulips|Lisse|Netherlands|4,5|Late March to mid May|nature|Peak bloom is usually mid April.',
+'lavender|Lavender bloom in Provence|provence|Valensole|France|6,7|Mid June to late July|nature|Fields peak at golden hour. Stay on public paths.',
+'tomatina|La Tomatina||Buñol|Spain|8|Last Wednesday of August|festival|A tomato food fight. Tickets are required.',
+'burningman|Burning Man||Black Rock City|United States|8,9|Late August to early September|festival|A large desert event with strict preparation rules.',
+'coachella|Coachella||Indio|United States|4|Mid April, two weekends|festival|Tickets sell out. Book lodging far ahead.',
+'sapporo|Sapporo Snow Festival||Sapporo|Japan|2|Early February|festival|Giant snow sculptures. Dress for deep cold.',
+'sakura_k|Kyoto autumn leaves|kyoto|Kyoto|Japan|11|Mid to late November|nature|Temples and gardens glow red. Book lodging early.'
+];
+const EV=EVRAW.map(s=>{const p=s.split('|');return {id:p[0],n:p[1],place:p[2],city:p[3],country:p[4],m:p[5].split(',').map(Number),when:p[6],kind:p[7],note:p[8],q:p[3]+', '+p[4]};});
+const KINDL={fashion:'Fashion',festival:'Festival',film:'Film',sport:'Sport',culture:'Culture',nature:'Nature'};
 /* Entry rules by destination country and passport. Compiled from government pages and travel sites on Oct 3, 2026. Rules change. */
 const CODE={'United States':'us','Canada':'ca','Japan':'jp','Indonesia':'id','Turkey':'tr','Morocco':'ma','Chile':'cl','United Kingdom':'gb','India':'in'};
 const SCH=['Austria','Belgium','Bulgaria','Croatia','Czechia','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Iceland','Italy','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Netherlands','Norway','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden','Switzerland'];
@@ -1686,7 +1784,7 @@ async function askClaude(t){
   askBusy=false;askCtl=null;if(!state.view)renderHome();
 }
 function renderHome(){
-  renderControls();renderHero();
+  renderControls();renderHero();renderEvents();
   const r=results();
   $('#sub').textContent=r.length+' of '+D.length+(r.length===1?' place':' places')+(state.month?' at their best this month.':'. Places in season now come first.')+' Pick a country or state, or search for any place on earth.';
   $('#grid').innerHTML=(r.length?r.map(card).join(''):'<div class="empty"><p>No guides match these filters yet.</p><button class="btn" data-reset>Show all places</button></div>')+sugCard()+askCard(r.length);
@@ -1746,6 +1844,7 @@ function planPrompt(d){
   const mo=state.month?MF[state.month-1]:'its best season ('+rangeText(d.m)+')';
   return 'Plan a '+state.days+'-day trip to '+JSON.stringify(d.n+', '+d.loc)+' for '+state.ppl+' traveler(s), visiting in '+mo+'.\n'+
   'Curate the best of the best so no day is wasted. Order the days so the most important days come first. Use 5 to 6 stops per day covering sunrise or morning, midday, afternoon, sunset or golden hour, and evening or night. Group stops by neighborhood to cut travel time, and put each place at the time of day it works best (sunrise for quiet views, golden hour for photos, night for lit-up skylines). Include the famous themed experiences and day trips travelers ask about (for example the Harry Potter studio tour for London), plus meals with local food and gelato or sweets where fitting. For each stop give the time to allow, travel or transfer time if it is more than a few minutes, and what to book ahead or closing days if relevant. Do not invent exact prices or opening hours you are unsure of. Keep every note under 20 words so the reply is not cut off.\n'+
+  (eventsFor(d).filter(e=>state.month&&e.m.includes(state.month)).length?'These events overlap the traveler’s month, so build them in where public access is possible: '+JSON.stringify(eventsFor(d).filter(e=>e.m.includes(state.month)).map(e=>e.n+': '+e.note))+'.\n':'')+
   ((store.mine[d.id]||[]).length?'The traveler specifically asked to include these places, so fit them into sensible days: '+JSON.stringify(store.mine[d.id].map(p=>p.n))+'.\n':'')+
   'Known highlights you can use: photo spots '+JSON.stringify(d.spots.map(x=>x[0]+' ('+x[1]+')'))+'; food '+JSON.stringify(d.eat.map(x=>x[0]))+'. Add other well-known places too.\n'+
   'Reply with ONLY one JSON object, no markdown: {"days":[{"title":"short theme for the day","stops":[{"t":"time label such as Sunrise 6:30 AM, Morning, Lunch, Golden hour, Night view","n":"stop name","d":"time to allow, e.g. 2–3 hrs","note":"why this time is best plus one tip, 1 to 2 sentences","b":"what to book ahead or closing days, or empty"}]}]} with exactly '+state.days+' days.';
@@ -1817,9 +1916,30 @@ function addHTML(d){
   return h;
 }
 const mapUrl=(n,d)=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(String(n).replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"')+' '+String(d.n).replace(/&amp;/g,'&'));
+
+const eventsFor=d=>EV.filter(e=>e.place===d.id);
+function evCard(e){
+  const has=e.place&&D.some(x=>x.id===e.place);
+  const act=has?'<button class="btn" data-open="'+e.place+'">Open guide</button>':(sampleFn?'<button class="btn" data-ask="'+esc(e.q)+'">Build guide</button>':'');
+  return '<article class="ev"><span class="pill evk">'+(KINDL[e.kind]||'Event')+'</span><h4>'+e.n+'</h4><p class="area">'+e.city+', '+e.country+'</p><p class="evw">'+e.when+'</p><p class="muted">'+e.note+'</p>'+act+'</article>';
+}
+function renderEvents(){
+  const ref=state.month||nowM;
+  const list=EV.filter(e=>e.m.includes(ref)&&(state.cont==='all'||CONT_OF[e.country]===state.cont||(e.country==='Monaco'&&state.cont==='Europe'))&&(state.country==='all'||e.country===state.country)&&(state.tag==='all'||state.tag==='festival'&&e.kind==='festival'||state.tag==='fashion'&&e.kind==='fashion'||(state.tag!=='festival'&&state.tag!=='fashion'))).sort((a,b)=>(a.kind==='fashion'?0:1)-(b.kind==='fashion'?0:1)||a.n.localeCompare(b.n));
+  const box=$('#events');
+  if(!list.length){box.hidden=true;box.innerHTML='';return;}
+  box.hidden=false;
+  box.innerHTML='<h2 class="evh">Events in '+MF[ref-1]+(state.month?'':' (this month)')+'</h2><div class="evrow">'+list.map(evCard).join('')+'</div>';
+}
+function eventsPanel(d,compact){
+  const L=eventsFor(d);if(!L.length)return '';
+  return '<h3 class="sp">Events and festivals</h3><ul class="spots">'+L.map(e=>'<li class="spot"><h4>'+e.n+' <span class="when'+(e.m.includes(state.month)?'':' alt')+'">'+(e.m.includes(state.month)?'In your month':rangeText(e.m))+'</span></h4><p>'+e.when+'. '+e.note+'</p></li>').join('')+'</ul>';
+}
 function planHTML(d){
   const n=state.days,ai=store.plans[planKey(d)],days=ai||baseDays(d,n);
+  const evs=eventsFor(d).filter(e=>!state.month||e.m.includes(state.month));
   let h='<div class="planhead"><h3>'+n+'-day plan</h3><label class="sel"><span>Days</span><select data-days aria-label="Number of days">'+Array.from({length:14},(_,i)=>'<option value="'+(i+1)+'"'+(n===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label></div>';
+  if(evs.length)h+='<p class="note"><b>Events to plan around</b>'+evs.map(e=>e.n+' ('+e.when+')').join('. ')+'. Book lodging early and expect crowds.</p>';
   if(!ai&&n>days.length)h+='<p class="note"><b>The library plan covers '+days.length+' days.</b>'+(sampleFn?' Ask Claude to curate all '+n+' days with the best time for each stop.':' The Claude-hosted version can curate all '+n+' days.')+'</p>';
   if(sampleFn){
     if(planBusy)h+='<p class="muted">Claude is curating your '+n+'-day plan. This usually takes about a minute.</p><div class="actions">'+busyBtn('plan','data-planstop')+'</div>';
@@ -1839,7 +1959,7 @@ function panelHTML(d){
   if(t==='pack')return packHTML(d);
   const e=entry(d,state.pp,state.st);
   return '<p class="lead">'+d.b+'</p><div class="glance"><div><small>Typical daily cost</small><b>'+fmt(d.bud[1])+'</b></div><div><small>Getting around</small><b>'+d.ride[0]+'</b></div><div><small>Booking</small><b>'+bookLevel(d)+'</b></div><div><small>Entry</small><b>'+(state.pp?VL[e[0]]:'Pick passport')+'</b></div></div>'+
-    (d.ev?'<p class="note"><b>Good to know</b>'+d.ev+'</p>':'')+'<p class="note"><b>Insider tip</b>'+d.tip+'</p><h3>Best months</h3>'+monthBar(d,true)+'<div class="tagrow">'+d.tags.map(x=>'<span>'+x+'</span>').join('')+'</div>';
+    (d.ev?'<p class="note"><b>Good to know</b>'+d.ev+'</p>':'')+'<p class="note"><b>Insider tip</b>'+d.tip+'</p><h3>Best months</h3>'+monthBar(d,true)+'<div class="tagrow">'+d.tags.map(x=>'<span>'+x+'</span>').join('')+'</div>'+eventsPanel(d);
 }
 function renderDetail(){
   const d=state.view;
