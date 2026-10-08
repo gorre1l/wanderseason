@@ -320,7 +320,8 @@ try{console.info('Wanderseason © 2026 Lalitha Priya Gorre. All rights reserved.
 const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MF=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const SC={tx:'Texas',usa:'USA',world:'World'};
-const TAGS=['nature','adventure','beach','culture','city','festival','fashion'];
+const TAGS=['nature','adventure','beach','culture','city','festival','fashion','train','falls','sunset'];
+const TAGL={train:'Scenic train',falls:'Waterfalls',sunset:'Sunsets'};
 
 const D=[
 {id:'bigbend',n:'Big Bend National Park',loc:'West Texas',sc:'tx',m:[11,12,1,2,3],tags:['nature','adventure'],z:'desert',h:28,
@@ -1111,6 +1112,72 @@ P('antarctica','Antarctic Peninsula','Antarctic Peninsula','Antarctica',[11,12,1
  [500,900,1800],'Mixed|Expedition ships sail from Ushuaia.',
  ['Expedition cruise|Required|Book 12 months ahead.','Travel insurance|Required|Cover medical evacuation.'],
  'Polar cabin with a balcony|Wildlife from your room.|Book early.');
+
+/* ---------- Colorado, falls and scenic trains ---------- */
+P('rmnp','Rocky Mountain National Park','Colorado','United States',[6,7,8,9,10],['nature','adventure','falls','sunset'],'alpine',205,'peaks',{ev:'Elk rut in Estes Park runs from mid September to mid October. Trail Ridge Road is usually open from late May to mid October. Timed-entry reservations have been required in peak season.'},
+ 'Alpine lakes, waterfalls, tundra drives and big elk herds an hour and a half from Denver.','Check whether timed-entry reservations are required for your dates before you drive in.',
+ ['Bear Lake|Sunrise|A mountain-ringed lake with a short loop trail.','Alberta Falls|Morning|A short hike to a waterfall in Glacier Gorge.','Trail Ridge Road|Sunset|Tundra views above 12,000 feet.'],
+ ['Estes Park and Bear Lake|Sunrise at Bear Lake and the Alberta Falls hike.','Trail Ridge Road|The scenic drive to the Alpine Visitor Center.','Wildlife and falls|Elk at dawn and a hike to Ouzel Falls.'],
+ ['Estes Park mountain diners|Hearty breakfasts before a hike.|Budget|$','Colorado craft beer|Breweries in Estes Park.|Drink|$$','Fudge and taffy|Sweet shops downtown.|Sweet|$'],
+ [120,230,450],'Car needed|A car is needed. A free shuttle serves Bear Lake and Glacier Gorge in season.',
+ ['Timed entry reservation|Check|May be required in peak season.','Lodging in Estes Park|Book ahead|September rut season fills early.'],
+ 'Stanley Hotel stay|A historic hotel above Estes Park.|Book ahead.');
+P('maroonbells','Aspen and Maroon Bells','Colorado','United States',[6,7,9,10],['nature','sunset'],'alpine',210,'peaks',{ev:'Aspen leaves usually turn gold in late September. Maroon Bells access in season needs a shuttle or a reservation.'},
+ 'The most photographed peaks in Colorado, glowing at sunrise over a mirror-still lake.','Reserve the Maroon Bells bus or parking well ahead in summer and fall.',
+ ['Maroon Lake|Sunrise|The Bells reflect in still water at first light.','Independence Pass|Afternoon|A high mountain pass with golden aspens in fall.','Aspen downtown|Golden hour|Shops, cafés and mountain views.'],
+ ['Maroon Bells|Sunrise and a lake walk.','Independence Pass|A scenic drive with stops.','Aspen town|Cafés, shops and a gondola ride.'],
+ ['Aspen bakeries|Pastries before a sunrise trip.|Sweet|$','Local Colorado restaurants|Elk or trout dishes.|Local dish|$$$','Craft beer in Basalt|Small breweries nearby.|Drink|$$'],
+ [180,350,700],'Mixed|A shuttle bus serves Maroon Bells. A car helps for the pass.',
+ ['Maroon Bells bus or parking|Required|Reserve ahead for peak season.','Lodging|Book ahead|Fall color weeks fill early.'],
+ 'Sunrise at Maroon Lake|The classic reflection photo.|Reserve the earliest slot.');
+P('durango','Durango and the Silverton Train','Colorado','United States',[5,6,7,8,9,10],['adventure','train','culture'],'alpine',20,'forest',{ev:'The historic steam train usually runs from spring to fall. Fall color is usually best in late September. A winter Cascade Canyon train also runs.'},
+ 'A coal-fired steam train through the San Juan Mountains, then Mesa Verde’s cliff dwellings nearby.','Book the train early. A round trip takes most of a day.',
+ ['Durango and Silverton Narrow Gauge Railroad|Morning|A steam train along the Animas River.','Mesa Verde cliff dwellings|Morning|Ancestral Puebloan homes built into the cliffs.','Million Dollar Highway|Sunset|A dramatic mountain road toward Ouray.'],
+ ['Durango town|Main Avenue, the river trail and the train depot.','Silverton train|A full day on the steam train with time in Silverton.','Mesa Verde|A ranger-led cliff dwelling tour.'],
+ ['Durango breakfast spots|Hearty plates before the train.|Budget|$','Colorado craft beer|Brewpubs in downtown Durango.|Drink|$$','Silverton diners|A lunch stop during the layover.|Local dish|$'],
+ [130,240,420],'Mixed|The train departs from the Durango depot. A car is needed for Mesa Verde.',
+ ['Train tickets|Book ahead|Seats sell out in fall.','Mesa Verde cliff dwelling tours|Required|Reserve tickets through the national park.'],
+ 'Parlor car on the train|A premium seat with a private view.|Book ahead.');
+P('ouray','Telluride, Ouray and the Million Dollar Highway','Colorado','United States',[6,7,9,10],['nature','falls','sunset','adventure'],'alpine',195,'peaks',{ev:'Telluride hosts several festivals in summer. Aspens turn gold in late September and early October.'},
+ 'Box canyon waterfalls, a free gondola, hot springs and one of America’s most dramatic mountain roads.','Drive the Million Dollar Highway in daylight and in dry weather. Some stretches have steep drops.',
+ ['Bridal Veil Falls|Morning|A 365-foot waterfall above Telluride.','Box Canyon Falls|Midday|A waterfall inside a narrow canyon near Ouray.','Last Dollar Road|Golden hour|Aspens and peaks at sunset.'],
+ ['Telluride|Free gondola, Bridal Veil Falls and town.','Ouray|Box Canyon Falls and the hot springs.','Million Dollar Highway|Drive to Silverton and Durango.'],
+ ['Telluride cafés|Coffee before the gondola.|Budget|$','Ouray hot springs and burgers|A casual stop after a day outside.|Local dish|$','Colorado peach pie|A local seasonal treat.|Sweet|$'],
+ [150,280,550],'Car needed|A car is best. The Telluride gondola is free between town and Mountain Village.',
+ ['Lodging|Book ahead|Festival and fall color weeks fill early.','Hot springs|Optional|Timed entry may apply.'],
+ 'Cabin with a mountain view|A quiet stay near town.|Book ahead.');
+P('cosprings','Colorado Springs, Garden of the Gods and Pikes Peak','Colorado','United States',[5,6,7,8,9,10],['nature','train','falls','sunset'],'desert',15,'mesa',{ev:'Pikes Peak access may need timed reservations in peak season. The cog railway runs year-round, but schedules vary.'},
+ 'Red rock towers, a cog railway to a 14,000-foot summit and a waterfall climb.','Go to Garden of the Gods early. The park is free but busy by midday.',
+ ['Garden of the Gods|Sunrise|Red sandstone towers with Pikes Peak behind.','Pikes Peak Cog Railway|Morning|A mountain railway to the summit.','Seven Falls|Midday|A multi-tiered waterfall in a box canyon.'],
+ ['Garden of the Gods|A sunrise walk and the visitor center.','Pikes Peak|The cog railway or Pikes Peak Highway.','Manitou Springs and Seven Falls|Town, soda springs and the falls.'],
+ ['Manitou Springs cafés|A relaxed lunch.|Budget|$','Colorado steak and craft beer|A hearty dinner.|Local dish|$$','Salt-water taffy|A Manitou Springs sweet.|Sweet|$'],
+ [110,210,420],'Car needed|A car is best. Trails inside the park are free.',
+ ['Cog railway tickets|Book ahead|Reserve a morning departure.','Pikes Peak Highway|Check|Reservations may apply.'],
+ 'Sunrise at Garden of the Gods|Quiet light on red rock.|No booking needed.');
+P('denver','Denver and Red Rocks','Colorado','United States',[5,6,7,8,9,10],['city','sunset','nature'],'temperate',195,'city',{ev:'Red Rocks hosts concerts from spring to fall. On non-show days the amphitheater is free to visit.'},
+ 'A sunny mile-high city with an open-air mountain amphitheater, craft beer and the Rockies on the skyline.','Give yourself a day to adjust to the altitude.',
+ ['Red Rocks Amphitheatre|Sunrise|Rows of seats between giant red slabs.','Union Station|Evening|A restored station with bars and restaurants.','Larimer Square|Golden hour|String lights and old brick buildings.'],
+ ['Downtown|Union Station, Larimer Square and the 16th Street Mall.','Red Rocks|A morning visit or an evening show.','Day trip|Boulder or the Rockies.'],
+ ['Green chile|A Colorado favorite.|Local dish|$','Craft beer|Denver has many breweries.|Drink|$$','Rocky Mountain oysters and bison burgers|For the adventurous.|Local dish|$$'],
+ [130,250,500],'Transit works|Trains and buses link the airport and downtown. A car helps for the mountains.',
+ ['Red Rocks concert tickets|Book ahead|Popular shows sell out.','Lodging|Optional|Book ahead for summer weekends.'],
+ 'Concert at Red Rocks|An open-air show under the stars.|Book ahead.');
+P('niagara','Niagara Falls','Ontario','Canada',[5,6,7,8,9,12,1],['nature','falls','sunset'],'temperate',200,'waves',{loc:'Ontario, Canada and New York, United States',ev:'The falls are lit in colors every night, with fireworks on some evenings in summer. Winter brings ice formations and a festival of lights.'},
+ 'Three huge waterfalls on the Canada and U.S. border, with boat rides into the mist.','The Canadian side has the best views. Bring a poncho for the boat ride.',
+ ['Table Rock|Sunrise|The closest look at the Horseshoe Falls.','Journey Behind the Falls|Morning|Tunnels behind the water.','Skylon Tower|Night|The illuminated falls from above.'],
+ ['The falls|Table Rock, a boat tour and a rainbow at midday.','Behind the falls|Tunnels and a walk along the gorge.','Niagara-on-the-Lake|Wineries and a quiet town.'],
+ ['Niagara icewine|A sweet local dessert wine.|Drink|$$','Poutine and wings|Casual lunch near the falls.|Local dish|$$','Fudge and ice wine truffles|Sweets in town.|Sweet|$'],
+ [130,260,520],'Mixed|A walkable tourist area with shuttles. A car helps for wineries.',
+ ['Boat tour tickets|Book ahead|Buy online for peak days.','Border crossing|Check|Carry your passport if you cross.'],
+ 'Falls-view hotel room|Fireworks and lights from your window.|Book far ahead.');
+P('iguazu','Iguazú Falls','Misiones','Argentina',[3,4,5,8,9,10],['nature','falls','adventure'],'tropical',140,'forest',{south:true,loc:'Argentina and Brazil',ev:'Water flow changes through the year. Rainy months have the most water, and drier months have clearer walkways. Check conditions.'},
+ 'A wall of waterfalls in the rainforest, with the Devil’s Throat as its centerpiece.','Arrive early and see both the Argentine and Brazilian sides if you can.',
+ ['Devil’s Throat|Morning|A massive horseshoe of falling water.','Brazilian side panorama|Afternoon|Wide views across the falls.','Upper and Lower Circuits|Morning|Walkways close to the falls.'],
+ ['Argentine side|Devil’s Throat and the circuits.','Brazilian side|The panoramic walk.','Jungle day|Boat ride and wildlife.'],
+ ['Regional river fish|Local freshwater dishes.|Local dish|$$','Empanadas|A cheap snack.|Budget|$','Dulce de leche treats|Sweet Argentine staples.|Sweet|$'],
+ [100,200,400],'Mixed|Taxis and park trains. Buses link the two sides.',
+ ['Park entry|Required|Buy tickets online or at the gate.','Border crossing|Check|Carry your passport between the sides.'],
+ 'Falls-view lodge|A stay close to the national park.|Book ahead.');
 /* ---------- More of India ---------- */
 P('agra','Agra and the Taj Mahal','Uttar Pradesh','India',[10,11,12,1,2,3],['culture','city'],'desert',35,'dome',{ev:'The Taj Mahal is closed on Fridays. Winter mornings can be foggy.',shop:'Marble inlay and leather are Agra specialties. Compare prices and buy from government-run emporiums if you want fixed prices.'},
  'The white marble Taj Mahal, Mughal forts and a day trip to an abandoned red sandstone city.','Buy Taj tickets online and arrive at opening for the best light and fewer crowds.',
@@ -1217,6 +1284,10 @@ P('gandikota','Gandikota Grand Canyon','Andhra Pradesh','India',[10,11,12,1,2],[
  [30,70,160],'Car needed|A car or taxi is best from Hyderabad or Kadapa.',
  ['Camping or stays|Book ahead|Reserve winter weekends.','Boating|Optional|Check timings.'],
  'Riverside tent camp|A stay by the gorge.|Book ahead.');
+
+/* Extra vibe tags: scenic trains, waterfalls and sunsets. */
+const ADDTAG={train:['swiss','highlands','vizag','banff','alaska','kyoto','machupicchu'],falls:['iceland','victoriafalls','yosemite','maui','bali','costarica','swiss','glacier','highlands','kerala','banff','alaska'],sunset:['santorini','bigsur','maui','sedona','zion','keys','maldives','bali','rio','capetown','goa','udaipur','jaipur','tuscany','dubai','borabora','sydney','uyuni','mumbai','vizag','barcelona','lisbon','abq','amalfi']};
+Object.keys(ADDTAG).forEach(t=>ADDTAG[t].forEach(id=>{const d=D.find(x=>x.id===id);if(d&&!d.tags.includes(t))d.tags.push(t);}));
 /* Hand-ordered day plans for popular cities. Each day groups stops by area and puts each stop at the time of day it works best.
    Stop format: best time | place | time to allow | note | what to book (optional). Days are ordered best first, so a shorter trip keeps the top days. */
 const PLANS={
@@ -1793,7 +1864,7 @@ function renderControls(){
   const rb=$('#ribbon'),keep=rb.scrollLeft;
   $('#ribbon').innerHTML='<button class="mbtn" data-month="0" aria-pressed="'+(state.month===0)+'">All</button>'+MN.map((n,i)=>'<button class="mbtn'+(i+1===nowM?' now':'')+'" data-month="'+(i+1)+'" aria-pressed="'+(state.month===i+1)+'" aria-label="'+MF[i]+'">'+n+'</button>').join('');
   rb.scrollLeft=keep;
-  $('#chips').innerHTML=['all'].concat(TAGS).map(t=>'<button class="chip" data-tag="'+t+'" aria-pressed="'+(state.tag===t)+'">'+(t==='all'?'Any vibe':t.charAt(0).toUpperCase()+t.slice(1))+'</button>').join('');
+  $('#chips').innerHTML=['all'].concat(TAGS).map(t=>'<button class="chip" data-tag="'+t+'" aria-pressed="'+(state.tag===t)+'">'+(t==='all'?'Any vibe':TAGL[t]||t.charAt(0).toUpperCase()+t.slice(1))+'</button>').join('');
   $('#budgets').innerHTML=[['all','Any budget'],['budget','Under $150 a day'],['mid','$150 to $260'],['splurge','Splurge']].map(b=>'<button class="chip" data-budget="'+b[0]+'" aria-pressed="'+(state.budget===b[0])+'">'+b[1]+'</button>').join('');
   $('#visaf').innerHTML='<button class="chip" data-visaok aria-pressed="'+state.visaOk+'">Hide places that need a visa</button>';
   $('#passHome').innerHTML=passUI('H');
@@ -1855,7 +1926,7 @@ function sugCard(){
 const PROMPT=t=>'You are a travel researcher. Build a concise travel guide for this destination: '+JSON.stringify(t)+'.\n'+
 'Be brief: every text value under 15 words, exactly 3 spots, 3 itinerary days, 3 eat items, 2 book items, 2 stay tips, 4 gear items. A long reply gets cut off and fails.\nReply with ONLY one JSON object, no markdown, using exactly these keys:\n'+
 '{"n":"place name","reg":"state, province or region (empty if none)","country":"country name in English","cont":"one of North America, South America, Europe, Asia, Africa, Oceania, Antarctica",'+
-'"m":[best months as numbers 1-12],"tags":[up to 3 of nature,adventure,beach,culture,city,festival],"z":"temperate|desert|tropical|alpine","h":hue 0-360,"motif":"peaks|mesa|waves|balloons|fields|forest|torii|dome|coast|city","south":true if southern hemisphere,'+
+'"m":[best months as numbers 1-12],"tags":[up to 3 of nature,adventure,beach,culture,city,festival,fashion,train,falls,sunset],"z":"temperate|desert|tropical|alpine","h":hue 0-360,"motif":"peaks|mesa|waves|balloons|fields|forest|torii|dome|coast|city","south":true if southern hemisphere,'+
 '"b":"one-sentence summary","ev":"a notable festival or seasonal event, or empty","tip":"one insider tip",'+
 '"spots":[["photo spot","best time","short description"] x3],"it":[["day title","short plan"] x3],"gear":["4 packing items specific to the place"],'+
 '"bud":[shoestring,comfortable,splurge USD per person per day, excluding flights],"ride":["Car needed|Transit works|Mixed","getting-around note"],'+
@@ -2085,7 +2156,7 @@ function panelHTML(d){
   if(t==='pack')return packHTML(d);
   const e=entry(d,state.pp,state.st);
   return '<p class="lead">'+d.b+'</p><div class="glance"><div><small>Typical daily cost</small><b>'+fmt(d.bud[1])+'</b></div><div><small>Getting around</small><b>'+d.ride[0]+'</b></div><div><small>Booking</small><b>'+bookLevel(d)+'</b></div><div><small>Entry</small><b>'+(state.pp?VL[e[0]]:'Pick passport')+'</b></div></div>'+
-    (d.ev?'<p class="note"><b>Good to know</b>'+d.ev+'</p>':'')+'<p class="note"><b>Insider tip</b>'+d.tip+'</p><h3>Best months</h3>'+monthBar(d,true)+'<div class="tagrow">'+d.tags.map(x=>'<span>'+x+'</span>').join('')+'</div>'+eventsPanel(d);
+    (d.ev?'<p class="note"><b>Good to know</b>'+d.ev+'</p>':'')+'<p class="note"><b>Insider tip</b>'+d.tip+'</p><h3>Best months</h3>'+monthBar(d,true)+'<div class="tagrow">'+d.tags.map(x=>'<span>'+(TAGL[x]||x)+'</span>').join('')+'</div>'+eventsPanel(d);
 }
 function renderDetail(){
   const d=state.view;
