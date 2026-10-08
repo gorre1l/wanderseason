@@ -1178,6 +1178,16 @@ P('iguazu','Iguazú Falls','Misiones','Argentina',[3,4,5,8,9,10],['nature','fall
  [100,200,400],'Mixed|Taxis and park trains. Buses link the two sides.',
  ['Park entry|Required|Buy tickets online or at the gate.','Border crossing|Check|Carry your passport between the sides.'],
  'Falls-view lodge|A stay close to the national park.|Book ahead.');
+
+P('stowe',"Stowe and Smugglers' Notch",'Vermont','United States',[1,2,6,7,8,9,10,12],['nature','falls','adventure'],'alpine',25,'forest',{ev:'Fall color in northern Vermont is usually at its best from late September to mid October. Route 108 through the Notch closes in winter, usually from about late fall to spring, so check road status. Ski season runs about December to early April.'},
+ 'A white-steeple mountain village with a free paved path, waterfalls, Vermont’s highest peak and a narrow mountain pass. Most of the best things here are free or cheap.',
+ 'Spend on one or two things, not everything: the Notch drive, the waterfalls and the Rec Path cost nothing, so save money for one paid highlight.',
+ ["Smugglers' Notch drive (Route 108)|Morning|A narrow pass between huge boulders and cliffs. Free. Allow about an hour with stops, and avoid it in rain or fog.",'Bingham Falls|Midday|A short hike to a gorge waterfall just off Route 108. Free. The path can be slippery, so wear grippy shoes.','Moss Glen Falls|Golden hour|A tall cascade that you can see from a short boardwalk. Free and quick.'],
+ ['Free day|Stowe Recreation Path (5.3 miles, paved, year-round), the village and Moss Glen Falls.','Notch day|Route 108 through the pass, Bingham Falls and the Barnes Camp loop.','Treat day|Ben & Jerry’s tour and Cold Hollow Cider Mill on the way to Waterbury, or a Mt. Mansfield summit trip if the weather is clear.'],
+ ['Cold Hollow Cider Mill|Cider doughnuts, a Vermont favorite.|Sweet|$','Ben & Jerry’s factory tour|Includes a sample. Paid tour, so book a time in busy seasons.|Sweet|$','Maple creemees and maple syrup|A local treat in summer and fall. Cheaper at farm stands than in village shops.|Local dish|$','Craft beer in Stowe and Waterbury|A strong local scene, so check the taproom you want before you drive.|Drink|$$'],
+ [180,320,650],'Car needed|A car is needed for the Notch and the waterfalls. The Recreation Path is walkable from the village.',
+ ['Mt. Mansfield gondola or auto toll road|Optional|Pay for one view, not both. Summer and fall only. Check current prices and hours.','Lodging in fall color weeks|Book ahead|Mid-week rooms and inns outside the village are cheaper.','Notch road|Check|Route 108 closes in winter, so confirm it is open.'],
+ 'Inn with a mountain view|A classic Vermont inn near the village, or a farm stay in nearby Morristown for less.|Book ahead in fall.');
 /* ---------- More of India ---------- */
 P('agra','Agra and the Taj Mahal','Uttar Pradesh','India',[10,11,12,1,2,3],['culture','city'],'desert',35,'dome',{ev:'The Taj Mahal is closed on Fridays. Winter mornings can be foggy.',shop:'Marble inlay and leather are Agra specialties. Compare prices and buy from government-run emporiums if you want fixed prices.'},
  'The white marble Taj Mahal, Mughal forts and a day trip to an abandoned red sandstone city.','Buy Taj tickets online and arrive at opening for the best light and fewer crowds.',
@@ -1286,7 +1296,7 @@ P('gandikota','Gandikota Grand Canyon','Andhra Pradesh','India',[10,11,12,1,2],[
  'Riverside tent camp|A stay by the gorge.|Book ahead.');
 
 /* Extra vibe tags: scenic trains, waterfalls and sunsets. */
-const ADDTAG={train:['swiss','highlands','vizag','banff','alaska','kyoto','machupicchu'],falls:['iceland','victoriafalls','yosemite','maui','bali','costarica','swiss','glacier','highlands','kerala','banff','alaska'],sunset:['santorini','bigsur','maui','sedona','zion','keys','maldives','bali','rio','capetown','goa','udaipur','jaipur','tuscany','dubai','borabora','sydney','uyuni','mumbai','vizag','barcelona','lisbon','abq','amalfi']};
+const ADDTAG={train:['swiss','highlands','vizag','banff','alaska','kyoto','machupicchu'],falls:['stowe','iceland','victoriafalls','yosemite','maui','bali','costarica','swiss','glacier','highlands','kerala','banff','alaska'],sunset:['santorini','bigsur','maui','sedona','zion','keys','maldives','bali','rio','capetown','goa','udaipur','jaipur','tuscany','dubai','borabora','sydney','uyuni','mumbai','vizag','barcelona','lisbon','abq','amalfi']};
 Object.keys(ADDTAG).forEach(t=>ADDTAG[t].forEach(id=>{const d=D.find(x=>x.id===id);if(d&&!d.tags.includes(t))d.tags.push(t);}));
 /* Hand-ordered day plans for popular cities. Each day groups stops by area and puts each stop at the time of day it works best.
    Stop format: best time | place | time to allow | note | what to book (optional). Days are ordered best first, so a shorter trip keeps the top days. */
@@ -1445,6 +1455,7 @@ const parseStop=s=>{const p=s.split('|');return {t:p[0],n:p[1],d:p[2]||'',note:p
 Object.keys(PLANS).forEach(k=>{PLANS[k]=PLANS[k].map(x=>({title:x[0],area:x[1],stops:x[2].map(parseStop)}));});
 /* Annual events and festivals. Dates move each year, so "when" is a typical window. Format: id|name|library place id|city|country|months|typical timing|kind|note */
 const EVRAW=[
+'vtfall|Vermont fall foliage|stowe|Stowe|United States|9,10|Late September to mid October|festival|Peak color changes by elevation and year. Prices and traffic rise on weekends, so mid-week visits save money.',
 'pfw|Paris Fashion Week, women’s|paris|Paris|France|2,3,9,10|Late February to early March, and late September to early October|fashion|Runway shows are by invitation. Visitors can still see street style outside venues, pop-up events and fashion museums. Hotels book up and prices rise.',
 'pfwm|Paris Men’s Fashion Week|paris|Paris|France|1,6|Mid January and late June|fashion|Mostly invitation-only. Brand flagships and pop-ups are open to everyone.',
 'couture|Paris Haute Couture Week|paris|Paris|France|1,7|Late January and early July|fashion|Couture shows are private. Galerie Dior and fashion museums are open to the public.',
