@@ -1424,6 +1424,103 @@ const EVRAW=[
 ];
 const EV=EVRAW.map(s=>{const p=s.split('|');return {id:p[0],n:p[1],place:p[2],city:p[3],country:p[4],m:p[5].split(',').map(Number),when:p[6],kind:p[7],note:p[8],q:p[3]+', '+p[4]};});
 const KINDL={fashion:'Fashion',festival:'Festival',film:'Film',sport:'Sport',culture:'Culture',nature:'Nature'};
+/* Tea, coffee, date-night and must-try experiences. Format: place id|category|name|why it is worth it|booking or dress tip. Venues change, so confirm hours and bookings. */
+const CATS=['Tea and coffee','Date night','Must try'];
+const CTIP={
+ Italy:'Italian coffee: order at the bar (al banco) for the lowest price, since sitting down adds a service charge. A cappuccino is a morning drink. “Un caffè” means an espresso. Locals drink espresso standing up in a minute or two.',
+ France:'French cafés: coffee on a terrace costs more than at the counter. A “café” is an espresso, and a “crème” is with milk. Lunch is served roughly 12 to 2, and many kitchens close between meals.',
+ Japan:'Japanese tea and coffee: look for old-style kissaten coffee houses and tea rooms serving matcha with a sweet. Ordering a morning set (a “morning” menu) is a good-value breakfast.',
+ 'United Kingdom':'British tea: afternoon tea is served roughly 2 to 5 pm and usually needs a booking. Many hotels have a dress code, so check before you go.',
+ Austria:'Viennese coffee houses: you can stay for hours over one coffee, and the waiter will not rush you. Order a Melange (like a cappuccino) with a slice of cake.'
+};
+const EXPRAW=[
+'london|Tea and coffee|Afternoon tea at The Ritz, Palm Court|The classic London tea with a live-piano room. Smart dress is expected.|Book weeks ahead and check the dress code',
+'london|Tea and coffee|Afternoon tea at Fortnum & Mason, Diamond Jubilee Tea Salon|A historic tea room above the famous department store.|Reserve ahead',
+'london|Tea and coffee|Afternoon tea at The Savoy or Claridge’s|Grand hotel tea rooms with a pot of tea and sandwiches.|Book ahead',
+'london|Date night|Sky Garden at sunset|A free glass-domed garden with skyline views, then dinner nearby.|Book free tickets weeks ahead',
+'london|Date night|Dinner at Rules, Covent Garden|London’s oldest restaurant, dating to 1798, with game and classic British food.|Reserve ahead',
+'london|Date night|The River Café, Hammersmith|A riverside Italian restaurant known for simple seasonal cooking.|Reserve ahead',
+'london|Must try|Sunday roast at a pub|A British Sunday tradition with roast meat, potatoes and Yorkshire pudding.|Book a table for Sunday',
+'london|Must try|Dishoom|Bombay café dishes like the bacon naan roll and house black daal. Queues are common.|Go early or reserve for dinner',
+'paris|Tea and coffee|Angelina on Rue de Rivoli|A belle-époque tea room known for thick hot chocolate and Mont-Blanc pastry.|Expect a queue at peak hours',
+'paris|Tea and coffee|Café de Flore or Les Deux Magots|Famous Saint-Germain cafés with a literary history.|No booking needed, but prices are high',
+'paris|Tea and coffee|Ladurée and Pierre Hermé macarons|Two of Paris’s best-known macaron makers.|Buy a small box to compare',
+'paris|Date night|Seine dinner cruise|Lit-up monuments with a seated dinner on the river.|Book a day ahead',
+'paris|Date night|Le Train Bleu at Gare de Lyon|A gilded dining room inside a train station, dating to 1900.|Reserve ahead',
+'paris|Date night|Eiffel Tower sparkle at Trocadéro|The tower sparkles for five minutes at the top of each hour after dark.|Free and no booking',
+'paris|Must try|Fresh croissant from a neighborhood boulangerie|Pick a shop with a queue of locals in the morning.|No booking needed',
+'paris|Must try|Crêpes and galettes|A sweet crêpe or a savory buckwheat galette.|No booking needed',
+'milan|Tea and coffee|Espresso at the bar|Drink it standing at the counter in a classic Milan bar, as locals do.|No booking needed',
+'milan|Tea and coffee|Marchesi 1824 or Camparino in the Galleria|A historic pastry shop and a Campari bar under the glass arcade.|No booking needed',
+'milan|Date night|Aperitivo at the Navigli canals|Drinks with a snack buffet as the lights come on along the water.|Arrive early for a canal-side table',
+'milan|Date night|A terrace with a Duomo view|Several rooftops and terraces look straight at the cathedral.|Reserve for dinner',
+'milan|Must try|Risotto alla Milanese and cotoletta|Saffron risotto and breaded veal cutlet.|Book popular trattorias',
+'tuscany|Tea and coffee|Caffè Gilli or Caffè Rivoire in Florence|Historic cafés on Piazza della Repubblica and Piazza della Signoria.|Standing at the bar costs less than a table',
+'tuscany|Tea and coffee|Gelato at Vivoli|A well-known Florence gelateria that has been open for decades.|Cash is helpful',
+'tuscany|Date night|Sunset at Piazzale Michelangelo|The best skyline of Florence, with a glass of wine nearby.|Free and no booking',
+'tuscany|Date night|Dinner at a winery or agriturismo|Home-cooked Tuscan food among the vines.|Book a table ahead',
+'tuscany|Must try|Chianti tasting and bistecca alla fiorentina|The region’s signature wine and its thick grilled steak.|Reserve for dinner',
+'amalfi|Tea and coffee|Limoncello and delizia al limone|Lemon liqueur and a lemon sponge dessert from Pasticceria Pansa, in Amalfi.|No booking needed',
+'amalfi|Date night|Sunset dinner above Positano|A terrace table over the pastel village.|Reserve well ahead in season',
+'amalfi|Date night|Sunset boat ride|Cruise the coast as the cliffs turn gold.|Book a day ahead',
+'amalfi|Must try|Spaghetti alle vongole|Clams and pasta by the sea.|No booking needed',
+'nyc|Tea and coffee|Bagel and lox at Russ & Daughters|A century-old appetizing shop on the Lower East Side.|Go early on weekends',
+'nyc|Tea and coffee|Levain Bakery cookies|Thick, gooey cookies that are a New York tradition.|Expect a line at peak hours',
+'nyc|Date night|Dinner at The River Café, Brooklyn|Skyline and Brooklyn Bridge views from the waterfront.|Reserve ahead and check the dress code',
+'nyc|Date night|Top of the Rock at sunset|The Empire State Building and Central Park in the golden light.|Book a sunset slot',
+'nyc|Date night|Jazz at the Blue Note|A famous Greenwich Village jazz club.|Reserve tickets ahead',
+'nyc|Must try|A slice at Joe’s Pizza and pastrami at Katz’s|Two New York classics.|No booking needed',
+'tokyo|Tea and coffee|Kissaten coffee at Café de l’Ambre, Ginza|A classic coffee house that has focused on aged coffee for decades.|No booking needed',
+'tokyo|Tea and coffee|Matcha and sweets at a tea house|Try a matcha parfait or whisked tea in a quiet room.|No booking needed',
+'tokyo|Date night|Shibuya Sky at sunset|A rooftop view of the crossing at golden hour and after dark.|Book a sunset slot online',
+'tokyo|Date night|New York Bar at the Park Hyatt|A high-floor bar with a skyline view and live jazz, made famous by a film.|Check the cover charge and dress code',
+'tokyo|Must try|A sushi counter and a ramen shop|Choose a small counter. Conveyor-belt sushi is a cheap, fun option.|Reserve sushi counters ahead',
+'kyoto|Tea and coffee|Matcha at Ippodo Tea|A tea merchant founded in 1717, with a tea room beside the shop.|No booking needed',
+'kyoto|Tea and coffee|A tea ceremony in Gion|A short ceremony with a host who explains each step.|Book ahead',
+'kyoto|Date night|Evening in Gion and Pontocho|Lantern-lit lanes and small restaurants along the river.|Reserve dinner ahead',
+'kyoto|Date night|Kaiseki dinner|A multi-course meal that follows the seasons.|Book well ahead',
+'kyoto|Must try|Kyoto-style sweets and yudofu|Wagashi sweets and simple tofu, both Kyoto specialties.|No booking needed',
+'santorini|Tea and coffee|Greek frappé with a caldera view|A cold iced coffee that is a Greek summer staple.|No booking needed',
+'santorini|Date night|Sunset dinner in Oia|A caldera-facing table as the sun sets.|Reserve weeks ahead',
+'santorini|Date night|Wine tasting at a caldera winery|Taste volcanic-soil wines like Assyrtiko.|Book ahead for sunset slots',
+'santorini|Must try|Fava, tomato fritters and fresh fish|Local food of the island.|No booking needed',
+'bali|Tea and coffee|Balinese coffee in Ubud|Try locally grown beans at a small café.|No booking needed',
+'bali|Date night|Seafood dinner on the sand at Jimbaran|Tables on the beach at sunset.|Book ahead',
+'bali|Date night|Rice-terrace dinner in Ubud|A quiet table above the paddies.|Reserve ahead',
+'bali|Must try|Babi guling and nasi campur|Roast pork and a mixed rice plate.|No booking needed',
+'hyderabad|Tea and coffee|Irani chai and Osmania biscuits|A classic Hyderabadi tea stop near Charminar, such as Nimrah Cafe.|No booking needed',
+'hyderabad|Date night|Dinner at Falaknuma Palace|A Nizam-era palace hotel with a formal dining experience.|Reserve ahead and check the dress code',
+'hyderabad|Date night|Hussain Sagar boat ride|A evening ride on the lake with the Buddha statue lit up.|Check boat timings',
+'hyderabad|Must try|Hyderabadi biryani|Try a well-known biryani house such as Paradise or Shah Ghouse.|No booking needed',
+'jaipur|Tea and coffee|Chai on a rooftop|A tea stop with a view of the old city, such as Tapri Central.|No booking needed',
+'jaipur|Date night|Dinner at a palace hotel|A courtyard dinner at a heritage palace.|Reserve ahead and check the dress code',
+'jaipur|Date night|Amber Fort light-and-sound show|Evening show with history told over the lit fort.|Check timings and book ahead',
+'jaipur|Must try|Lassi at Lassiwala and pyaaz kachori|A thick yogurt drink and a fried onion pastry.|No booking needed',
+'vienna|Tea and coffee|Café Central|A grand coffee house with vaulted ceilings, old marble and a long cake list.|Expect a queue at peak hours',
+'vienna|Tea and coffee|Sachertorte at Café Sacher or Demel|Try the original chocolate cake and compare with a rival bakery.|Reserve for peak weekends',
+'vienna|Date night|Riesenrad at dusk|A 1897 Ferris wheel above the Prater with city lights.|Book a slot ahead',
+'vienna|Date night|Heuriger wine tavern in Grinzing|A casual evening with new wine and Austrian snacks.|No booking needed',
+'vienna|Must try|Opera standing tickets|Cheap standing places let you see a show at a famous opera house.|Queue on the day',
+'lisbon|Tea and coffee|Pastéis de Belém|A famous custard tart bakery since 1837.|Expect a line',
+'lisbon|Tea and coffee|Café A Brasileira|A historic Chiado café from 1905.|No booking needed',
+'lisbon|Date night|Fado dinner in Alfama|Live fado music with dinner in a small house.|Book ahead',
+'lisbon|Date night|Sunset at a miradouro|A hilltop viewpoint with a drink in hand.|Free and no booking',
+'lisbon|Must try|Ginjinha and bifana|A cherry liqueur and a pork sandwich.|No booking needed',
+'barcelona|Tea and coffee|Vermouth hour|A Catalan tradition with a small glass and olives before lunch.|No booking needed',
+'barcelona|Date night|Flamenco at a tablao|A close-up show with dinner or drinks.|Book ahead',
+'barcelona|Date night|Sunset at Bunkers del Carmel|A hilltop view of the city.|Free and no booking',
+'barcelona|Must try|Els Quatre Gats|A café from 1897 where Picasso hung out.|Reserve for lunch',
+'dubai|Tea and coffee|Afternoon tea at the Burj Al Arab|A famous tea inside a landmark hotel.|Book ahead and check the dress code',
+'dubai|Tea and coffee|Arabic coffee with dates|A traditional welcome drink.|No booking needed',
+'dubai|Date night|At.mosphere, Burj Khalifa|Dinner on a high floor of the world’s tallest building.|Reserve ahead and check the dress code',
+'dubai|Date night|Dhow dinner cruise|A wooden boat with a buffet and skyline views.|Book a day ahead',
+'singapore|Tea and coffee|Kaya toast and kopi at Ya Kun|A traditional breakfast of toast, soft eggs and coffee.|No booking needed',
+'singapore|Tea and coffee|Tiffin at Raffles Hotel|A colonial hotel afternoon tea setting.|Book ahead and check the dress code',
+'singapore|Date night|Gardens by the Bay light show|A free evening show among the Supertrees.|Check show times',
+'singapore|Date night|Singapore Sling at the Long Bar|The drink’s home, at Raffles Hotel.|Book or queue',
+'singapore|Must try|Chicken rice and chilli crab|Hawker favorites, with chilli crab for a splurge.|No booking needed'
+];
+const EXP={};EXPRAW.forEach(s=>{const p=s.split('|');(EXP[p[0]]=EXP[p[0]]||[]).push({c:p[1],n:p[2],note:p[3],b:p[4]||''});});
 /* Entry rules by destination country and passport. Compiled from government pages and travel sites on Oct 3, 2026. Rules change. */
 const CODE={'United States':'us','Canada':'ca','Japan':'jp','Indonesia':'id','Turkey':'tr','Morocco':'ma','Chile':'cl','United Kingdom':'gb','India':'in'};
 const SCH=['Austria','Belgium','Bulgaria','Croatia','Czechia','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Iceland','Italy','Latvia','Liechtenstein','Lithuania','Luxembourg','Malta','Netherlands','Norway','Poland','Portugal','Romania','Slovakia','Slovenia','Spain','Sweden','Switzerland'];
@@ -1555,7 +1652,7 @@ const GATE={salt:"cfea520bf97d6c28",n:3000,hash:"65a6d3251892dd1978a1a1f616a3454
 const nowM=new Date().getMonth()+1;
 const state={cont:'all',country:'all',region:'all',month:0,tag:'all',budget:'all',tier:1,days:3,ppl:2,q:'',saved:false,visaOk:false,view:null,tab:'overview',season:null,pp:'',st:'none'};
 let store={saved:[],packed:{},pp:'',st:'none',custom:[],plans:{}};
-try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];store.plans=(p.plans&&typeof p.plans==='object')?p.plans:{};store.mine=(p.mine&&typeof p.mine==='object')?p.mine:{};}}catch(e){}
+try{const s=localStorage.getItem('wanderseason');if(s){const p=JSON.parse(s);store.saved=p.saved||[];store.packed=p.packed||{};store.pp=p.pp||'';store.st=p.st||'none';store.custom=Array.isArray(p.custom)?p.custom:[];store.plans=(p.plans&&typeof p.plans==='object')?p.plans:{};store.mine=(p.mine&&typeof p.mine==='object')?p.mine:{};store.exp=(p.exp&&typeof p.exp==='object')?p.exp:{};}}catch(e){}
 state.pp=store.pp;state.st=store.st;
 function persist(){store.pp=state.pp;store.st=state.st;try{localStorage.setItem('wanderseason',JSON.stringify(store));}catch(e){}}
 
@@ -1893,7 +1990,7 @@ function moreHTML(d){
   return h;
 }
 
-store.mine=store.mine||{};
+store.mine=store.mine||{};store.exp=store.exp||{};
 let addBusy=false,addMsg='',addDraft='';
 async function addPlace(text){
   const d=state.view;text=String(text||'').trim().slice(0,100);if(!d||!sampleFn||addBusy||text.length<2)return;
@@ -1948,6 +2045,34 @@ function planHTML(d){
   h+='<ol class="days">'+days.map((x,i)=>'<li class="day"><div class="dn">Day '+(i+1)+'</div><div><h4>'+x.title+'</h4>'+(x.area?'<p class="area">'+x.area+'</p>':'')+'<ul class="stops">'+x.stops.map(p=>'<li><span class="tm">'+p.t+'</span><div><b>'+p.n+'</b>'+(p.d?' <span class="dur">'+p.d+'</span>':'')+' <a class="mp" href="'+mapUrl(p.n,d)+'" target="_blank" rel="noopener">Map</a><p>'+p.note+'</p>'+(p.b?'<p class="bk"><b>Booking:</b> '+p.b+'</p>':'')+'</div></li>').join('')+'</ul></div></li>').join('')+'</ol>'+addHTML(d)+moreHTML(d);
   return h;
 }
+
+PH.exp=['Searching cafés and tea rooms…','Finding date-night spots…','Picking the must-tries…'];
+let expBusy=false,expMsg='';
+async function findExp(){
+  const d=state.view;if(!d||!sampleFn||expBusy)return;
+  expBusy=true;busyT0=Date.now();expMsg='';renderDetail();
+  const have=(EXP[d.id]||[]).concat(store.exp[d.id]||[]).map(x=>x.n);
+  try{
+    const raw=await sampleFn.json('Suggest tea and coffee experiences, date-night restaurants or romantic evenings, and must-try food or drink for a trip to '+JSON.stringify(d.n+', '+d.loc)+'. Use real, well-known places. Skip these: '+JSON.stringify(have)+'. Give 2 to 3 for each category. Do not invent prices or opening hours. Keep every text value under 20 words.\nReply with ONLY one JSON object, no markdown: {"items":[{"c":"Tea and coffee or Date night or Must try","n":"name","note":"why it is worth it","b":"booking or dress tip, or empty"}]}',{cache:false});
+    if(!raw||!Array.isArray(raw.items)||!raw.items.length)throw new Error('bad');
+    const add=raw.items.slice(0,9).map(x=>({c:CATS.includes(x&&x.c)?x.c:'Must try',n:clip(x&&x.n,90),note:clip(x&&x.note,200),b:clip(x&&x.b,120)})).filter(x=>x.n);
+    store.exp[d.id]=(store.exp[d.id]||[]).concat(add);persist();
+  }catch(e){expMsg=e&&e.code==='not_granted'?'Claude access was declined.':e&&e.code==='rate_limited'?'Too many requests. Wait a minute.':'Claude could not find more. Try again.';}
+  expBusy=false;if(state.view===d)renderDetail();
+}
+function treatsHTML(d){
+  const L=(EXP[d.id]||[]).concat(store.exp[d.id]||[]);
+  let h='<h3>Tea, coffee, date night and must-tries</h3>';
+  if(CTIP[d.country])h+='<p class="note"><b>Local know-how</b>'+CTIP[d.country]+'</p>';
+  if(!L.length)h+='<p class="muted">No hand-picked list for '+d.n+' yet.'+(sampleFn?' Ask Claude to find tea, coffee, date-night and must-try spots.':'')+'</p>';
+  CATS.forEach(c=>{
+    const items=L.filter(x=>x.c===c);if(!items.length)return;
+    h+='<h3 class="sp">'+c+'</h3><ul class="spots">'+items.map(x=>'<li class="spot"><h4>'+x.n+' <a class="mp" href="'+mapUrl(x.n,d)+'" target="_blank" rel="noopener">Map</a></h4><p>'+x.note+'</p>'+(x.b?'<p class="bk"><b>Tip:</b> '+x.b+'</p>':'')+'</li>').join('')+'</ul>';
+  });
+  if(sampleFn)h+='<div class="actions">'+(expBusy?busyBtn('exp'):'<button class="btn sun" data-exp>'+(L.length?'Find more with Claude':'Find spots with Claude')+'</button>')+'</div>'+(expMsg?'<p class="err">'+esc(expMsg)+'</p>':'');
+  h+='<p class="muted s">Venues, hours and dress codes change. Confirm before you go.</p>';
+  return h;
+}
 function panelHTML(d){
   const t=state.tab;
   if(t==='itinerary')return planHTML(d);
@@ -1956,6 +2081,7 @@ function panelHTML(d){
   if(t==='stay')return '<h3>Ways to save on where you sleep</h3><ul class="spots">'+d.stay.map(s=>'<li class="spot"><h4>'+s[0]+'</h4><p>'+s[1]+'</p></li>').join('')+'</ul>';
   if(t==='book')return '<h3>Getting around</h3><div class="ride"><span class="when">'+d.ride[0]+'</span><p>'+d.ride[1]+'</p></div><h3>What to reserve</h3><ul class="spots">'+d.book.map(b=>'<li class="spot"><h4>'+b[0]+' <span class="urg u-'+b[1].replace(/\W/g,'')+'">'+b[1]+'</span></h4><p>'+b[2]+'</p></li>').join('')+'</ul>';
   if(t==='shop')return '<h3>Shopping and better prices</h3><p class="lead">'+d.shop+'</p><p class="muted">Tax-refund rules and minimum spends change. Ask the store, and keep your receipts and passport handy.</p>';
+  if(t==='treats')return treatsHTML(d);
   if(t==='pack')return packHTML(d);
   const e=entry(d,state.pp,state.st);
   return '<p class="lead">'+d.b+'</p><div class="glance"><div><small>Typical daily cost</small><b>'+fmt(d.bud[1])+'</b></div><div><small>Getting around</small><b>'+d.ride[0]+'</b></div><div><small>Booking</small><b>'+bookLevel(d)+'</b></div><div><small>Entry</small><b>'+(state.pp?VL[e[0]]:'Pick passport')+'</b></div></div>'+
@@ -1963,7 +2089,7 @@ function panelHTML(d){
 }
 function renderDetail(){
   const d=state.view;
-  const tabs=[['overview','Overview'],['itinerary','Itinerary'],['spots','Photo spots'],['eat','Eat'],['stay','Stay & save'],['book','Book & rides']].concat(d.shop?[['shop','Shop']]:[]).concat([['pack','Packing list']]);
+  const tabs=[['overview','Overview'],['itinerary','Itinerary'],['spots','Photo spots'],['eat','Eat'],['stay','Stay & save'],['book','Book & rides']].concat(d.shop?[['shop','Shop']]:[]).concat([['treats','Tea and date night'],['pack','Packing list']]);
   $('#detail').innerHTML='<button class="back" data-back>← All places</button>'+
     '<div class="dcover">'+art(d,motifOf(d),'d'+d.id)+'<span class="wm">© Wanderseason</span>'+'<div class="pills"><span class="pill">'+d.cont+'</span>'+(d.custom?'<span class="pill ai">Made by Claude</span>':'')+'</div><h2>'+d.n+'</h2><p>'+d.loc+'</p><p class="meta">Best: '+rangeText(d.m)+'</p><button class="heart" data-save="'+d.id+'" aria-pressed="'+isSaved(d.id)+'" aria-label="Save '+d.n+'">'+heartSvg+'</button></div>'+
     (d.custom?'<p class="aibadge">This guide was built by Claude from general knowledge. Check hours, prices and rules before you book.<button class="btn" data-rmcustom="'+d.id+'">Remove guide</button></p>':'')+'<div class="trip">'+budgetCard(d)+entryCard(d)+'</div>'+
@@ -1995,12 +2121,13 @@ function copyText(text){
 const rerender=()=>{state.view?renderDetail():renderHome();};
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-sug],[data-more],[data-rmmine],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
+  const t=e.target.closest('[data-visaok],[data-budget],[data-tier],[data-open],[data-cont],[data-ask],[data-exp],[data-sug],[data-more],[data-rmmine],[data-plan],[data-planstop],[data-planreset],[data-askstop],[data-rmcustom],[data-month],[data-tag],[data-save],[data-tab],[data-season],[data-back],[data-copy],[data-clear],[data-reset],#savedBtn,#surprise');
   if(!t)return;
   if(t.dataset.open){e.preventDefault();openDetail(t.dataset.open);return;}
   if(t.dataset.cont){state.cont=t.dataset.cont;if(state.country!=='all'&&state.cont!=='all'&&CONT_OF[state.country]!==state.cont){state.country='all';state.region='all';}renderHome();return;}
   if(t.dataset.rmmine!==undefined){const L=store.mine[state.view.id]||[];L.splice(+t.dataset.rmmine,1);persist();renderDetail();return;}
   if(t.dataset.more!==undefined){moreStops();return;}
+  if(t.dataset.exp!==undefined){findExp();return;}
   if(t.dataset.sug){suggestMore(state.country);return;}
   if(t.dataset.ask){askClaude(t.dataset.ask.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'));return;}
   if(t.dataset.plan!==undefined){curatePlan();return;}
